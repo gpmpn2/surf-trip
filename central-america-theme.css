@@ -1,0 +1,32 @@
+/* Central America theme — overrides the ocean palette with warm jungle + sunset.
+   Loaded after styles.css on central-america.html only. */
+:root {
+  --ocean-900: #17321c;
+  --ocean-800: #1e4a2b;
+  --ocean-700: #2f6b3f;
+  --ocean-500: #3f9d5a;
+  --teal-400:  #5bbf7a;
+  --foam:      #eef6ea;
+  --sand:      #f7f0e4;
+  --sand-deep: #e7d8c0;
+  --coral:     #ff7a3c;
+  --coral-dk:  #e85f24;
+  --ink:       #21301f;
+  --ink-soft:  #5a6b54;
+  --heading:   #17321c;
+  --surface:   #ffffff;
+}
+
+[data-theme="dark"] {
+  --foam:      #122318;
+  --sand:      #0d1a12;
+  --sand-deep: #2a4433;
+  --ink:       #e9f3ea;
+  --ink-soft:  #a6bda9;
+  --surface:   #13291b;
+  --heading:   #eef8ee;
+  --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.30);
+  --shadow-md: 0 12px 30px rgba(0, 0, 0, 0.40);
+  --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.50);
+}
+[data-theme="dark"] .nav.is-scrolled { background: rgba(13, 26, 18, 0.85); }

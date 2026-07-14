@@ -299,6 +299,43 @@ select:focus-visible, textarea:focus-visible {
 }
 .section__lede { font-size: 1.15rem; color: var(--ink-soft); }
 
+/* ---------- Sabbatical phase strip ---------- */
+.phases {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px clamp(20px, 5vw, 48px) 0;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.phase {
+  flex: 1 1 180px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 16px;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  border: 1.5px solid transparent;
+  text-decoration: none;
+  color: var(--ink);
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+a.phase:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: var(--teal-400); }
+.phase__dot { flex: 0 0 auto; width: 9px; height: 9px; border-radius: 50%; background: var(--sand-deep); }
+.phase__icon { font-size: 1.25rem; line-height: 1; }
+.phase__label { font-weight: 600; color: var(--heading); }
+.phase__dates { margin-left: auto; font-size: .76rem; color: var(--ink-soft); white-space: nowrap; }
+.phase.is-done { opacity: .6; }
+.phase.is-done .phase__dot { background: var(--ocean-500); }
+.phase.is-now .phase__dot { background: var(--coral); animation: phase-blink 1.3s ease-in-out infinite; }
+.phase.is-here { outline: 2px solid var(--teal-400); outline-offset: 2px; }
+@keyframes phase-blink {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(255, 122, 60, 0.5); }
+  50%      { opacity: .35; box-shadow: 0 0 0 6px rgba(255, 122, 60, 0); }
+}
+
 /* ---------- Timeline ---------- */
 .timeline { list-style: none; position: relative; padding-left: 8px; }
 .timeline::before {
@@ -483,7 +520,7 @@ select:focus-visible, textarea:focus-visible {
   box-shadow: var(--shadow-sm);
   margin-bottom: 36px;
   position: sticky;
-  top: 76px;
+  top: 90px;
   z-index: 20;
 }
 .packing__progress-bar {
@@ -1024,7 +1061,15 @@ body { font-optical-sizing: auto; }
 
 @media (max-width: 620px) {
   .hero__meta { gap: 28px; }
-  .packing__progress { top: 66px; }
+  .packing__progress { top: 76px; }
+  .phases { padding-top: 20px; gap: 8px; }
+  .phase { padding: 11px 14px; }
+  .phase__dates { font-size: .72rem; }
+}
+
+@media (max-width: 400px) {
+  .pack-item__toggles { gap: 5px; }
+  .pack-toggle { padding: 6px 9px; font-size: .66rem; letter-spacing: .02em; }
 }
 
 @media (max-width: 560px) {

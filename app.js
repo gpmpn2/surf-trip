@@ -6,6 +6,13 @@
 
 const TRIP_START = "2026-08-03"; // used for the hero countdown
 
+// Shared across both trip pages. Keep in sync with central-america.js.
+const PHASES = [
+  { key: "indonesia", icon: "🌊", label: "Indonesia", dates: "Aug 3–28", start: "2026-08-03", end: "2026-08-28", href: "index.html" },
+  { key: "reset", icon: "🏡", label: "Santa Cruz", dates: "Aug 28–Sep 1", start: "2026-08-28", end: "2026-09-01", href: null },
+  { key: "centralamerica", icon: "🌴", label: "Central America", dates: "Sep 1 – Oct 4", start: "2026-09-01", end: "2026-10-04", href: "central-america.html" },
+];
+
 const ITINERARY = [
   {
     days: "Aug 3–4",
@@ -138,7 +145,6 @@ const PACKING = [
       { label: "Underwear ×6", note: "Moisture-wicking, anti-chafe boxers" },
       { label: "Socks ×3", note: "Ankle socks for trekking / travel days" },
       { label: "Sun hoody", note: "Hooded UPF top for all-day sun cover" },
-      { label: "Sarong", note: "Towel, temple cover-up, boat layer — all-purpose" },
       { label: "Compression socks", note: "For the long-haul flights" },
       { label: "Rain shell", note: "Packable, breathable waterproof jacket" },
     ],
@@ -405,6 +411,26 @@ function pop(el) {
     [{ transform: "scale(1)" }, { transform: "scale(1.25)" }, { transform: "scale(1)" }],
     { duration: 260, easing: "cubic-bezier(.3, 1.4, .5, 1)" }
   );
+}
+
+function renderPhaseStrip() {
+  const el = document.getElementById("phaseStrip");
+  if (!el) return;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const toDate = (s) => new Date(s + "T00:00:00");
+  const page = document.body.dataset.page;
+  let activeIdx = PHASES.findIndex((p) => toDate(p.start) <= today && today <= toDate(p.end));
+  if (activeIdx === -1) activeIdx = PHASES.findIndex((p) => toDate(p.start) > today);
+
+  el.innerHTML = PHASES.map((p, i) => {
+    const status = i === activeIdx ? "is-now" : toDate(p.end) < today ? "is-done" : "is-upcoming";
+    const here = p.key === page ? "is-here" : "";
+    const inner = `<span class="phase__dot"></span><span class="phase__icon">${p.icon}</span><span class="phase__label">${p.label}</span><span class="phase__dates">${p.dates}</span>`;
+    return p.href && p.key !== page
+      ? `<a class="phase ${status} ${here}" href="${p.href}">${inner}</a>`
+      : `<div class="phase ${status} ${here}">${inner}</div>`;
+  }).join("");
 }
 
 function renderTimeline() {
@@ -1293,6 +1319,7 @@ function initMobileNav() {
 
 document.addEventListener("DOMContentLoaded", () => {
   initTheme();
+  renderPhaseStrip();
   renderTimeline();
   renderBreakFilters();
   renderBreaks();

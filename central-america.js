@@ -1,0 +1,694 @@
+/* ============================================
+   Central America — sabbatical part two
+   Self-contained; shares styles.css with the Indonesia page.
+   ============================================ */
+
+const TRIP_START = "2026-08-28"; // countdown target: start of the Santa Cruz reset
+
+// Shared across both trip pages. Keep in sync with app.js.
+const PHASES = [
+  { key: "indonesia", icon: "🌊", label: "Indonesia", dates: "Aug 3–28", start: "2026-08-03", end: "2026-08-28", href: "index.html" },
+  { key: "reset", icon: "🏡", label: "Santa Cruz", dates: "Aug 28–Sep 1", start: "2026-08-28", end: "2026-09-01", href: null },
+  { key: "centralamerica", icon: "🌴", label: "Central America", dates: "Sep 1 – Oct 4", start: "2026-09-01", end: "2026-10-04", href: "central-america.html" },
+];
+
+const ITINERARY = [
+  {
+    days: "Aug 28 – Sep 1",
+    start: "2026-08-28",
+    end: "2026-09-01",
+    place: "Resetting in Santa Cruz",
+    desc: "Home. Rest, reset, unpack the boards, do laundry, and recharge before round two.",
+    tags: ["Home", "Rest", "Reset"],
+  },
+  {
+    days: "Early September",
+    start: "2026-09-01",
+    end: "2026-09-14",
+    place: "Nicaragua",
+    desc: "Warm-water beach and reef breaks around Popoyo and the Tola coast. Offshore most mornings.",
+    tags: ["Popoyo", "Tola coast", "Dates TBD"],
+  },
+  {
+    days: "Mid–late September",
+    start: "2026-09-14",
+    end: "2026-09-30",
+    place: "Costa Rica",
+    desc: "South down the Pacific coast — Santa Teresa and Nosara, maybe Pavones if a big south swell lines up.",
+    tags: ["Santa Teresa", "Nosara", "Pavones"],
+  },
+  {
+    days: "Sep 30 – Oct 4",
+    start: "2026-09-30",
+    end: "2026-10-04",
+    place: "Home",
+    desc: "Fly back to Santa Cruz by October 4th. Sabbatical complete. Exact flights still to be booked.",
+    tags: ["Fly home", "Oct 4"],
+  },
+];
+
+const BREAKS = [
+  {
+    name: "Popoyo",
+    region: "Nicaragua",
+    type: "Reef + beach",
+    level: "Beginner–Adv",
+    best: "S/SW swell · offshore mornings · most tides",
+    hazard: "Crowds, rocks at the reef",
+    blurb: "The hub of southern Nica — a consistent outer reef plus a mellower beach break.",
+  },
+  {
+    name: "Playa Colorados",
+    region: "Nicaragua",
+    type: "Beach break",
+    level: "Intermediate–Adv",
+    best: "S/SW swell · mid tide",
+    hazard: "Punchy, can get heavy",
+    blurb: "Hollow, powerful beach break a short ride from Popoyo.",
+  },
+  {
+    name: "Playgrounds",
+    region: "Nicaragua",
+    type: "Reef",
+    level: "Intermediate",
+    best: "Mid tide · smaller swell",
+    hazard: "Shallow reef sections",
+    blurb: "Fun, forgiving rights and lefts — a good step-up from the beach.",
+  },
+  {
+    name: "Playa Maderas",
+    region: "Nicaragua",
+    type: "Beach break",
+    level: "Beginner–Int",
+    best: "Morning offshore · small–mid swell",
+    hazard: "Crowds, rips",
+    blurb: "San Juan del Sur's go-to beach break and a great warm-up.",
+  },
+  {
+    name: "Santa Teresa",
+    region: "Costa Rica",
+    type: "Beach break",
+    level: "Beginner–Adv",
+    best: "S/SW swell · offshore AM · mid tide",
+    hazard: "Rips on bigger days",
+    blurb: "Long stretch of consistent, punchy beach break — surfable most of the day.",
+  },
+  {
+    name: "Playa Guiones, Nosara",
+    region: "Costa Rica",
+    type: "Beach break",
+    level: "Beginner–Int",
+    best: "Almost any swell · mid tide",
+    hazard: "Strong currents at size",
+    blurb: "Mellow, super-consistent — one of the best all-round learning-to-logging waves.",
+  },
+  {
+    name: "Pavones",
+    region: "Costa Rica",
+    type: "Left point",
+    level: "Advanced",
+    best: "Solid S swell · mid–high tide",
+    hazard: "Rocks, very long paddle back",
+    blurb: "One of the longest left points on earth — needs a real south swell to fire.",
+  },
+  {
+    name: "Witch's Rock",
+    region: "Costa Rica",
+    type: "Beach break",
+    level: "Intermediate–Adv",
+    best: "Offshore Papagayo wind · S swell",
+    hazard: "Remote, boat access, crocs in the river mouth",
+    blurb: "Fabled Guanacaste beach break — usually a boat or 4x4 mission from Tamarindo.",
+  },
+  {
+    name: "Ollie's Point",
+    region: "Costa Rica",
+    type: "Right point",
+    level: "Intermediate–Adv",
+    best: "S/SW swell · offshore · mid tide",
+    hazard: "Boat access only, crowds",
+    blurb: "Long, peeling right point north of Witch's Rock — boat trip from Playas del Coco.",
+  },
+  {
+    name: "Playa Hermosa (Jacó)",
+    region: "Costa Rica",
+    type: "Beach break",
+    level: "Advanced",
+    best: "S/SW swell · mid tide",
+    hazard: "Heavy, powerful, strong rips",
+    blurb: "Fast, hollow, and serious — the proving-ground beach break south of Jacó.",
+  },
+];
+
+const BREAK_REGIONS = ["All", "Nicaragua", "Costa Rica"];
+let breakFilter = "All";
+
+const PACKING = [
+  {
+    id: "surf",
+    icon: "🏄",
+    title: "Surf Gear",
+    items: [
+      { label: "Surfboards ×2", note: "Daily driver + a step-up for Pavones on a south swell" },
+      { label: "Board bag", note: "Padded travel bag for the flights + shuttles" },
+      { label: "Leashes ×2", note: "Plus a spare leash string" },
+      { label: "Fin sets ×2", note: "Match your boards; pack a fin key" },
+      { label: "Tropical wax + comb", note: "Warm-water formula" },
+      { label: "Ding repair kit", note: "Solar-cure resin + sandpaper" },
+      { label: "Reef booties", note: "For the rocks at Pavones / point setups" },
+      { label: "Surf earplugs", note: "Vented" },
+    ],
+  },
+  {
+    id: "surfwear",
+    icon: "🩱",
+    title: "Surf Apparel",
+    items: [
+      { label: "Boardshorts ×2", note: "Quick-dry, anti-chafe" },
+      { label: "Rashguards ×2", note: "Long-sleeve UV50+" },
+      { label: "Surf hat", note: "Brim + chin strap" },
+      { label: "Sunglasses + strap", note: "Polarized, floating retainer" },
+    ],
+  },
+  {
+    id: "clothing",
+    icon: "👕",
+    title: "Clothing",
+    items: [
+      { label: "T-shirts ×4", note: "Lightweight" },
+      { label: "Casual shorts ×2", note: "Walk-shorts" },
+      { label: "Sun hoody", note: "Hooded UPF top" },
+      { label: "Light layer", note: "For AC buses / cool evenings" },
+      { label: "Flip-flops", note: "Quality rubber" },
+      { label: "Walking / trail shoes", note: "For travel days and hikes" },
+      { label: "Underwear + socks", note: "~6 / 3" },
+    ],
+  },
+  {
+    id: "health",
+    icon: "🧴",
+    title: "Health & Sun",
+    items: [
+      { label: "Reef-safe sunscreen ×2", note: "SPF 50+" },
+      { label: "Zinc stick", note: "Face, stays on all session" },
+      { label: "Aloe vera", note: "After-sun" },
+      { label: "Mosquito repellent", note: "DEET/Picaridin — dengue risk in both countries" },
+      { label: "First-aid + reef kit", note: "Antiseptic, tape, waterproof band-aids" },
+      { label: "Stomach meds + Liquid I.V.", note: "Traveler's tummy + rehydration" },
+      { label: "Antihistamines", note: "Bites, stings, allergies" },
+      { label: "Personal + prescription meds", note: "Full trip supply" },
+    ],
+  },
+  {
+    id: "tech",
+    icon: "🔌",
+    title: "Tech",
+    items: [
+      { label: "Phone + charger", note: "No adapter needed — CR & Nica use US-style plugs, 120V" },
+      { label: "Power bank", note: "20,000mAh, airline-approved" },
+      { label: "Action camera", note: "Mounts, spare battery, SD cards" },
+      { label: "Charging cables ×2", note: "Braided USB-C / Lightning" },
+      { label: "Headlamp", note: "For dark early paddle-outs" },
+    ],
+  },
+  {
+    id: "docs",
+    icon: "🛂",
+    title: "Documents & Money",
+    items: [
+      { label: "Passport", note: "6+ months validity" },
+      { label: "Passport copies", note: "Printed + offline digital" },
+      { label: "Travel insurance", note: "Must cover surfing + medical" },
+      { label: "Cash (USD)", note: "Small bills — widely accepted in both countries" },
+      { label: "Debit/credit cards", note: "No foreign-transaction fees" },
+    ],
+  },
+];
+
+const INFO = [
+  {
+    icon: "🇳🇮",
+    title: "Nicaragua",
+    type: "list",
+    rows: [
+      ["Currency", "Córdoba (NIO) · USD ok"],
+      ["Plug", "Type A/B, 120V"],
+      ["Language", "Spanish"],
+      ["Getting there", "Fly into Managua (MGA)"],
+    ],
+  },
+  {
+    icon: "🇨🇷",
+    title: "Costa Rica",
+    type: "list",
+    rows: [
+      ["Currency", "Colón (CRC) · USD ok"],
+      ["Plug", "Type A/B, 120V"],
+      ["Language", "Spanish"],
+      ["Getting there", "Fly into Liberia (LIR) or San José (SJO)"],
+    ],
+  },
+  {
+    icon: "🌊",
+    title: "Surf Season",
+    type: "text",
+    text: "May–November is the Pacific green season with consistent S/SW groundswells. Expect glassy, offshore mornings, warm water, and afternoon rain, no wetsuit needed.",
+  },
+  {
+    icon: "🦟",
+    title: "Stay Well",
+    type: "text",
+    text: "Dengue is present in both countries — wear repellent, especially at dawn and dusk. Drink filtered or bottled water, mind the rips, and reapply reef-safe sunscreen every session.",
+  },
+  {
+    icon: "🚐",
+    title: "Getting Around",
+    type: "text",
+    text: "Shared shuttles connect the surf towns; a 4x4 helps for remote points. Boat trips run to Witch's Rock and Ollie's Point. Border crossing Nica↔CR overland is doable but slow.",
+  },
+  {
+    icon: "💵",
+    title: "Money",
+    type: "text",
+    text: "US dollars are accepted almost everywhere — carry small, clean bills. Cards work in towns; keep cash for shuttles, sodas (local diners), and boat drivers.",
+  },
+];
+
+// ---- Rendering ----------------------------------------------------
+
+const CHECK_SVG = '<svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg>';
+const STORAGE_KEY = "surf-trip-ca-packing-v1";
+
+function pop(el) {
+  if (!el || !el.animate) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  el.animate(
+    [{ transform: "scale(1)" }, { transform: "scale(1.25)" }, { transform: "scale(1)" }],
+    { duration: 260, easing: "cubic-bezier(.3, 1.4, .5, 1)" }
+  );
+}
+
+function tripStatuses() {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const toDate = (s) => new Date(s + "T00:00:00");
+  let nowIdx = -1;
+  ITINERARY.forEach((s, i) => {
+    if (nowIdx === -1 && toDate(s.start) <= today && today <= toDate(s.end)) nowIdx = i;
+  });
+  let upcomingIdx = -1;
+  if (nowIdx === -1) upcomingIdx = ITINERARY.findIndex((s) => toDate(s.start) > today);
+  return ITINERARY.map((s, i) => {
+    if (i === nowIdx) return "now";
+    if (i === upcomingIdx) return "upcoming";
+    if (toDate(s.end) < today) return "done";
+    return "later";
+  });
+}
+
+const STATUS_BADGE = {
+  now: '<span class="tl-badge tl-badge--now"><span class="tl-badge__dot"></span>You\'re here</span>',
+  upcoming: '<span class="tl-badge tl-badge--upcoming">Up next</span>',
+  done: '<span class="tl-badge tl-badge--done">✓ Done</span>',
+  later: "",
+};
+
+function loadState() {
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+  } catch {
+    return {};
+  }
+}
+function saveState(s) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
+  } catch {
+    /* ignore */
+  }
+}
+let state = loadState();
+function itemKey(catId, index) {
+  return `${catId}:${index}`;
+}
+
+let revealIO = null;
+function armReveal(root = document) {
+  const items = root.querySelectorAll(".reveal:not(.is-visible)");
+  if (!("IntersectionObserver" in window)) {
+    items.forEach((el) => el.classList.add("is-visible"));
+    return;
+  }
+  if (!revealIO) {
+    revealIO = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            revealIO.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12 }
+    );
+  }
+  items.forEach((el) => {
+    const sibs = el.parentElement
+      ? [...el.parentElement.children].filter((c) => c.classList.contains("reveal"))
+      : [el];
+    el.style.transitionDelay = Math.min(sibs.indexOf(el), 6) * 60 + "ms";
+    revealIO.observe(el);
+  });
+}
+
+function renderPhaseStrip() {
+  const el = document.getElementById("phaseStrip");
+  if (!el) return;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const toDate = (s) => new Date(s + "T00:00:00");
+  const page = document.body.dataset.page;
+  let activeIdx = PHASES.findIndex((p) => toDate(p.start) <= today && today <= toDate(p.end));
+  if (activeIdx === -1) activeIdx = PHASES.findIndex((p) => toDate(p.start) > today);
+
+  el.innerHTML = PHASES.map((p, i) => {
+    const status = i === activeIdx ? "is-now" : toDate(p.end) < today ? "is-done" : "is-upcoming";
+    const here = p.key === page ? "is-here" : "";
+    const inner = `<span class="phase__dot"></span><span class="phase__icon">${p.icon}</span><span class="phase__label">${p.label}</span><span class="phase__dates">${p.dates}</span>`;
+    return p.href && p.key !== page
+      ? `<a class="phase ${status} ${here}" href="${p.href}">${inner}</a>`
+      : `<div class="phase ${status} ${here}">${inner}</div>`;
+  }).join("");
+}
+
+function renderTimeline() {
+  const el = document.getElementById("timeline");
+  const statuses = tripStatuses();
+  el.innerHTML = ITINERARY.map((stop, idx) => {
+    const status = statuses[idx];
+    const dotInner = status === "done" ? CHECK_SVG : "";
+    return `
+    <li class="tl-item reveal is-${status}">
+      <span class="tl-item__dot">${dotInner}</span>
+      <div class="tl-item__card">
+        <div class="tl-item__meta">
+          <span class="tl-item__days">${stop.days}</span>
+          ${STATUS_BADGE[status]}
+        </div>
+        <h3 class="tl-item__place">${stop.place}</h3>
+        <p class="tl-item__desc">${stop.desc}</p>
+        <div class="tl-item__tags">
+          ${stop.tags.map((t) => `<span class="tl-item__tag">${t}</span>`).join("")}
+        </div>
+      </div>
+    </li>`;
+  }).join("");
+}
+
+function renderBreakFilters() {
+  const el = document.getElementById("breakFilters");
+  el.innerHTML = BREAK_REGIONS.map(
+    (r) => `<button type="button" class="breaks__filter ${r === breakFilter ? "is-active" : ""}" data-region="${r}">${r}</button>`
+  ).join("");
+  el.querySelectorAll(".breaks__filter").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      breakFilter = btn.dataset.region;
+      renderBreakFilters();
+      renderBreaks();
+    });
+  });
+}
+
+function renderBreaks() {
+  const grid = document.getElementById("breaksGrid");
+  const list = BREAKS.filter((b) => breakFilter === "All" || b.region === breakFilter);
+  grid.innerHTML = list
+    .map(
+      (b) => `
+    <article class="break-card reveal">
+      <div class="break-card__top">
+        <div class="break-card__heading">
+          <h3 class="break-card__name">${b.name}</h3>
+          <span class="break-card__region">${b.region}</span>
+        </div>
+        <span class="break-card__level" data-level="${b.level.split("–")[0]}">${b.level}</span>
+        <span class="break-card__chev" aria-hidden="true">▾</span>
+      </div>
+      <div class="break-card__body">
+        <p class="break-card__blurb">${b.blurb}</p>
+        <dl class="break-card__facts">
+          <div><dt>Wave</dt><dd>${b.type}</dd></div>
+          <div><dt>Best</dt><dd>${b.best}</dd></div>
+          <div><dt>Watch for</dt><dd>${b.hazard}</dd></div>
+        </dl>
+      </div>
+    </article>`
+    )
+    .join("");
+  armReveal(grid);
+  if (!grid.dataset.bound) {
+    grid.dataset.bound = "1";
+    grid.addEventListener("click", (e) => {
+      const card = e.target.closest(".break-card");
+      if (card) card.classList.toggle("is-open");
+    });
+  }
+}
+
+function renderPacking() {
+  const grid = document.getElementById("packingGrid");
+  grid.innerHTML = PACKING.map(
+    (cat) => `
+    <div class="pack-cat reveal" data-cat="${cat.id}">
+      <div class="pack-cat__head">
+        <span class="pack-cat__icon">${cat.icon}</span>
+        <h3 class="pack-cat__title">${cat.title}</h3>
+        <span class="pack-cat__count" data-count="${cat.id}"></span>
+      </div>
+      <div class="pack-cat__items">
+        ${cat.items
+          .map((item, i) => {
+            const key = itemKey(cat.id, i);
+            const st = state[key] || {};
+            const label = typeof item === "string" ? item : item.label;
+            const note = typeof item === "string" ? "" : item.note;
+            return `
+            <div class="pack-item ${st.got ? "is-got" : ""} ${st.packed ? "is-packed" : ""}" data-key="${key}">
+              <span class="pack-item__text">
+                <span class="pack-item__label">${label}</span>
+                ${note ? `<span class="pack-item__note">${note}</span>` : ""}
+              </span>
+              <span class="pack-item__toggles">
+                <button type="button" class="pack-toggle pack-toggle--got ${st.got ? "is-on" : ""}" data-act="got">Got</button>
+                <button type="button" class="pack-toggle pack-toggle--packed ${st.packed ? "is-on" : ""}" data-act="packed">Packed</button>
+              </span>
+            </div>`;
+          })
+          .join("")}
+      </div>
+    </div>`
+  ).join("");
+
+  if (!grid.dataset.bound) {
+    grid.dataset.bound = "1";
+    grid.addEventListener("click", (e) => {
+      const btn = e.target.closest(".pack-toggle");
+      if (!btn) return;
+      const item = btn.closest(".pack-item");
+      const key = item.dataset.key;
+      const cur = state[key] || { got: false, packed: false };
+      if (btn.dataset.act === "got") {
+        cur.got = !cur.got;
+        if (!cur.got) cur.packed = false;
+      } else {
+        cur.packed = !cur.packed;
+        if (cur.packed) cur.got = true;
+      }
+      if (!cur.got && !cur.packed) delete state[key];
+      else state[key] = cur;
+      saveState(state);
+      const now = state[key] || { got: false, packed: false };
+      item.classList.toggle("is-got", now.got);
+      item.classList.toggle("is-packed", now.packed);
+      item.querySelector(".pack-toggle--got").classList.toggle("is-on", now.got);
+      item.querySelector(".pack-toggle--packed").classList.toggle("is-on", now.packed);
+      pop(btn);
+      updateProgress();
+    });
+  }
+}
+
+function updateProgress() {
+  const total = PACKING.reduce((n, c) => n + c.items.length, 0);
+  let packed = 0;
+  let got = 0;
+  Object.values(state).forEach((v) => {
+    if (v && v.packed) packed++;
+    if (v && v.got) got++;
+  });
+  const pct = total ? Math.round((packed / total) * 100) : 0;
+  const gotPct = total ? Math.round((got / total) * 100) : 0;
+
+  document.getElementById("progressFill").style.width = pct + "%";
+  const gotFill = document.getElementById("progressFillGot");
+  if (gotFill) gotFill.style.width = gotPct + "%";
+  document.getElementById("progressCount").textContent = packed;
+  document.getElementById("progressTotal").textContent = total;
+  const complete = total > 0 && packed === total;
+  document.getElementById("progressPct").textContent = complete ? pct + "% 🤙" : pct + "%";
+  document.querySelector(".packing__progress")?.classList.toggle("is-complete", complete);
+  const gotEl = document.getElementById("progressGot");
+  if (gotEl) gotEl.textContent = got;
+
+  PACKING.forEach((cat) => {
+    const catPacked = cat.items.filter((_, i) => state[itemKey(cat.id, i)]?.packed).length;
+    const badge = document.querySelector(`[data-count="${cat.id}"]`);
+    if (badge) badge.textContent = `${catPacked}/${cat.items.length}`;
+  });
+}
+
+function resetPacking() {
+  if (!confirm("Clear every item's Got and Packed status and start fresh?")) return;
+  state = {};
+  saveState(state);
+  renderPacking();
+  updateProgress();
+}
+
+function renderInfo() {
+  const grid = document.getElementById("infoGrid");
+  grid.innerHTML = INFO.map((card) => {
+    const body =
+      card.type === "list"
+        ? `<ul class="info-card__list">${card.rows.map((r) => `<li><span>${r[0]}</span><b>${r[1]}</b></li>`).join("")}</ul>`
+        : `<p class="info-card__text">${card.text}</p>`;
+    return `
+      <div class="info-card reveal">
+        <span class="info-card__icon">${card.icon}</span>
+        <h3 class="info-card__title">${card.title}</h3>
+        ${body}
+      </div>`;
+  }).join("");
+}
+
+function renderCountdown() {
+  const el = document.getElementById("countdown");
+  const start = new Date(TRIP_START + "T00:00:00");
+  const now = new Date();
+  const days = Math.ceil((start - now) / (1000 * 60 * 60 * 24));
+  el.textContent = days > 0 ? days : "🌴";
+}
+
+// ---- Interactions (shared behavior) -------------------------------
+
+function initTheme() {
+  const root = document.documentElement;
+  const mq = window.matchMedia("(prefers-color-scheme: dark)");
+  const btn = document.getElementById("themeToggle");
+  const isDark = () => (root.dataset.theme ? root.dataset.theme === "dark" : mq.matches);
+  const sync = () => {
+    const dark = isDark();
+    btn.textContent = dark ? "☀️" : "🌙";
+    btn.setAttribute("aria-pressed", String(dark));
+  };
+  if (!root.dataset.theme) root.dataset.theme = mq.matches ? "dark" : "light";
+  sync();
+  btn.addEventListener("click", () => {
+    root.dataset.theme = isDark() ? "light" : "dark";
+    try {
+      localStorage.setItem("surf-theme", root.dataset.theme);
+    } catch {
+      /* ignore */
+    }
+    sync();
+  });
+  mq.addEventListener?.("change", (e) => {
+    try {
+      if (localStorage.getItem("surf-theme")) return;
+    } catch {
+      /* ignore */
+    }
+    root.dataset.theme = e.matches ? "dark" : "light";
+    sync();
+  });
+}
+
+function initNavScroll() {
+  const nav = document.getElementById("nav");
+  const onScroll = () => nav.classList.toggle("is-scrolled", window.scrollY > 40);
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
+}
+
+function initMobileNav() {
+  const nav = document.getElementById("nav");
+  const burger = document.getElementById("navBurger");
+  if (!nav || !burger) return;
+  const close = () => {
+    nav.classList.remove("is-open");
+    burger.setAttribute("aria-expanded", "false");
+  };
+  burger.addEventListener("click", () => {
+    const open = nav.classList.toggle("is-open");
+    burger.setAttribute("aria-expanded", String(open));
+  });
+  nav.querySelectorAll(".nav__links a").forEach((a) => a.addEventListener("click", close));
+}
+
+function initScrollSpy() {
+  const links = [...document.querySelectorAll(".nav__links a")];
+  const byId = new Map(links.map((a) => [a.getAttribute("href").slice(1), a]));
+  const sections = [...document.querySelectorAll("main section[id]")];
+  if (!("IntersectionObserver" in window) || !sections.length) return;
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        links.forEach((a) => a.classList.remove("is-current"));
+        byId.get(entry.target.id)?.classList.add("is-current");
+      });
+    },
+    { rootMargin: "-45% 0px -50% 0px", threshold: 0 }
+  );
+  sections.forEach((s) => io.observe(s));
+}
+
+function initParallax() {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const bg = document.querySelector(".hero__bg");
+  if (!bg) return;
+  let ticking = false;
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const y = window.scrollY;
+        if (y < window.innerHeight) bg.style.transform = `translate3d(0, ${y * 0.35}px, 0)`;
+        ticking = false;
+      });
+    },
+    { passive: true }
+  );
+}
+
+// ---- Init ---------------------------------------------------------
+
+document.addEventListener("DOMContentLoaded", () => {
+  initTheme();
+  renderPhaseStrip();
+  renderTimeline();
+  renderBreakFilters();
+  renderBreaks();
+  renderPacking();
+  renderInfo();
+  updateProgress();
+  renderCountdown();
+  initNavScroll();
+  initScrollSpy();
+  initMobileNav();
+  initParallax();
+  armReveal();
+  document.getElementById("resetBtn").addEventListener("click", resetPacking);
+});
