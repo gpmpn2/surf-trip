@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Indonesia Surf Trip · Aug 2026</title>
+  <script>try{var t=localStorage.getItem('surf-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.dataset.theme=t;}catch(e){}</script>
+  <meta name="description" content="Itinerary, surf breaks, packing list, and trip info for a surf trip to Indonesia." />
+  <meta property="og:title" content="Indonesia Surf Trip · Aug 2026" />
+  <meta property="og:description" content="Two weeks chasing swell across Bali, the Bukit, and the Mentawais — itinerary, surf breaks, packing, and trip info." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="assets/favicon.svg" />
+  <meta name="twitter:card" content="summary" />
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Nav -->
+  <header class="nav" id="nav">
+    <a href="#top" class="nav__brand">
+      <span class="nav__mark">🌊</span>
+      <span>Indonesia '26</span>
+    </a>
+    <nav class="nav__links">
+      <a href="#itinerary">Itinerary</a>
+      <a href="#breaks">Breaks</a>
+      <a href="#boat">The Boat</a>
+      <a href="#packing">Packing</a>
+      <a href="#log">Log</a>
+      <a href="#money">Money</a>
+      <a href="#info">Info</a>
+    </nav>
+    <button class="nav__theme" id="themeToggle" type="button" aria-label="Toggle dark mode">🌙</button>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero" id="top">
+    <div class="hero__bg"></div>
+    <div class="hero__bubbles" aria-hidden="true">
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="hero__waves" aria-hidden="true">
+      <svg viewBox="0 0 1440 200" preserveAspectRatio="none"><path d="M0,96 C240,160 480,32 720,64 C960,96 1200,192 1440,128 L1440,200 L0,200 Z"></path></svg>
+    </div>
+    <div class="hero__content">
+      <p class="hero__eyebrow">Surf Trip · Aug 2026</p>
+      <h1 class="hero__title">Indonesia<br /><em>Surf Trip</em></h1>
+      <p class="hero__sub">Aug 3–28 across Bali, the Bukit, and the Mentawais. Itinerary, packing, and the essentials.</p>
+      <div class="hero__meta">
+        <div class="hero__meta-item"><span class="hero__meta-num" id="countdown">—</span><span class="hero__meta-label">days to go</span></div>
+        <div class="hero__meta-item"><span class="hero__meta-num">26</span><span class="hero__meta-label">days away</span></div>
+        <div class="hero__meta-item"><span class="hero__meta-num">11</span><span class="hero__meta-label">days at sea</span></div>
+      </div>
+      <a href="#itinerary" class="hero__cta">See the plan ↓</a>
+    </div>
+  </section>
+
+  <main>
+    <!-- Itinerary -->
+    <section class="section" id="itinerary">
+      <div class="section__head">
+        <p class="section__eyebrow">The Plan</p>
+        <h2 class="section__title">Itinerary</h2>
+        <p class="section__lede">The route, dates, and flights.</p>
+      </div>
+
+      <!-- Flight route map -->
+      <div class="flightmap-wrap">
+        <div class="flightmap" id="flightMap" aria-label="Interactive flight route map"></div>
+        <div class="flightmap__legend" id="mapLegend">
+          <span class="routemap__key routemap__key--flight">Flights</span>
+          <span class="routemap__key routemap__key--boat">Boat charter</span>
+        </div>
+      </div>
+
+      <ol class="timeline" id="timeline"></ol>
+    </section>
+
+    <!-- Surf Breaks -->
+    <section class="section section--alt" id="breaks">
+      <div class="section__head">
+        <p class="section__eyebrow">Where to surf</p>
+        <h2 class="section__title">Surf Breaks</h2>
+        <p class="section__lede">The lineups on the list, with the conditions that make them fire.</p>
+      </div>
+      <div class="breaks__filters" id="breakFilters"></div>
+      <div class="breaks__grid" id="breaksGrid"></div>
+    </section>
+
+    <!-- The Boat -->
+    <section class="section" id="boat">
+      <div class="section__head">
+        <p class="section__eyebrow">Home for 11 nights</p>
+        <h2 class="section__title">The Switchfoot</h2>
+        <p class="section__lede" id="boatIntro"></p>
+      </div>
+      <div class="boat__stats" id="boatStats"></div>
+      <div class="info__grid" id="boatSpecs"></div>
+    </section>
+
+    <!-- Packing List -->
+    <section class="section section--alt" id="packing">
+      <div class="section__head">
+        <p class="section__eyebrow">Don't forget</p>
+        <h2 class="section__title">Packing List</h2>
+        <p class="section__lede">Mark items <b>Got</b> once you have them, then <b>Packed</b> when they're in the bag. Saves automatically on this device.</p>
+      </div>
+
+      <div class="packing__progress">
+        <div class="packing__progress-bar">
+          <div class="packing__progress-fill packing__progress-fill--got" id="progressFillGot"></div>
+          <div class="packing__progress-fill" id="progressFill"></div>
+        </div>
+        <div class="packing__progress-text"><span id="progressCount">0</span> of <span id="progressTotal">0</span> packed <span class="packing__progress-pct" id="progressPct">0%</span><span class="packing__progress-got"><span id="progressGot">0</span> obtained</span></div>
+        <button class="packing__reset" id="resetBtn" type="button">Reset all</button>
+      </div>
+
+      <div class="packing__grid" id="packingGrid"></div>
+    </section>
+
+    <!-- Surf Log -->
+    <section class="section" id="log">
+      <div class="section__head">
+        <p class="section__eyebrow">The sessions</p>
+        <h2 class="section__title">Surf Log</h2>
+        <p class="section__lede">Log every session as you go. Saved on this device.</p>
+      </div>
+
+      <form class="logform" id="logForm">
+        <div class="logform__row">
+          <label class="logform__field">
+            <span>Date</span>
+            <input type="date" id="logDate" required />
+          </label>
+          <label class="logform__field">
+            <span>Spot</span>
+            <input type="text" id="logSpot" list="breakList" placeholder="e.g. Uluwatu" required />
+            <datalist id="breakList"></datalist>
+          </label>
+          <div class="logform__field logform__field--rating">
+            <span>Rating</span>
+            <div class="logform__stars" id="logStars"></div>
+          </div>
+        </div>
+        <label class="logform__field">
+          <span>Notes</span>
+          <textarea id="logNotes" rows="2" placeholder="Size, crowd, board, how it went…"></textarea>
+        </label>
+        <button type="submit" class="logform__submit">Log session</button>
+      </form>
+
+      <div class="log__list" id="logList"></div>
+    </section>
+
+    <!-- Money -->
+    <section class="section section--alt" id="money">
+      <div class="section__head">
+        <p class="section__eyebrow">Rupiah &amp; spending</p>
+        <h2 class="section__title">Money</h2>
+        <p class="section__lede">Convert on the fly and keep a running tally of the trip budget.</p>
+      </div>
+
+      <div class="money__grid">
+        <div class="money__panel">
+          <h3 class="money__panel-title">Converter</h3>
+          <div class="converter" id="converter">
+            <div class="converter__row">
+              <input type="number" id="convFrom" value="10" min="0" inputmode="decimal" />
+              <span class="converter__cur" id="convFromCur">USD</span>
+            </div>
+            <button type="button" class="converter__swap" id="convSwap" aria-label="Swap currencies">⇅</button>
+            <div class="converter__row">
+              <input type="text" id="convTo" readonly />
+              <span class="converter__cur" id="convToCur">IDR</span>
+            </div>
+          </div>
+          <p class="converter__rate" id="convRate"></p>
+          <div class="cheatsheet" id="cheatsheet"></div>
+        </div>
+
+        <div class="money__panel">
+          <div class="budget__head">
+            <h3 class="money__panel-title">Budget tracker</h3>
+            <div class="budget__total"><span class="budget__total-num" id="budgetTotal">$0</span><span class="budget__total-label">logged</span></div>
+          </div>
+          <form class="budget__form" id="budgetForm">
+            <select id="budgetCat"></select>
+            <input type="text" id="budgetLabel" placeholder="What for?" required />
+            <input type="number" id="budgetAmount" placeholder="USD" min="0" step="0.01" inputmode="decimal" required />
+            <button type="submit">Add</button>
+          </form>
+          <div class="budget__bars" id="budgetBars"></div>
+          <div class="budget__list" id="budgetList"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Info Hub -->
+    <section class="section" id="info">
+      <div class="section__head">
+        <p class="section__eyebrow">Good to know</p>
+        <h2 class="section__title">Info Hub</h2>
+        <p class="section__lede">The essentials for landing, staying, and staying safe.</p>
+      </div>
+      <div class="info__grid" id="infoGrid"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Indonesia · August 3–28, 2026</p>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
