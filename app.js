@@ -413,6 +413,48 @@ function pop(el) {
   );
 }
 
+function renderStatusLine() {
+  const el = document.getElementById("statusLine");
+  if (!el) return;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const toDate = (s) => new Date(s + "T00:00:00");
+  const days = (a, b) => Math.round((b - a) / 86400000);
+  const page = document.body.dataset.page;
+  const firstStart = toDate(PHASES[0].start);
+  const lastEnd = toDate(PHASES[PHASES.length - 1].end);
+
+  let msg;
+  if (today < firstStart) {
+    const n = days(today, firstStart);
+    msg = `${n} day${n === 1 ? "" : "s"} until Indonesia`;
+  } else if (today > lastEnd) {
+    msg = "Sabbatical complete 🤙";
+  } else {
+    const active = PHASES.find((p) => toDate(p.start) <= today && today <= toDate(p.end));
+    if (active && active.key === page) {
+      const nowIdx = tripStatuses().indexOf("now");
+      if (nowIdx >= 0) {
+        const stop = ITINERARY[nowIdx];
+        const dayN = days(toDate(stop.start), today) + 1;
+        const next = ITINERARY[nowIdx + 1];
+        msg = `Day ${dayN} · ${stop.place}` + (next ? ` — up next: ${next.place}` : "");
+      } else {
+        msg = `${active.label} — underway`;
+      }
+    } else if (active) {
+      const pagePhase = PHASES.find((p) => p.key === page);
+      if (pagePhase && toDate(pagePhase.start) > today) {
+        const n = days(today, toDate(pagePhase.start));
+        msg = `${active.label} right now · ${pagePhase.label} in ${n} day${n === 1 ? "" : "s"}`;
+      } else {
+        msg = `${active.label} right now`;
+      }
+    }
+  }
+  el.innerHTML = `<span class="statusline__dot"></span>${msg}`;
+}
+
 function renderPhaseStrip() {
   const el = document.getElementById("phaseStrip");
   if (!el) return;
@@ -878,6 +920,10 @@ function renderBreaks() {
           <div><dt>Best</dt><dd>${b.best}</dd></div>
           <div><dt>Watch for</dt><dd>${b.hazard}</dd></div>
         </dl>
+        <div class="break-card__links">
+          <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(b.name + " surf spot")}" target="_blank" rel="noopener">📍 Map</a>
+          <a href="https://www.google.com/search?q=${encodeURIComponent(b.name + " surf forecast")}" target="_blank" rel="noopener">🌊 Forecast</a>
+        </div>
       </div>
     </article>`
     )
@@ -888,6 +934,7 @@ function renderBreaks() {
   if (!grid.dataset.bound) {
     grid.dataset.bound = "1";
     grid.addEventListener("click", (e) => {
+      if (e.target.closest("a")) return;
       const card = e.target.closest(".break-card");
       if (card) card.classList.toggle("is-open");
     });
@@ -1156,6 +1203,18 @@ function initBudget() {
 
 // ---- Flight map (Leaflet, needs internet) -------------------------
 
+function indoCurrentPoint(P) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const toDate = (s) => new Date(s + "T00:00:00");
+  const inR = (a, b) => today >= toDate(a) && today <= toDate(b);
+  if (inR("2026-08-03", "2026-08-04")) return P.tpe; // in transit
+  if (inR("2026-08-04", "2026-08-15")) return P.dps;
+  if (inR("2026-08-16", "2026-08-27")) return P.mtw;
+  if (inR("2026-08-27", "2026-08-28")) return P.pdg;
+  return P.sfo; // home before and after the trip
+}
+
 function initFlightMap() {
   const el = document.getElementById("flightMap");
   if (!el) return;
@@ -1216,6 +1275,14 @@ function initFlightMap() {
       .addTo(map)
       .bindTooltip(s.name, { permanent: true, direction: "top", offset: [0, -6], className: "map-label" });
   });
+
+  const icon = L.divIcon({
+    className: "map-pulse",
+    html: '<span class="map-pulse__ring"></span><span class="map-pulse__dot"></span>',
+    iconSize: [18, 18],
+    iconAnchor: [9, 9],
+  });
+  L.marker(indoCurrentPoint(P), { icon, zIndexOffset: 1000 }).addTo(map);
 
   map.fitBounds(stops.map((s) => s.p), { padding: [50, 40] });
   setTimeout(() => map.invalidateSize(), 200);
@@ -1319,6 +1386,7 @@ function initMobileNav() {
 
 document.addEventListener("DOMContentLoaded", () => {
   initTheme();
+  renderStatusLine();
   renderPhaseStrip();
   renderTimeline();
   renderBreakFilters();

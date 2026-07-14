@@ -17,6 +17,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="central-america-theme.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 </head>
 <body data-page="centralamerica">
   <!-- Nav -->
@@ -29,6 +30,8 @@
       <a href="#itinerary">Plan</a>
       <a href="#breaks">Breaks</a>
       <a href="#packing">Packing</a>
+      <a href="#log">Log</a>
+      <a href="#money">Money</a>
       <a href="#info">Info</a>
     </nav>
     <button class="nav__theme" id="themeToggle" type="button" aria-label="Toggle dark mode">🌙</button>
@@ -60,6 +63,7 @@
   </section>
 
   <main>
+    <p class="statusline" id="statusLine"></p>
     <div class="phases" id="phaseStrip" aria-label="Sabbatical progress"></div>
 
     <!-- Itinerary -->
@@ -69,6 +73,15 @@
         <h2 class="section__title">The Route</h2>
         <p class="section__lede">Dates and stops are intentionally unsettled, chase the swell and the good vibes.</p>
       </div>
+
+      <div class="flightmap-wrap">
+        <div class="flightmap" id="routeMap" aria-label="Central America route map"></div>
+        <div class="flightmap__legend" id="mapLegend">
+          <span class="routemap__key routemap__key--flight">Travel</span>
+          <span class="routemap__key routemap__key--now">You are here</span>
+        </div>
+      </div>
+
       <ol class="timeline" id="timeline"></ol>
     </section>
 
@@ -103,6 +116,86 @@
       <div class="packing__grid" id="packingGrid"></div>
     </section>
 
+    <!-- Surf Log -->
+    <section class="section section--alt" id="log">
+      <div class="section__head">
+        <p class="section__eyebrow">The sessions</p>
+        <h2 class="section__title">Surf Log</h2>
+        <p class="section__lede">Log every session as you go. Saved on this device.</p>
+      </div>
+
+      <form class="logform" id="logForm">
+        <div class="logform__row">
+          <label class="logform__field">
+            <span>Date</span>
+            <input type="date" id="logDate" required />
+          </label>
+          <label class="logform__field">
+            <span>Spot</span>
+            <input type="text" id="logSpot" list="breakList" placeholder="e.g. Popoyo" required />
+            <datalist id="breakList"></datalist>
+          </label>
+          <div class="logform__field logform__field--rating">
+            <span>Rating</span>
+            <div class="logform__stars" id="logStars"></div>
+          </div>
+        </div>
+        <label class="logform__field">
+          <span>Notes</span>
+          <textarea id="logNotes" rows="2" placeholder="Size, crowd, board, how it went…"></textarea>
+        </label>
+        <button type="submit" class="logform__submit">Log session</button>
+      </form>
+
+      <div class="log__list" id="logList"></div>
+    </section>
+
+    <!-- Money -->
+    <section class="section" id="money">
+      <div class="section__head">
+        <p class="section__eyebrow">Córdoba, colón &amp; spending</p>
+        <h2 class="section__title">Money</h2>
+        <p class="section__lede">Convert to the local currency and keep a running tally of the budget.</p>
+      </div>
+
+      <div class="money__grid">
+        <div class="money__panel">
+          <h3 class="money__panel-title">Converter</h3>
+          <div class="converter">
+            <div class="converter__row">
+              <input type="number" id="convFrom" value="10" min="0" inputmode="decimal" />
+              <span class="converter__cur">USD</span>
+            </div>
+            <div class="converter__arrow" aria-hidden="true">↓</div>
+            <div class="converter__row">
+              <input type="text" id="convTo" readonly />
+              <select id="convCur" class="converter__cur converter__cur--select">
+                <option value="CRC">₡ Colón</option>
+                <option value="NIO">C$ Córdoba</option>
+              </select>
+            </div>
+          </div>
+          <p class="converter__rate" id="convRate"></p>
+          <div class="cheatsheet" id="cheatsheet"></div>
+        </div>
+
+        <div class="money__panel">
+          <div class="budget__head">
+            <h3 class="money__panel-title">Budget tracker</h3>
+            <div class="budget__total"><span class="budget__total-num" id="budgetTotal">$0</span><span class="budget__total-label">logged</span></div>
+          </div>
+          <form class="budget__form" id="budgetForm">
+            <select id="budgetCat"></select>
+            <input type="text" id="budgetLabel" placeholder="What for?" required />
+            <input type="number" id="budgetAmount" placeholder="USD" min="0" step="0.01" inputmode="decimal" required />
+            <button type="submit">Add</button>
+          </form>
+          <div class="budget__bars" id="budgetBars"></div>
+          <div class="budget__list" id="budgetList"></div>
+        </div>
+      </div>
+    </section>
+
     <!-- Info Hub -->
     <section class="section section--alt" id="info">
       <div class="section__head">
@@ -118,6 +211,7 @@
     <p>Central America · September 2026 · Sabbatical Pt. 2</p>
   </footer>
 
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="central-america.js"></script>
 </body>
 </html>

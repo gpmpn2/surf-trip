@@ -300,10 +300,28 @@ select:focus-visible, textarea:focus-visible {
 .section__lede { font-size: 1.15rem; color: var(--ink-soft); }
 
 /* ---------- Sabbatical phase strip ---------- */
+.statusline {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 30px clamp(20px, 5vw, 48px) 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  color: var(--heading);
+  font-size: 1rem;
+}
+.statusline__dot {
+  flex: 0 0 auto;
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: var(--coral);
+  animation: phase-blink 1.3s ease-in-out infinite;
+}
 .phases {
   max-width: var(--maxw);
   margin: 0 auto;
-  padding: 28px clamp(20px, 5vw, 48px) 0;
+  padding: 16px clamp(20px, 5vw, 48px) 0;
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
@@ -743,6 +761,33 @@ a.phase:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); borde
 .routemap__key::before { content: ""; width: 22px; border-top: 3px dashed; }
 .routemap__key--flight::before { border-color: var(--teal-400); }
 .routemap__key--boat::before { border-color: var(--coral); }
+.routemap__key--now::before { border: none; width: 11px; height: 11px; border-radius: 50%; background: var(--coral); }
+
+/* pulsing "you are here" map marker */
+.map-pulse { position: relative; }
+.map-pulse span {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+}
+.map-pulse__dot {
+  width: 14px; height: 14px;
+  background: var(--coral);
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+  z-index: 2;
+}
+.map-pulse__ring {
+  width: 14px; height: 14px;
+  background: var(--coral);
+  opacity: .5;
+  animation: map-pulse-ring 1.7s ease-out infinite;
+}
+@keyframes map-pulse-ring {
+  0%   { width: 14px; height: 14px; opacity: .5; }
+  100% { width: 48px; height: 48px; opacity: 0; }
+}
 
 .leaflet-tooltip.map-label {
   background: var(--ocean-900);
@@ -819,6 +864,18 @@ a.phase:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); borde
 .break-card__facts div { display: grid; grid-template-columns: 84px 1fr; gap: 12px; }
 .break-card__facts dt { font-size: .7rem; text-transform: uppercase; letter-spacing: .07em; color: var(--ocean-500); font-weight: 700; padding-top: 3px; }
 .break-card__facts dd { color: var(--ink); font-size: .92rem; }
+.break-card__links { display: flex; gap: 10px; margin-top: 16px; }
+.break-card__links a {
+  font-size: .8rem;
+  font-weight: 600;
+  color: var(--heading);
+  background: var(--foam);
+  padding: 7px 13px;
+  border-radius: 100px;
+  text-decoration: none;
+  transition: background .2s ease, color .2s ease;
+}
+.break-card__links a:hover { background: var(--ocean-700); color: #fff; }
 
 /* ---------- Shared form controls ---------- */
 .logform input, .logform textarea,
@@ -925,6 +982,20 @@ button.star:hover { transform: scale(1.15); }
 }
 .converter__swap:hover { background: var(--ocean-800); transform: rotate(180deg); }
 .converter__rate { font-size: .82rem; color: var(--ink-soft); margin-top: 12px; }
+.converter__arrow { text-align: center; color: var(--ocean-500); font-size: 1.1rem; line-height: 1; }
+.converter__cur--select {
+  border: none;
+  background: var(--foam);
+  color: var(--ocean-500);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: .82rem;
+  padding: 7px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
 
 .cheatsheet { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-top: 22px; padding-top: 20px; border-top: 1px solid var(--sand-deep); }
 .cheatsheet h4 { font-size: .7rem; text-transform: uppercase; letter-spacing: .1em; color: var(--ocean-500); margin-bottom: 8px; }

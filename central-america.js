@@ -361,6 +361,48 @@ function armReveal(root = document) {
   });
 }
 
+function renderStatusLine() {
+  const el = document.getElementById("statusLine");
+  if (!el) return;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const toDate = (s) => new Date(s + "T00:00:00");
+  const days = (a, b) => Math.round((b - a) / 86400000);
+  const page = document.body.dataset.page;
+  const firstStart = toDate(PHASES[0].start);
+  const lastEnd = toDate(PHASES[PHASES.length - 1].end);
+
+  let msg;
+  if (today < firstStart) {
+    const n = days(today, firstStart);
+    msg = `${n} day${n === 1 ? "" : "s"} until Indonesia`;
+  } else if (today > lastEnd) {
+    msg = "Sabbatical complete 🤙";
+  } else {
+    const active = PHASES.find((p) => toDate(p.start) <= today && today <= toDate(p.end));
+    if (active && active.key === page) {
+      const nowIdx = tripStatuses().indexOf("now");
+      if (nowIdx >= 0) {
+        const stop = ITINERARY[nowIdx];
+        const dayN = days(toDate(stop.start), today) + 1;
+        const next = ITINERARY[nowIdx + 1];
+        msg = `Day ${dayN} · ${stop.place}` + (next ? ` — up next: ${next.place}` : "");
+      } else {
+        msg = `${active.label} — underway`;
+      }
+    } else if (active) {
+      const pagePhase = PHASES.find((p) => p.key === page);
+      if (pagePhase && toDate(pagePhase.start) > today) {
+        const n = days(today, toDate(pagePhase.start));
+        msg = `${active.label} right now · ${pagePhase.label} in ${n} day${n === 1 ? "" : "s"}`;
+      } else {
+        msg = `${active.label} right now`;
+      }
+    }
+  }
+  el.innerHTML = `<span class="statusline__dot"></span>${msg}`;
+}
+
 function renderPhaseStrip() {
   const el = document.getElementById("phaseStrip");
   if (!el) return;
@@ -441,6 +483,10 @@ function renderBreaks() {
           <div><dt>Best</dt><dd>${b.best}</dd></div>
           <div><dt>Watch for</dt><dd>${b.hazard}</dd></div>
         </dl>
+        <div class="break-card__links">
+          <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(b.name + " surf spot")}" target="_blank" rel="noopener">📍 Map</a>
+          <a href="https://www.google.com/search?q=${encodeURIComponent(b.name + " surf forecast")}" target="_blank" rel="noopener">🌊 Forecast</a>
+        </div>
       </div>
     </article>`
     )
@@ -449,6 +495,7 @@ function renderBreaks() {
   if (!grid.dataset.bound) {
     grid.dataset.bound = "1";
     grid.addEventListener("click", (e) => {
+      if (e.target.closest("a")) return;
       const card = e.target.closest(".break-card");
       if (card) card.classList.toggle("is-open");
     });
@@ -579,6 +626,285 @@ function renderCountdown() {
   el.textContent = days > 0 ? days : "🌴";
 }
 
+// ---- Route map (Leaflet) ------------------------------------------
+
+function caCurrentPoint(P) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const toDate = (s) => new Date(s + "T00:00:00");
+  const inR = (a, b) => today >= toDate(a) && today <= toDate(b);
+  if (inR("2026-09-01", "2026-09-14")) return P.nica;
+  if (inR("2026-09-14", "2026-09-30")) return P.cr;
+  return P.sc; // home (Santa Cruz) before, during the reset, and after
+}
+
+function initRouteMap() {
+  const el = document.getElementById("routeMap");
+  if (!el) return;
+  if (typeof L === "undefined") {
+    el.classList.add("flightmap--offline");
+    el.closest(".flightmap-wrap")?.classList.add("is-offline");
+    el.innerHTML = "<p>The interactive map needs an internet connection.</p>";
+    return;
+  }
+  const P = { sc: [36.97, -122.03], nica: [11.44, -86.11], cr: [9.98, -85.65] };
+  const map = L.map(el, { scrollWheelZoom: false, zoomControl: true });
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
+    attribution: "&copy; OpenStreetMap contributors &copy; CARTO",
+    subdomains: "abcd",
+    maxZoom: 10,
+  }).addTo(map);
+
+  [[P.sc, P.nica], [P.nica, P.cr]].forEach((leg) =>
+    L.polyline(leg, { color: "#3f9d5a", weight: 3, opacity: 0.9, dashArray: "1 9", lineCap: "round" }).addTo(map)
+  );
+
+  const stops = [
+    { p: P.sc, name: "Santa Cruz", dest: false },
+    { p: P.nica, name: "Nicaragua", dest: true },
+    { p: P.cr, name: "Costa Rica", dest: true },
+  ];
+  stops.forEach((s) => {
+    L.circleMarker(s.p, {
+      radius: 7,
+      color: "#fff",
+      weight: 2.5,
+      fillColor: s.dest ? "#ff7a3c" : "#3f9d5a",
+      fillOpacity: 1,
+    })
+      .addTo(map)
+      .bindTooltip(s.name, { permanent: true, direction: "top", offset: [0, -6], className: "map-label" });
+  });
+
+  const icon = L.divIcon({
+    className: "map-pulse",
+    html: '<span class="map-pulse__ring"></span><span class="map-pulse__dot"></span>',
+    iconSize: [18, 18],
+    iconAnchor: [9, 9],
+  });
+  L.marker(caCurrentPoint(P), { icon, zIndexOffset: 1000 }).addTo(map);
+
+  map.fitBounds(stops.map((s) => s.p), { padding: [55, 55] });
+  setTimeout(() => map.invalidateSize(), 200);
+}
+
+// ---- Surf Log -----------------------------------------------------
+
+const LOG_KEY = "surf-trip-ca-log-v1";
+let logEntries = loadJSON(LOG_KEY, []);
+let logRating = 0;
+
+function loadJSON(key, fallback) {
+  try {
+    return JSON.parse(localStorage.getItem(key)) ?? fallback;
+  } catch {
+    return fallback;
+  }
+}
+function saveJSON(key, val) {
+  try {
+    localStorage.setItem(key, JSON.stringify(val));
+  } catch {
+    /* ignore */
+  }
+}
+function escapeHTML(str) {
+  return String(str).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+function starRow(n, interactive) {
+  let s = "";
+  for (let i = 1; i <= 5; i++) {
+    const on = i <= n ? "is-on" : "";
+    s += interactive
+      ? `<button type="button" class="star ${on}" data-val="${i}" aria-label="${i} star">★</button>`
+      : `<span class="star ${on}">★</span>`;
+  }
+  return s;
+}
+function renderLogStars() {
+  const el = document.getElementById("logStars");
+  el.innerHTML = starRow(logRating, true);
+  el.querySelectorAll(".star").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      logRating = Number(btn.dataset.val);
+      renderLogStars();
+      pop(document.querySelector(`#logStars .star[data-val="${logRating}"]`));
+    });
+  });
+}
+function fmtLogDate(iso) {
+  const d = new Date(iso + "T00:00:00");
+  return d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
+}
+function renderLog() {
+  const el = document.getElementById("logList");
+  if (!logEntries.length) {
+    el.innerHTML = `<p class="log__empty">No sessions logged yet. Your first paddle-out goes here.</p>`;
+    return;
+  }
+  const sorted = [...logEntries].sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : b.id - a.id));
+  el.innerHTML = sorted
+    .map(
+      (e) => `
+    <div class="log-entry">
+      <div class="log-entry__date">${fmtLogDate(e.date)}</div>
+      <div class="log-entry__body">
+        <div class="log-entry__head">
+          <span class="log-entry__spot">${escapeHTML(e.spot)}</span>
+          <span class="log-entry__stars">${starRow(e.rating, false)}</span>
+        </div>
+        ${e.notes ? `<p class="log-entry__notes">${escapeHTML(e.notes)}</p>` : ""}
+      </div>
+      <button type="button" class="log-entry__del" data-id="${e.id}" aria-label="Delete session">✕</button>
+    </div>`
+    )
+    .join("");
+  el.querySelectorAll(".log-entry__del").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      logEntries = logEntries.filter((x) => String(x.id) !== btn.dataset.id);
+      saveJSON(LOG_KEY, logEntries);
+      renderLog();
+    });
+  });
+}
+function initLog() {
+  const form = document.getElementById("logForm");
+  const dateInput = document.getElementById("logDate");
+  const spotInput = document.getElementById("logSpot");
+  const notesInput = document.getElementById("logNotes");
+  document.getElementById("breakList").innerHTML = BREAKS.map((b) => `<option value="${b.name}"></option>`).join("");
+  dateInput.value = new Date().toISOString().slice(0, 10);
+  renderLogStars();
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    logEntries.push({ id: Date.now(), date: dateInput.value, spot: spotInput.value.trim(), rating: logRating, notes: notesInput.value.trim() });
+    saveJSON(LOG_KEY, logEntries);
+    spotInput.value = "";
+    notesInput.value = "";
+    logRating = 0;
+    renderLogStars();
+    renderLog();
+  });
+  renderLog();
+}
+
+// ---- Money: converter + budget ------------------------------------
+
+const RATES = { CRC: 510, NIO: 36.8 }; // approximate — 1 USD = ; update before departure
+const SYM = { CRC: "₡", NIO: "C$" };
+function fmtUSD(n) {
+  return "$" + Number(n).toLocaleString("en-US", { maximumFractionDigits: 2 });
+}
+function fmtLocal(n, cur) {
+  return SYM[cur] + Math.round(n).toLocaleString("en-US");
+}
+function updateConverter() {
+  const cur = document.getElementById("convCur").value;
+  const amt = parseFloat(document.getElementById("convFrom").value) || 0;
+  document.getElementById("convTo").value = fmtLocal(amt * RATES[cur], cur);
+}
+function initConverter() {
+  const curEl = document.getElementById("convCur");
+  const rate = document.getElementById("convRate");
+  const build = () => {
+    const c = curEl.value;
+    rate.textContent = `Approx. $1 = ${fmtLocal(RATES[c], c)} · update before you go`;
+    const usd = [1, 5, 10, 20, 50, 100];
+    const local = [500, 1000, 5000, 10000, 20000];
+    document.getElementById("cheatsheet").innerHTML = `
+      <div class="cheatsheet__col">
+        <h4>USD → ${c}</h4>
+        ${usd.map((v) => `<div class="cheatsheet__row"><span>${fmtUSD(v)}</span><b>${fmtLocal(v * RATES[c], c)}</b></div>`).join("")}
+      </div>
+      <div class="cheatsheet__col">
+        <h4>${c} → USD</h4>
+        ${local.map((v) => `<div class="cheatsheet__row"><span>${fmtLocal(v, c)}</span><b>${fmtUSD(v / RATES[c])}</b></div>`).join("")}
+      </div>`;
+  };
+  document.getElementById("convFrom").addEventListener("input", updateConverter);
+  curEl.addEventListener("change", () => {
+    build();
+    updateConverter();
+  });
+  build();
+  updateConverter();
+}
+
+const BUDGET_CATS = [
+  { id: "flights", label: "✈️ Flights" },
+  { id: "stay", label: "🏨 Stay" },
+  { id: "food", label: "🍜 Food" },
+  { id: "transport", label: "🚐 Transport" },
+  { id: "surf", label: "🏄 Surf" },
+  { id: "fun", label: "🎉 Fun" },
+  { id: "other", label: "🧾 Other" },
+];
+const BUDGET_KEY = "surf-trip-ca-budget-v1";
+let budget = loadJSON(BUDGET_KEY, []);
+function catLabel(id) {
+  const c = BUDGET_CATS.find((x) => x.id === id);
+  return c ? c.label : id;
+}
+function renderBudget() {
+  const total = budget.reduce((n, e) => n + e.amount, 0);
+  document.getElementById("budgetTotal").textContent = fmtUSD(total);
+  const byCat = {};
+  budget.forEach((e) => (byCat[e.cat] = (byCat[e.cat] || 0) + e.amount));
+  const cats = Object.keys(byCat).sort((a, b) => byCat[b] - byCat[a]);
+  const max = Math.max(1, ...cats.map((c) => byCat[c]));
+  document.getElementById("budgetBars").innerHTML = cats
+    .map(
+      (c) => `
+    <div class="budget-bar">
+      <span class="budget-bar__label">${catLabel(c)}</span>
+      <span class="budget-bar__track"><span class="budget-bar__fill" style="width:${(byCat[c] / max) * 100}%"></span></span>
+      <span class="budget-bar__amt">${fmtUSD(byCat[c])}</span>
+    </div>`
+    )
+    .join("");
+  const listEl = document.getElementById("budgetList");
+  if (!budget.length) {
+    listEl.innerHTML = `<p class="budget__empty">No expenses yet. Add your flights or a shuttle to start.</p>`;
+    return;
+  }
+  listEl.innerHTML = [...budget]
+    .reverse()
+    .map(
+      (e) => `
+    <div class="budget-item">
+      <span class="budget-item__cat">${catLabel(e.cat)}</span>
+      <span class="budget-item__label">${escapeHTML(e.label)}</span>
+      <span class="budget-item__amt">${fmtUSD(e.amount)}</span>
+      <button type="button" class="budget-item__del" data-id="${e.id}" aria-label="Delete expense">✕</button>
+    </div>`
+    )
+    .join("");
+  listEl.querySelectorAll(".budget-item__del").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      budget = budget.filter((x) => String(x.id) !== btn.dataset.id);
+      saveJSON(BUDGET_KEY, budget);
+      renderBudget();
+    });
+  });
+}
+function initBudget() {
+  document.getElementById("budgetCat").innerHTML = BUDGET_CATS.map((c) => `<option value="${c.id}">${c.label}</option>`).join("");
+  document.getElementById("budgetForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const cat = document.getElementById("budgetCat").value;
+    const label = document.getElementById("budgetLabel");
+    const amount = document.getElementById("budgetAmount");
+    const val = parseFloat(amount.value);
+    if (!(val > 0) || !label.value.trim()) return;
+    budget.push({ id: Date.now(), cat, label: label.value.trim(), amount: val });
+    saveJSON(BUDGET_KEY, budget);
+    label.value = "";
+    amount.value = "";
+    renderBudget();
+  });
+  renderBudget();
+}
+
 // ---- Interactions (shared behavior) -------------------------------
 
 function initTheme() {
@@ -677,6 +1003,7 @@ function initParallax() {
 
 document.addEventListener("DOMContentLoaded", () => {
   initTheme();
+  renderStatusLine();
   renderPhaseStrip();
   renderTimeline();
   renderBreakFilters();
@@ -685,6 +1012,10 @@ document.addEventListener("DOMContentLoaded", () => {
   renderInfo();
   updateProgress();
   renderCountdown();
+  initRouteMap();
+  initLog();
+  initConverter();
+  initBudget();
   initNavScroll();
   initScrollSpy();
   initMobileNav();
