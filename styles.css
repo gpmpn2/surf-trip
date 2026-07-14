@@ -53,6 +53,31 @@
 
 html { scroll-behavior: smooth; scroll-padding-top: 84px; }
 
+/* ---------- Accessibility helpers ---------- */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.skip-link {
+  position: fixed;
+  left: 12px; top: -80px;
+  z-index: 300;
+  background: var(--coral);
+  color: #fff;
+  padding: 11px 18px;
+  border-radius: 10px;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: var(--shadow-md);
+  transition: top .2s ease;
+}
+.skip-link:focus { top: 12px; }
+
 body {
   font-family: var(--font-body);
   color: var(--ink);
@@ -834,7 +859,7 @@ a.phase:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); borde
 .break-card__top { display: flex; align-items: flex-start; gap: 10px; }
 .break-card__heading { flex: 1; min-width: 0; }
 .break-card__name { font-family: var(--font-display); font-weight: 600; font-size: 1.4rem; color: var(--heading); }
-.break-card__chev { display: none; flex: 0 0 auto; color: var(--ocean-500); font-size: 1rem; transition: transform .25s ease; }
+.break-card__chev { display: none; flex: 0 0 auto; background: none; border: none; padding: 2px 4px; cursor: pointer; color: var(--ocean-500); font-size: 1rem; transition: transform .25s ease; }
 .break-card__level {
   flex: 0 0 auto;
   font-size: .68rem;

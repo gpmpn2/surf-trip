@@ -452,7 +452,7 @@ function renderStatusLine() {
       }
     }
   }
-  el.innerHTML = `<span class="statusline__dot"></span>${msg}`;
+  el.innerHTML = `<span class="statusline__dot" aria-hidden="true"></span>${msg}`;
 }
 
 function renderPhaseStrip() {
@@ -468,10 +468,11 @@ function renderPhaseStrip() {
   el.innerHTML = PHASES.map((p, i) => {
     const status = i === activeIdx ? "is-now" : toDate(p.end) < today ? "is-done" : "is-upcoming";
     const here = p.key === page ? "is-here" : "";
-    const inner = `<span class="phase__dot"></span><span class="phase__icon">${p.icon}</span><span class="phase__label">${p.label}</span><span class="phase__dates">${p.dates}</span>`;
+    const current = i === activeIdx ? '<span class="sr-only"> (current)</span>' : "";
+    const inner = `<span class="phase__dot" aria-hidden="true"></span><span class="phase__icon" aria-hidden="true">${p.icon}</span><span class="phase__label">${p.label}${current}</span><span class="phase__dates">${p.dates}</span>`;
     return p.href && p.key !== page
       ? `<a class="phase ${status} ${here}" href="${p.href}">${inner}</a>`
-      : `<div class="phase ${status} ${here}">${inner}</div>`;
+      : `<div class="phase ${status} ${here}"${here ? ' aria-current="page"' : ""}>${inner}</div>`;
   }).join("");
 }
 
@@ -483,7 +484,7 @@ function renderTimeline() {
     const dotInner = status === "done" ? CHECK_SVG : "";
     return `
     <li class="tl-item reveal is-${status}">
-      <span class="tl-item__dot">${dotInner}</span>
+      <span class="tl-item__dot" aria-hidden="true">${dotInner}</span>
       <div class="tl-item__card">
         <div class="tl-item__meta">
           <span class="tl-item__days">${stop.days}</span>
@@ -519,7 +520,7 @@ function renderPacking() {
     (cat) => `
     <div class="pack-cat reveal" data-cat="${cat.id}">
       <div class="pack-cat__head">
-        <span class="pack-cat__icon">${cat.icon}</span>
+        <span class="pack-cat__icon" aria-hidden="true">${cat.icon}</span>
         <h3 class="pack-cat__title">${cat.title}</h3>
         <span class="pack-cat__count" data-count="${cat.id}"></span>
       </div>
@@ -537,8 +538,8 @@ function renderPacking() {
                 ${note ? `<span class="pack-item__note">${note}</span>` : ""}
               </span>
               <span class="pack-item__toggles">
-                <button type="button" class="pack-toggle pack-toggle--got ${st.got ? "is-on" : ""}" data-act="got">Got</button>
-                <button type="button" class="pack-toggle pack-toggle--packed ${st.packed ? "is-on" : ""}" data-act="packed">Packed</button>
+                <button type="button" class="pack-toggle pack-toggle--got ${st.got ? "is-on" : ""}" data-act="got" aria-pressed="${!!st.got}" aria-label="Got: ${escapeHTML(label)}">Got</button>
+                <button type="button" class="pack-toggle pack-toggle--packed ${st.packed ? "is-on" : ""}" data-act="packed" aria-pressed="${!!st.packed}" aria-label="Packed: ${escapeHTML(label)}">Packed</button>
               </span>
             </div>`;
           })
@@ -570,8 +571,12 @@ function renderPacking() {
       const now = state[key] || { got: false, packed: false };
       item.classList.toggle("is-got", now.got);
       item.classList.toggle("is-packed", now.packed);
-      item.querySelector(".pack-toggle--got").classList.toggle("is-on", now.got);
-      item.querySelector(".pack-toggle--packed").classList.toggle("is-on", now.packed);
+      const gotBtn = item.querySelector(".pack-toggle--got");
+      const packedBtn = item.querySelector(".pack-toggle--packed");
+      gotBtn.classList.toggle("is-on", now.got);
+      packedBtn.classList.toggle("is-on", now.packed);
+      gotBtn.setAttribute("aria-pressed", String(now.got));
+      packedBtn.setAttribute("aria-pressed", String(now.packed));
       pop(btn);
       updateProgress();
     });
@@ -592,7 +597,7 @@ function renderBoat() {
     .map(
       (card) => `
       <div class="info-card reveal">
-        <span class="info-card__icon">${card.icon}</span>
+        <span class="info-card__icon" aria-hidden="true">${card.icon}</span>
         <h3 class="info-card__title">${card.title}</h3>
         <ul class="info-card__list">
           ${card.rows.map((r) => `<li><span>${r[0]}</span><b>${r[1]}</b></li>`).join("")}
@@ -613,7 +618,7 @@ function renderInfo() {
         : `<p class="info-card__text">${card.text}</p>`;
     return `
       <div class="info-card reveal">
-        <span class="info-card__icon">${card.icon}</span>
+        <span class="info-card__icon" aria-hidden="true">${card.icon}</span>
         <h3 class="info-card__title">${card.title}</h3>
         ${body}
       </div>`;
@@ -641,6 +646,11 @@ function updateProgress() {
   const complete = total > 0 && packed === total;
   document.getElementById("progressPct").textContent = complete ? pct + "% 🤙" : pct + "%";
   document.querySelector(".packing__progress")?.classList.toggle("is-complete", complete);
+  const bar = document.querySelector(".packing__progress-bar");
+  if (bar) {
+    bar.setAttribute("aria-valuenow", String(pct));
+    bar.setAttribute("aria-valuetext", `${packed} of ${total} packed, ${got} obtained`);
+  }
   const gotEl = document.getElementById("progressGot");
   if (gotEl) gotEl.textContent = got;
 
@@ -885,9 +895,11 @@ let breakFilter = "All";
 
 function renderBreakFilters() {
   const el = document.getElementById("breakFilters");
+  el.setAttribute("role", "group");
+  el.setAttribute("aria-label", "Filter breaks by region");
   el.innerHTML = BREAK_REGIONS.map(
     (r) =>
-      `<button type="button" class="breaks__filter ${r === breakFilter ? "is-active" : ""}" data-region="${r}">${r}</button>`
+      `<button type="button" class="breaks__filter ${r === breakFilter ? "is-active" : ""}" data-region="${r}" aria-pressed="${r === breakFilter}">${r}</button>`
   ).join("");
   el.querySelectorAll(".breaks__filter").forEach((btn) => {
     btn.addEventListener("click", () => {
@@ -903,7 +915,7 @@ function renderBreaks() {
   const list = BREAKS.filter((b) => breakFilter === "All" || b.region === breakFilter);
   grid.innerHTML = list
     .map(
-      (b) => `
+      (b, i) => `
     <article class="break-card reveal">
       <div class="break-card__top">
         <div class="break-card__heading">
@@ -911,9 +923,9 @@ function renderBreaks() {
           <span class="break-card__region">${b.region}${b.verify ? ` · <span class="break-card__verify">confirm on charter</span>` : ""}</span>
         </div>
         <span class="break-card__level" data-level="${b.level.split("–")[0]}">${b.level}</span>
-        <span class="break-card__chev" aria-hidden="true">▾</span>
+        <button type="button" class="break-card__chev" aria-expanded="false" aria-controls="break-body-${i}" aria-label="Toggle details for ${escapeHTML(b.name)}">▾</button>
       </div>
-      <div class="break-card__body">
+      <div class="break-card__body" id="break-body-${i}">
         <p class="break-card__blurb">${b.blurb}</p>
         <dl class="break-card__facts">
           <div><dt>Wave</dt><dd>${b.type}</dd></div>
@@ -921,8 +933,8 @@ function renderBreaks() {
           <div><dt>Watch for</dt><dd>${b.hazard}</dd></div>
         </dl>
         <div class="break-card__links">
-          <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(b.name + " surf spot")}" target="_blank" rel="noopener">📍 Map</a>
-          <a href="https://www.google.com/search?q=${encodeURIComponent(b.name + " surf forecast")}" target="_blank" rel="noopener">🌊 Forecast</a>
+          <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(b.name + " surf spot")}" target="_blank" rel="noopener">📍 Map<span class="sr-only"> (opens Google Maps)</span></a>
+          <a href="https://www.google.com/search?q=${encodeURIComponent(b.name + " surf forecast")}" target="_blank" rel="noopener">🌊 Forecast<span class="sr-only"> (opens a web search)</span></a>
         </div>
       </div>
     </article>`
@@ -936,7 +948,9 @@ function renderBreaks() {
     grid.addEventListener("click", (e) => {
       if (e.target.closest("a")) return;
       const card = e.target.closest(".break-card");
-      if (card) card.classList.toggle("is-open");
+      if (!card) return;
+      const open = card.classList.toggle("is-open");
+      card.querySelector(".break-card__chev")?.setAttribute("aria-expanded", String(open));
     });
   }
 }
@@ -967,14 +981,16 @@ function starRow(n, interactive) {
   for (let i = 1; i <= 5; i++) {
     const on = i <= n ? "is-on" : "";
     s += interactive
-      ? `<button type="button" class="star ${on}" data-val="${i}" aria-label="${i} star">★</button>`
-      : `<span class="star ${on}">★</span>`;
+      ? `<button type="button" class="star ${on}" data-val="${i}" aria-pressed="${i === n}" aria-label="${i} star${i === 1 ? "" : "s"}">★</button>`
+      : `<span class="star ${on}" aria-hidden="true">★</span>`;
   }
   return s;
 }
 
 function renderLogStars() {
   const el = document.getElementById("logStars");
+  el.setAttribute("role", "group");
+  el.setAttribute("aria-label", `Session rating: ${logRating ? logRating + " of 5" : "not set"}`);
   el.innerHTML = starRow(logRating, true);
   el.querySelectorAll(".star").forEach((btn) => {
     btn.addEventListener("click", () => {
@@ -1005,7 +1021,7 @@ function renderLog() {
       <div class="log-entry__body">
         <div class="log-entry__head">
           <span class="log-entry__spot">${escapeHTML(e.spot)}</span>
-          <span class="log-entry__stars">${starRow(e.rating, false)}</span>
+          <span class="log-entry__stars" aria-label="${e.rating} out of 5 stars">${starRow(e.rating, false)}</span>
         </div>
         ${e.notes ? `<p class="log-entry__notes">${escapeHTML(e.notes)}</p>` : ""}
       </div>

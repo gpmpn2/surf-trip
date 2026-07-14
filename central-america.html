@@ -20,13 +20,14 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 </head>
 <body data-page="centralamerica">
+  <a class="skip-link" href="#main">Skip to content</a>
   <!-- Nav -->
   <header class="nav" id="nav">
     <a href="#top" class="nav__brand">
-      <span class="nav__mark">🌴</span>
+      <span class="nav__mark" aria-hidden="true">🌴</span>
       <span>Central America '26</span>
     </a>
-    <nav class="nav__links">
+    <nav class="nav__links" id="navLinks" aria-label="Primary">
       <a href="#itinerary">Plan</a>
       <a href="#breaks">Breaks</a>
       <a href="#packing">Packing</a>
@@ -35,7 +36,7 @@
       <a href="#info">Info</a>
     </nav>
     <button class="nav__theme" id="themeToggle" type="button" aria-label="Toggle dark mode">🌙</button>
-    <button class="nav__burger" id="navBurger" type="button" aria-label="Menu" aria-expanded="false">
+    <button class="nav__burger" id="navBurger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
       <span></span><span></span><span></span>
     </button>
   </header>
@@ -62,9 +63,9 @@
     </div>
   </section>
 
-  <main>
-    <p class="statusline" id="statusLine"></p>
-    <div class="phases" id="phaseStrip" aria-label="Sabbatical progress"></div>
+  <main id="main">
+    <p class="statusline" id="statusLine" role="status"></p>
+    <div class="phases" id="phaseStrip" role="group" aria-label="Sabbatical progress"></div>
 
     <!-- Itinerary -->
     <section class="section" id="itinerary">
@@ -74,8 +75,9 @@
         <p class="section__lede">Dates and stops are intentionally unsettled, chase the swell and the good vibes.</p>
       </div>
 
+      <p class="sr-only">Route: Santa Cruz, California to Nicaragua to Costa Rica, then home.</p>
       <div class="flightmap-wrap">
-        <div class="flightmap" id="routeMap" aria-label="Central America route map"></div>
+        <div class="flightmap" id="routeMap" aria-label="Interactive route map from Santa Cruz to Nicaragua and Costa Rica"></div>
         <div class="flightmap__legend" id="mapLegend">
           <span class="routemap__key routemap__key--flight">Travel</span>
           <span class="routemap__key routemap__key--now">You are here</span>
@@ -105,9 +107,9 @@
       </div>
 
       <div class="packing__progress">
-        <div class="packing__progress-bar">
-          <div class="packing__progress-fill packing__progress-fill--got" id="progressFillGot"></div>
-          <div class="packing__progress-fill" id="progressFill"></div>
+        <div class="packing__progress-bar" role="progressbar" aria-label="Packing progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <div class="packing__progress-fill packing__progress-fill--got" id="progressFillGot" aria-hidden="true"></div>
+          <div class="packing__progress-fill" id="progressFill" aria-hidden="true"></div>
         </div>
         <div class="packing__progress-text"><span id="progressCount">0</span> of <span id="progressTotal">0</span> packed <span class="packing__progress-pct" id="progressPct">0%</span><span class="packing__progress-got"><span id="progressGot">0</span> obtained</span></div>
         <button class="packing__reset" id="resetBtn" type="button">Reset all</button>
@@ -163,13 +165,13 @@
           <h3 class="money__panel-title">Converter</h3>
           <div class="converter">
             <div class="converter__row">
-              <input type="number" id="convFrom" value="10" min="0" inputmode="decimal" />
+              <input type="number" id="convFrom" value="10" min="0" inputmode="decimal" aria-label="Amount in US dollars" />
               <span class="converter__cur">USD</span>
             </div>
             <div class="converter__arrow" aria-hidden="true">↓</div>
             <div class="converter__row">
-              <input type="text" id="convTo" readonly />
-              <select id="convCur" class="converter__cur converter__cur--select">
+              <input type="text" id="convTo" readonly aria-label="Converted amount" />
+              <select id="convCur" class="converter__cur converter__cur--select" aria-label="Local currency">
                 <option value="CRC">₡ Colón</option>
                 <option value="NIO">C$ Córdoba</option>
               </select>
@@ -185,9 +187,9 @@
             <div class="budget__total"><span class="budget__total-num" id="budgetTotal">$0</span><span class="budget__total-label">logged</span></div>
           </div>
           <form class="budget__form" id="budgetForm">
-            <select id="budgetCat"></select>
-            <input type="text" id="budgetLabel" placeholder="What for?" required />
-            <input type="number" id="budgetAmount" placeholder="USD" min="0" step="0.01" inputmode="decimal" required />
+            <select id="budgetCat" aria-label="Expense category"></select>
+            <input type="text" id="budgetLabel" placeholder="What for?" aria-label="What the expense is for" required />
+            <input type="number" id="budgetAmount" placeholder="USD" min="0" step="0.01" inputmode="decimal" aria-label="Amount in US dollars" required />
             <button type="submit">Add</button>
           </form>
           <div class="budget__bars" id="budgetBars"></div>
