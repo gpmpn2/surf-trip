@@ -132,6 +132,34 @@ body {
 }
 .nav__theme:hover { transform: scale(1.12) rotate(-10deg); }
 
+/* mobile hamburger (hidden on desktop) */
+.nav__burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 42px;
+  height: 42px;
+  padding: 9px;
+  margin-left: 6px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--white);
+}
+.nav.is-scrolled .nav__burger { color: var(--heading); }
+.nav__burger span {
+  display: block;
+  height: 2px;
+  width: 100%;
+  border-radius: 2px;
+  background: currentColor;
+  transition: transform .25s ease, opacity .2s ease;
+}
+.nav.is-open .nav__burger span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav.is-open .nav__burger span:nth-child(2) { opacity: 0; }
+.nav.is-open .nav__burger span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
 /* focus rings */
 :focus:not(:focus-visible) { outline: none; }
 a:focus-visible, button:focus-visible, input:focus-visible,
@@ -719,8 +747,10 @@ select:focus-visible, textarea:focus-visible {
   transition: transform .25s ease, box-shadow .25s ease;
 }
 .break-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
-.break-card__top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.break-card__top { display: flex; align-items: flex-start; gap: 10px; }
+.break-card__heading { flex: 1; min-width: 0; }
 .break-card__name { font-family: var(--font-display); font-weight: 600; font-size: 1.4rem; color: var(--heading); }
+.break-card__chev { display: none; flex: 0 0 auto; color: var(--ocean-500); font-size: 1rem; transition: transform .25s ease; }
 .break-card__level {
   flex: 0 0 auto;
   font-size: .68rem;
@@ -764,6 +794,10 @@ select:focus-visible, textarea:focus-visible {
   border-radius: var(--radius-sm);
   padding: 11px 14px;
   width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
   transition: border-color .2s;
 }
 .logform input:focus, .logform textarea:focus,
@@ -782,7 +816,7 @@ select:focus-visible, textarea:focus-visible {
   gap: 16px;
 }
 .logform__row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; }
-.logform__field { display: flex; flex-direction: column; gap: 6px; }
+.logform__field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
 .logform__field > span { font-size: .74rem; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; color: var(--ocean-500); }
 .logform textarea { resize: vertical; }
 .logform__stars { display: flex; gap: 4px; padding-top: 4px; }
@@ -952,12 +986,45 @@ body { font-optical-sizing: auto; }
 .reveal.is-visible { opacity: 1; transform: none; }
 
 /* ---------- Responsive ---------- */
+@media (max-width: 800px) {
+  .nav__burger { display: flex; }
+  .nav__links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0; right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 6px 0 10px;
+    background: var(--surface);
+    border-top: 1px solid var(--sand-deep);
+    box-shadow: var(--shadow-md);
+  }
+  .nav.is-open .nav__links { display: flex; }
+  .nav__links a,
+  .nav.is-scrolled .nav__links a {
+    color: var(--ink);
+    padding: 13px clamp(20px, 5vw, 48px);
+    font-size: 1.02rem;
+  }
+  .nav__links a::after { display: none; }
+  .nav__links a.is-current { color: var(--coral); }
+}
+
+@media (max-width: 720px) {
+  .break-card { cursor: pointer; padding: 18px 20px; }
+  .break-card:hover { transform: none; box-shadow: var(--shadow-sm); }
+  .break-card__chev { display: block; }
+  .break-card.is-open .break-card__chev { transform: rotate(180deg); }
+  .break-card__body { display: none; }
+  .break-card.is-open .break-card__body { display: block; }
+  .breaks__grid { gap: 14px; }
+}
+
 @media (max-width: 620px) {
-  .nav__brand span:last-child { display: none; }
-  .nav__links { gap: 13px; }
-  .nav__links a { font-size: .86rem; }
   .hero__meta { gap: 28px; }
-  .packing__progress { top: 68px; }
+  .packing__progress { top: 66px; }
 }
 
 @media (max-width: 560px) {

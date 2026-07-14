@@ -838,20 +838,34 @@ function renderBreaks() {
       (b) => `
     <article class="break-card reveal">
       <div class="break-card__top">
-        <h3 class="break-card__name">${b.name}</h3>
+        <div class="break-card__heading">
+          <h3 class="break-card__name">${b.name}</h3>
+          <span class="break-card__region">${b.region}${b.verify ? ` · <span class="break-card__verify">confirm on charter</span>` : ""}</span>
+        </div>
         <span class="break-card__level" data-level="${b.level.split("–")[0]}">${b.level}</span>
+        <span class="break-card__chev" aria-hidden="true">▾</span>
       </div>
-      <span class="break-card__region">${b.region}${b.verify ? ` · <span class="break-card__verify">confirm on charter</span>` : ""}</span>
-      <p class="break-card__blurb">${b.blurb}</p>
-      <dl class="break-card__facts">
-        <div><dt>Wave</dt><dd>${b.type}</dd></div>
-        <div><dt>Best</dt><dd>${b.best}</dd></div>
-        <div><dt>Watch for</dt><dd>${b.hazard}</dd></div>
-      </dl>
+      <div class="break-card__body">
+        <p class="break-card__blurb">${b.blurb}</p>
+        <dl class="break-card__facts">
+          <div><dt>Wave</dt><dd>${b.type}</dd></div>
+          <div><dt>Best</dt><dd>${b.best}</dd></div>
+          <div><dt>Watch for</dt><dd>${b.hazard}</dd></div>
+        </dl>
+      </div>
     </article>`
     )
     .join("");
   armReveal(grid);
+
+  // Tap-to-expand on mobile (cards are always expanded on desktop via CSS).
+  if (!grid.dataset.bound) {
+    grid.dataset.bound = "1";
+    grid.addEventListener("click", (e) => {
+      const card = e.target.closest(".break-card");
+      if (card) card.classList.toggle("is-open");
+    });
+  }
 }
 
 // ---- Surf Log -----------------------------------------------------
@@ -1260,6 +1274,21 @@ function initParallax() {
   );
 }
 
+function initMobileNav() {
+  const nav = document.getElementById("nav");
+  const burger = document.getElementById("navBurger");
+  if (!nav || !burger) return;
+  const close = () => {
+    nav.classList.remove("is-open");
+    burger.setAttribute("aria-expanded", "false");
+  };
+  burger.addEventListener("click", () => {
+    const open = nav.classList.toggle("is-open");
+    burger.setAttribute("aria-expanded", String(open));
+  });
+  nav.querySelectorAll(".nav__links a").forEach((a) => a.addEventListener("click", close));
+}
+
 // ---- Init ---------------------------------------------------------
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -1278,6 +1307,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initBudget();
   initNavScroll();
   initScrollSpy();
+  initMobileNav();
   initParallax();
   armReveal();
   document.getElementById("resetBtn").addEventListener("click", resetPacking);
