@@ -779,14 +779,16 @@ a.phase:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); borde
   z-index: 2;
 }
 .map-pulse__ring {
-  width: 14px; height: 14px;
+  width: 16px; height: 16px;
   background: var(--coral);
-  opacity: .5;
-  animation: map-pulse-ring 1.7s ease-out infinite;
+  opacity: 0;
+  animation: map-pulse-ring 1.9s ease-out infinite;
+  will-change: transform, opacity;
 }
 @keyframes map-pulse-ring {
-  0%   { width: 14px; height: 14px; opacity: .5; }
-  100% { width: 48px; height: 48px; opacity: 0; }
+  0%   { transform: translate(-50%, -50%) scale(1);   opacity: 0; }
+  15%  { opacity: .5; }
+  100% { transform: translate(-50%, -50%) scale(3.4); opacity: 0; }
 }
 
 .leaflet-tooltip.map-label {
