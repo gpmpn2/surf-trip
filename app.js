@@ -184,7 +184,6 @@ const PACKING = [
       { label: "Liquid I.V. ×10", note: "Rehydration for heat, sun, and Bali Belly recovery" },
       { label: "Stomach meds", note: "Imodium, Pepto-Bismol, activated charcoal tablets" },
       { label: "Pain relief", note: "Ibuprofen for sore paddling muscles" },
-      { label: "Antimalarials", note: "Mentawais are malarial — see a travel doctor" },
       { label: "Prescription antibiotics", note: "Doctor-prescribed course for reef cuts / staph" },
       { label: "Antihistamines", note: "Allergies, bites, stings" },
     ],
