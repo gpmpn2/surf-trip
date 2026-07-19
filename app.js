@@ -88,6 +88,7 @@ const PACKING = [
     items: [
       { label: "Surfboards ×2–3", note: "Daily shortboard, step-up for bigger swell, backup" },
       { label: "Board bag", note: '6\'6" heavy-duty coffin bag, high-density foam padding' },
+      { label: "Day bags ×2", note: "Single-board sleeves for boat transfers and daybreak paddles" },
       { label: "Leashes ×3", note: "Heavy-duty; 6ft + 7ft for varying wave sizes" },
       { label: "Spare leash string", note: "Cheap insurance against a snapped rail-saver" },
       { label: "Fin sets ×3", note: "Match your board boxes; thruster/quad setups" },
@@ -186,8 +187,6 @@ const PACKING = [
       { label: "Antimalarials", note: "Mentawais are malarial — see a travel doctor" },
       { label: "Prescription antibiotics", note: "Doctor-prescribed course for reef cuts / staph" },
       { label: "Antihistamines", note: "Allergies, bites, stings" },
-      { label: "Antifungal cream", note: "Tropical rot / fungal infections" },
-      { label: "Melatonin", note: "Reset for the long-haul jet lag" },
     ],
   },
   {
