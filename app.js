@@ -194,6 +194,7 @@ const PACKING = [
     title: "Electronics & Power",
     items: [
       { label: "Travel adapter", note: "Universal, Type C + F outlets" },
+      { label: "eSIM", note: "Indonesia data plan — activate before departure for connectivity between islands" },
       { label: "Action camera", note: "GoPro, floating grip, spare battery, 2 SD cards" },
       { label: "Charging cables ×2", note: "Braided long USB-C / Lightning" },
       { label: "Headlamp", note: "Waterproof LED with red-light setting" },
@@ -217,6 +218,7 @@ const PACKING = [
       { label: "Stomach meds", note: "Imodium, Pepto-Bismol, activated charcoal tablets" },
       { label: "Pain relief", note: "Ibuprofen for sore paddling muscles" },
       { label: "Prescription antibiotics", note: "Doctor-prescribed course for reef cuts / staph" },
+      { label: "Antimalarial meds", note: "Doxycycline or Malarone — malaria risk in the Mentawais" },
       { label: "Antihistamines", note: "Allergies, bites, stings" },
       { label: "Tweezers", note: "Fine-point — for splinters, sea-urchin spines, reef debris" },
     ],
@@ -228,6 +230,7 @@ const PACKING = [
     items: [
       { label: "Face sunscreen ×2", note: "Heavy zinc surf mud, SPF 50+" },
       { label: "Body sunscreen ×2", note: "Reef-safe, biodegradable, SPF 50+" },
+      { label: "SPF lip balm", note: "Prevents sunburned/split lips on long sessions" },
       { label: "Mosquito spray", note: "High-concentration DEET or Picaridin" },
       { label: "Aloe vera", note: "After-sun / burn relief" },
       { label: "Deodorant", note: "Travel-sized stick" },
