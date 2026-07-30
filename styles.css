@@ -904,6 +904,71 @@ a.phase:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); borde
 }
 .break-card__links a:hover { background: var(--ocean-700); color: #fff; }
 
+/* ---------- Stays ---------- */
+.stays__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; }
+.stay-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 24px 26px;
+  box-shadow: var(--shadow-sm);
+  border-left: 4px solid var(--coral);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.stay-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
+.stay-card__top { display: flex; align-items: flex-start; gap: 12px; }
+.stay-card__heading { flex: 1; min-width: 0; }
+.stay-card__days {
+  display: inline-block;
+  font-size: .74rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ocean-500);
+  background: var(--foam);
+  padding: 5px 12px;
+  border-radius: 100px;
+  margin-bottom: 10px;
+}
+.stay-card__name { font-family: var(--font-display); font-weight: 600; font-size: 1.4rem; color: var(--heading); }
+.stay-card__area { display: inline-block; font-size: .8rem; font-weight: 600; letter-spacing: .04em; color: var(--ocean-500); margin-top: 3px; }
+.stay-card__nights {
+  flex: 0 0 auto;
+  font-size: .68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  padding: 5px 10px;
+  border-radius: 100px;
+  white-space: nowrap;
+  background: rgba(255, 107, 91, 0.16);
+  color: var(--coral-dk);
+}
+[data-theme="dark"] .stay-card__nights { background: rgba(255, 107, 91, 0.28); color: #ffa196; }
+.stay-card__facts { display: flex; flex-direction: column; gap: 10px; border-top: 1px solid var(--sand-deep); margin-top: 16px; padding-top: 14px; }
+.stay-card__facts div { display: grid; grid-template-columns: 88px 1fr; gap: 12px; }
+.stay-card__facts dt { font-size: .7rem; text-transform: uppercase; letter-spacing: .07em; color: var(--ocean-500); font-weight: 700; padding-top: 3px; }
+.stay-card__facts dd { color: var(--ink); font-size: .92rem; }
+.stay-card__tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.stay-card__tag {
+  font-size: .8rem;
+  color: var(--ocean-700);
+  background: rgba(15, 87, 118, 0.08);
+  padding: 4px 12px;
+  border-radius: 100px;
+}
+.stay-card__links { display: flex; gap: 10px; margin-top: 16px; }
+.stay-card__links a {
+  font-size: .8rem;
+  font-weight: 600;
+  color: var(--heading);
+  background: var(--foam);
+  padding: 7px 13px;
+  border-radius: 100px;
+  text-decoration: none;
+  transition: background .2s ease, color .2s ease;
+}
+.stay-card__links a:hover { background: var(--ocean-700); color: #fff; }
+
 /* ---------- Shared form controls ---------- */
 .logform input, .logform textarea,
 .budget__form input, .budget__form select {

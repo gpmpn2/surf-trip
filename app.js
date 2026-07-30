@@ -80,6 +80,33 @@ const ITINERARY = [
   },
 ];
 
+const STAYS = [
+  {
+    name: "Alamanda Bingin",
+    area: "Bingin · Uluwatu",
+    days: "Aug 4–6",
+    start: "2026-08-04",
+    end: "2026-08-06",
+    nights: 2,
+    checkIn: "After 2:00 PM",
+    checkOut: "11:00 AM",
+    address: "Jalan Pantai Bingin, Uluwatu, 80361 Uluwatu, Indonesia",
+    tags: ["2 nights", "Walk to Bingin"],
+  },
+  {
+    name: "Padang Padang Stay",
+    area: "Padang Padang · Uluwatu",
+    days: "Aug 6–9",
+    start: "2026-08-06",
+    end: "2026-08-09",
+    nights: 3,
+    checkIn: "After 2:00 PM",
+    checkOut: "12:00 PM (noon)",
+    address: "Jln. Melasti Labuhan Sait, Padang-Padang Beach, 80361 Uluwatu, Indonesia",
+    tags: ["3 nights", "Walk to Padang Padang"],
+  },
+];
+
 const PACKING = [
   {
     id: "hardware",
@@ -131,6 +158,7 @@ const PACKING = [
       { label: "Ear plugs (sleep)", note: "Good-quality foam or silicone for noisy boat cabins" },
       { label: "Snacks", note: "Bars, nuts, candy — a morale boost after a long paddle" },
       { label: "Books ×2", note: "For flat spells and long steam times" },
+      { label: "Dutch Blitz", note: "Fast card game — kills flat spells and boat downtime" },
     ],
   },
   {
@@ -144,6 +172,7 @@ const PACKING = [
       { label: "Underwear ×6", note: "Moisture-wicking, anti-chafe boxers" },
       { label: "Socks ×3", note: "Ankle socks for trekking / travel days" },
       { label: "Sun hoody", note: "Hooded UPF top for all-day sun cover" },
+      { label: "Patagonia Houdini jacket", note: "Ultralight, packable windbreaker for cool evenings" },
       { label: "Rain shell", note: "Packable, breathable waterproof jacket" },
     ],
   },
@@ -186,6 +215,7 @@ const PACKING = [
       { label: "Pain relief", note: "Ibuprofen for sore paddling muscles" },
       { label: "Prescription antibiotics", note: "Doctor-prescribed course for reef cuts / staph" },
       { label: "Antihistamines", note: "Allergies, bites, stings" },
+      { label: "Tweezers", note: "Fine-point — for splinters, sea-urchin spines, reef debris" },
     ],
   },
   {
@@ -198,6 +228,8 @@ const PACKING = [
       { label: "Mosquito spray", note: "High-concentration DEET or Picaridin" },
       { label: "Aloe vera", note: "After-sun / burn relief" },
       { label: "Deodorant", note: "Travel-sized stick" },
+      { label: "Razor", note: "Plus spare blades" },
+      { label: "Shaving cream", note: "Travel-sized" },
       { label: "Toothbrush kit", note: "Toothbrush + travel toothpaste" },
       { label: "Floss", note: "" },
       { label: "Mouthwash", note: "Travel-sized" },
@@ -509,6 +541,35 @@ function renderTimeline() {
       </div>
     </li>`;
   }).join("");
+}
+
+function renderStays() {
+  const el = document.getElementById("staysGrid");
+  if (!el) return;
+  el.innerHTML = STAYS.map(
+    (s) => `
+    <article class="stay-card reveal">
+      <div class="stay-card__top">
+        <div class="stay-card__heading">
+          <span class="stay-card__days">${s.days}</span>
+          <h3 class="stay-card__name">${s.name}</h3>
+          <span class="stay-card__area">${s.area}</span>
+        </div>
+        <span class="stay-card__nights">${s.nights} night${s.nights === 1 ? "" : "s"}</span>
+      </div>
+      <dl class="stay-card__facts">
+        <div><dt>Check-in</dt><dd>${s.checkIn}</dd></div>
+        <div><dt>Check-out</dt><dd>${s.checkOut}</dd></div>
+        <div><dt>Address</dt><dd>${escapeHTML(s.address)}</dd></div>
+      </dl>
+      <div class="stay-card__tags">
+        ${s.tags.map((t) => `<span class="stay-card__tag">${t}</span>`).join("")}
+      </div>
+      <div class="stay-card__links">
+        <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(s.name + " " + s.address)}" target="_blank" rel="noopener">📍 Map<span class="sr-only"> (opens Google Maps)</span></a>
+      </div>
+    </article>`
+  ).join("");
 }
 
 function renderPacking() {
@@ -1402,6 +1463,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderStatusLine();
   renderPhaseStrip();
   renderTimeline();
+  renderStays();
   renderBreakFilters();
   renderBreaks();
   renderBoat();
