@@ -198,8 +198,8 @@ const PACKING = [
       { label: "Charging cables ×2", note: "Braided long USB-C / Lightning" },
       { label: "Headlamp", note: "Waterproof LED with red-light setting" },
       { label: "AirTag", note: "Slip one in the board bag to track it through transfers" },
-      { label: "AirPods Max", note: "Over-ear; long-haul flights and noise isolation" },
       { label: "AirPods Pro", note: "In-ear; everyday use and boat downtime" },
+      { label: "MacBook Air", note: "Offloading photos/footage; travel days and downtime" },
     ],
   },
   {
