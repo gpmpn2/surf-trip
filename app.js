@@ -28,12 +28,38 @@ const ITINERARY = [
     tags: ["EVA Air", "Taipei layover"],
   },
   {
-    days: "Aug 4–15",
+    days: "Aug 4–6",
     start: "2026-08-04",
+    end: "2026-08-06",
+    place: "Alamanda Bingin",
+    area: "Bingin · Uluwatu",
+    desc: "Land and settle into the Bukit. Walk down to Bingin for the reef lefts and ease into the trip.",
+    nights: 2,
+    checkIn: "After 2:00 PM",
+    checkOut: "11:00 AM",
+    address: "Jalan Pantai Bingin, Uluwatu, 80361 Uluwatu, Indonesia",
+    tags: ["2 nights", "Walk to Bingin"],
+  },
+  {
+    days: "Aug 6–9",
+    start: "2026-08-06",
+    end: "2026-08-09",
+    place: "Padang Padang Stay",
+    area: "Padang Padang · Uluwatu",
+    desc: "Shift up the coast to Padang Padang — the Balinese Pipeline — with Uluwatu and Impossibles a short ride away.",
+    nights: 3,
+    checkIn: "After 2:00 PM",
+    checkOut: "12:00 PM (noon)",
+    address: "Jln. Melasti Labuhan Sait, Padang-Padang Beach, 80361 Uluwatu, Indonesia",
+    tags: ["3 nights", "Walk to Padang Padang"],
+  },
+  {
+    days: "Aug 9–15",
+    start: "2026-08-09",
     end: "2026-08-15",
-    place: "Bali",
-    desc: "Base in Bali. Ease in on the Canggu beach breaks, then chase the reef lefts of the Bukit — Uluwatu, Padang Padang, Bingin.",
-    tags: ["Canggu", "The Bukit", "Reef + beach breaks"],
+    place: "Bali · open days",
+    desc: "Unbooked days to chase swell around the Bukit and the Canggu beach breaks before the flight north to Padang.",
+    tags: ["Canggu", "The Bukit", "Flexible"],
   },
   {
     days: "Aug 16",
@@ -61,7 +87,12 @@ const ITINERARY = [
     start: "2026-08-27",
     end: "2026-08-28",
     place: "Padang · Fahira Hotel",
+    area: "Padang · Sumatera Barat",
     desc: "Back to the mainland around noon. One night at Fahira Hotel to clean up, repack, and rest before the flight home.",
+    nights: 1,
+    checkIn: "After 2:00 PM",
+    checkOut: "12:00 PM (noon)",
+    address: "No. 69 Jl. Ujung Gurun, Padang, Sumatera Barat, 25114 Indonesia",
     tags: ["Fahira Hotel", "1 night", "Recovery"],
   },
   {
@@ -77,33 +108,6 @@ const ITINERARY = [
     ],
     total: "25h 20m door-to-door",
     tags: ["Garuda + EVA", "3 legs", "Home"],
-  },
-];
-
-const STAYS = [
-  {
-    name: "Alamanda Bingin",
-    area: "Bingin · Uluwatu",
-    days: "Aug 4–6",
-    start: "2026-08-04",
-    end: "2026-08-06",
-    nights: 2,
-    checkIn: "After 2:00 PM",
-    checkOut: "11:00 AM",
-    address: "Jalan Pantai Bingin, Uluwatu, 80361 Uluwatu, Indonesia",
-    tags: ["2 nights", "Walk to Bingin"],
-  },
-  {
-    name: "Padang Padang Stay",
-    area: "Padang Padang · Uluwatu",
-    days: "Aug 6–9",
-    start: "2026-08-06",
-    end: "2026-08-09",
-    nights: 3,
-    checkIn: "After 2:00 PM",
-    checkOut: "12:00 PM (noon)",
-    address: "Jln. Melasti Labuhan Sait, Padang-Padang Beach, 80361 Uluwatu, Indonesia",
-    tags: ["3 nights", "Walk to Padang Padang"],
   },
 ];
 
@@ -520,7 +524,20 @@ function renderTimeline() {
           ${STATUS_BADGE[status]}
         </div>
         <h3 class="tl-item__place">${stop.place}</h3>
+        ${stop.area ? `<span class="tl-item__area">${stop.area}</span>` : ""}
         <p class="tl-item__desc">${stop.desc}</p>
+        ${
+          stop.address
+            ? `<dl class="tl-item__stay">
+                <div><dt>Check-in</dt><dd>${stop.checkIn}</dd></div>
+                <div><dt>Check-out</dt><dd>${stop.checkOut}</dd></div>
+                <div><dt>Address</dt><dd>${escapeHTML(stop.address)}</dd></div>
+              </dl>
+              <div class="tl-item__stay-links">
+                <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(stop.place + " " + stop.address)}" target="_blank" rel="noopener">📍 Map<span class="sr-only"> (opens Google Maps)</span></a>
+              </div>`
+            : ""
+        }
         ${
           stop.flights
             ? `<ul class="tl-item__flights">${stop.flights
@@ -541,35 +558,6 @@ function renderTimeline() {
       </div>
     </li>`;
   }).join("");
-}
-
-function renderStays() {
-  const el = document.getElementById("staysGrid");
-  if (!el) return;
-  el.innerHTML = STAYS.map(
-    (s) => `
-    <article class="stay-card reveal">
-      <div class="stay-card__top">
-        <div class="stay-card__heading">
-          <span class="stay-card__days">${s.days}</span>
-          <h3 class="stay-card__name">${s.name}</h3>
-          <span class="stay-card__area">${s.area}</span>
-        </div>
-        <span class="stay-card__nights">${s.nights} night${s.nights === 1 ? "" : "s"}</span>
-      </div>
-      <dl class="stay-card__facts">
-        <div><dt>Check-in</dt><dd>${s.checkIn}</dd></div>
-        <div><dt>Check-out</dt><dd>${s.checkOut}</dd></div>
-        <div><dt>Address</dt><dd>${escapeHTML(s.address)}</dd></div>
-      </dl>
-      <div class="stay-card__tags">
-        ${s.tags.map((t) => `<span class="stay-card__tag">${t}</span>`).join("")}
-      </div>
-      <div class="stay-card__links">
-        <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(s.name + " " + s.address)}" target="_blank" rel="noopener">📍 Map<span class="sr-only"> (opens Google Maps)</span></a>
-      </div>
-    </article>`
-  ).join("");
 }
 
 function renderPacking() {
@@ -1463,7 +1451,6 @@ document.addEventListener("DOMContentLoaded", () => {
   renderStatusLine();
   renderPhaseStrip();
   renderTimeline();
-  renderStays();
   renderBreakFilters();
   renderBreaks();
   renderBoat();
