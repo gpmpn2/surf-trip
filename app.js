@@ -177,7 +177,6 @@ const PACKING = [
       { label: "Socks ×3", note: "Ankle socks for trekking / travel days" },
       { label: "Sun hoody", note: "Hooded UPF top for all-day sun cover" },
       { label: "Patagonia Houdini jacket", note: "Ultralight, packable windbreaker for cool evenings" },
-      { label: "Rain shell", note: "Packable, breathable waterproof jacket" },
     ],
   },
   {
@@ -257,6 +256,7 @@ const PACKING = [
       { label: "Crew tip cash", note: "Customary 10–15% of trip cost — set aside separately" },
       { label: "Cards ×2", note: "Zero foreign-exchange-fee debit/credit" },
       { label: "Wallet (ID)", note: "Driver's license + everyday cards, kept separate from passport" },
+      { label: "Pen", note: "For immigration / customs arrival forms" },
     ],
   },
 ];
