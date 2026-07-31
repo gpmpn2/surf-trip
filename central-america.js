@@ -155,6 +155,7 @@ const PACKING = [
       { label: "Fin sets ×2", note: "Match your boards; pack a fin key" },
       { label: "Tropical wax + comb", note: "Warm-water formula" },
       { label: "Ding repair kit", note: "Solar-cure resin + sandpaper" },
+      { label: "Tie-down straps ×2", note: "Roof-rack straps for boat/car transfers" },
       { label: "Reef booties", note: "For the rocks at Pavones / point setups" },
       { label: "Surf earplugs", note: "Vented" },
     ],
