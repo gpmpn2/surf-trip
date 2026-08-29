@@ -841,7 +841,6 @@ function renderBreaks() {
           <div><dt>Watch for</dt><dd>${b.hazard}</dd></div>
         </dl>
         <div class="break-card__links">
-          <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(b.name + " surf spot")}" target="_blank" rel="noopener">📍 Map<span class="sr-only"> (opens Google Maps)</span></a>
           <a href="https://www.google.com/search?q=${encodeURIComponent(b.name + " surf forecast")}" target="_blank" rel="noopener">🌊 Forecast<span class="sr-only"> (opens a web search)</span></a>
         </div>
       </div>
@@ -865,9 +864,7 @@ function renderBreaks() {
 
 // ---- Surf Log -----------------------------------------------------
 
-const LOG_KEY = "surf-trip-log-v1";
-
-// The quiver — used to color-code sessions and to label the export.
+// The quiver — used to color-code sessions.
 const BOARDS = [
   { id: "5150", label: "5150+", color: "#2f6df6" },
   { id: "sword", label: "Sword", color: "#ff8a3d" },
@@ -905,25 +902,10 @@ const SEED_LOG = [
   { id: 27, date: "2026-08-26", spot: "Monkey's", rating: 5, board: "sword", notes: "Final session. Surfed 3.5 hours. Couple barrels on the inside. Tons of great carves and critical take offs. Only our boat out until like 9am." },
 ];
 
-let logEntries = loadJSON(LOG_KEY, SEED_LOG);
+const logEntries = SEED_LOG;
 
 function boardMeta(id) {
   return BOARDS.find((b) => b.id === id);
-}
-
-function loadJSON(key, fallback) {
-  try {
-    return JSON.parse(localStorage.getItem(key)) ?? fallback;
-  } catch {
-    return fallback;
-  }
-}
-function saveJSON(key, val) {
-  try {
-    localStorage.setItem(key, JSON.stringify(val));
-  } catch {
-    /* storage unavailable */
-  }
 }
 
 function starRow(n) {
@@ -937,11 +919,6 @@ function starRow(n) {
 function fmtLogDate(iso) {
   const d = new Date(iso + "T00:00:00");
   return d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
-}
-
-function fmtLogDateLong(iso) {
-  const d = new Date(iso + "T00:00:00");
-  return d.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" });
 }
 
 function renderLog() {
@@ -966,17 +943,9 @@ function renderLog() {
         </div>
         ${e.notes ? `<p class="log-entry__notes">${escapeHTML(e.notes)}</p>` : ""}
       </div>
-      <button type="button" class="log-entry__del" data-id="${e.id}" aria-label="Delete session">✕</button>
     </div>`
     )
     .join("");
-  el.querySelectorAll(".log-entry__del").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      logEntries = logEntries.filter((x) => String(x.id) !== btn.dataset.id);
-      saveJSON(LOG_KEY, logEntries);
-      renderLog();
-    });
-  });
 }
 
 function escapeHTML(str) {
@@ -984,37 +953,7 @@ function escapeHTML(str) {
 }
 
 function initLog() {
-  document.getElementById("logExport")?.addEventListener("click", exportLog);
   renderLog();
-}
-
-function exportLog() {
-  const tripLabel = document.body.dataset.page === "centralamerica" ? "Central America" : "Indonesia";
-  const sorted = [...logEntries].sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : a.id - b.id));
-
-  const lines = [`SURF LOG — ${tripLabel} Trip`, `${sorted.length} session${sorted.length === 1 ? "" : "s"}`, ""];
-  if (!sorted.length) {
-    lines.push("No sessions logged yet.");
-  } else {
-    sorted.forEach((e) => {
-      const board = boardMeta(e.board);
-      lines.push(`${fmtLogDateLong(e.date)} — ${e.spot}`);
-      lines.push(`  Rating: ${"★".repeat(e.rating)}${"☆".repeat(5 - e.rating)} (${e.rating}/5)`);
-      if (board) lines.push(`  Board: ${board.label}`);
-      if (e.notes) lines.push(`  Notes: ${e.notes}`);
-      lines.push("");
-    });
-  }
-
-  const blob = new Blob([lines.join("\n")], { type: "text/plain" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `surf-log-${tripLabel.toLowerCase().replace(/\s+/g, "-")}-${new Date().toISOString().slice(0, 10)}.txt`;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(url);
 }
 
 // ---- Money: converter + budget ------------------------------------
@@ -1073,6 +1012,21 @@ function initConverter() {
       <h4>IDR → USD</h4>
       ${idr.map((v) => `<div class="cheatsheet__row"><span>${fmtIDR(v)}</span><b>${fmtUSD(v / USD_TO_IDR)}</b></div>`).join("")}
     </div>`;
+}
+
+function loadJSON(key, fallback) {
+  try {
+    return JSON.parse(localStorage.getItem(key)) ?? fallback;
+  } catch {
+    return fallback;
+  }
+}
+function saveJSON(key, val) {
+  try {
+    localStorage.setItem(key, JSON.stringify(val));
+  } catch {
+    /* storage unavailable */
+  }
 }
 
 const BUDGET_CATS = [
