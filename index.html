@@ -93,9 +93,8 @@
       <div class="section__head">
         <p class="section__eyebrow">Where to surf</p>
         <h2 class="section__title">Surf Breaks</h2>
-        <p class="section__lede">The lineups on the list, with the conditions that make them fire.</p>
+        <p class="section__lede">The Telo reef setups on the charter, with the conditions that make them fire.</p>
       </div>
-      <div class="breaks__filters" id="breakFilters"></div>
       <div class="breaks__grid" id="breaksGrid"></div>
     </section>
 
@@ -153,13 +152,21 @@
             <span>Rating</span>
             <div class="logform__stars" id="logStars"></div>
           </div>
+          <div class="logform__field logform__field--board">
+            <span>Board</span>
+            <div class="logform__boards" id="logBoards"></div>
+          </div>
         </div>
         <label class="logform__field">
           <span>Notes</span>
-          <textarea id="logNotes" rows="2" placeholder="Size, crowd, board, how it went…"></textarea>
+          <textarea id="logNotes" rows="2" placeholder="Size, crowd, how it went…"></textarea>
         </label>
         <button type="submit" class="logform__submit">Log session</button>
       </form>
+
+      <div class="log__actions">
+        <button type="button" class="log__export" id="logExport">⬇ Export log (.txt)</button>
+      </div>
 
       <div class="log__list" id="logList"></div>
     </section>

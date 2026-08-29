@@ -619,10 +619,13 @@ a.phase:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); borde
   position: absolute;
   left: 0; top: 0;
   height: 100%;
-  width: 0%;
+  width: 100%;
   border-radius: 100px;
   background: linear-gradient(90deg, var(--teal-400), var(--ocean-500));
-  transition: width .5s cubic-bezier(.2,.8,.2,1);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform .6s cubic-bezier(.16,.84,.32,1);
+  will-change: transform;
   z-index: 2;
 }
 .packing__progress-fill--got {
@@ -1050,6 +1053,37 @@ a.phase:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); borde
 .star { font-size: 1.5rem; line-height: 1; color: var(--sand-deep); background: none; border: none; padding: 0; cursor: pointer; transition: color .15s, transform .15s; }
 button.star:hover { transform: scale(1.15); }
 .star.is-on { color: #ffc23d; }
+
+.logform__boards { display: flex; flex-wrap: wrap; gap: 8px; padding-top: 4px; }
+.board-pill {
+  font-family: var(--font-body);
+  font-size: .82rem;
+  font-weight: 600;
+  padding: 7px 15px;
+  border-radius: 100px;
+  border: 1.5px solid var(--sand-deep);
+  background: var(--sand);
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: background .15s, color .15s, border-color .15s, transform .15s;
+}
+button.board-pill:hover { transform: translateY(-1px); }
+.board-pill.is-on { background: var(--board-color, var(--coral)); border-color: var(--board-color, var(--coral)); color: #fff; }
+
+.log__actions { display: flex; justify-content: flex-end; margin: -6px 0 18px; }
+.log__export {
+  font-family: var(--font-body);
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--ocean-700);
+  background: var(--surface);
+  border: 1.5px solid var(--sand-deep);
+  padding: 9px 18px;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: background .2s, color .2s, transform .2s;
+}
+.log__export:hover { background: var(--ocean-700); color: #fff; transform: translateY(-2px); }
 .logform__submit, .budget__form button {
   align-self: flex-start;
   background: var(--coral);
@@ -1080,6 +1114,17 @@ button.star:hover { transform: scale(1.15); }
 .log-entry__body { flex: 1; min-width: 0; }
 .log-entry__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 .log-entry__spot { font-weight: 600; color: var(--heading); font-size: 1.05rem; }
+.log-entry__tags { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.log-entry__board {
+  font-size: .68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  padding: 3px 10px;
+  border-radius: 100px;
+  color: #fff;
+  background: var(--board-color, var(--ocean-500));
+}
 .log-entry__stars .star { font-size: 1rem; cursor: default; }
 .log-entry__notes { color: var(--ink-soft); margin-top: 6px; }
 .log-entry__del { flex: 0 0 auto; background: none; border: none; color: var(--ink-soft); font-size: 1rem; cursor: pointer; opacity: .5; transition: opacity .2s, color .2s; }

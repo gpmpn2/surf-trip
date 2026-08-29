@@ -686,9 +686,9 @@ function updateProgress() {
   const pct = total ? Math.round((packed / total) * 100) : 0;
   const gotPct = total ? Math.round((got / total) * 100) : 0;
 
-  document.getElementById("progressFill").style.width = pct + "%";
+  document.getElementById("progressFill").style.transform = `scaleX(${pct / 100})`;
   const gotFill = document.getElementById("progressFillGot");
-  if (gotFill) gotFill.style.width = gotPct + "%";
+  if (gotFill) gotFill.style.transform = `scaleX(${gotPct / 100})`;
   document.getElementById("progressCount").textContent = packed;
   document.getElementById("progressTotal").textContent = total;
   const complete = total > 0 && packed === total;
@@ -770,123 +770,6 @@ function armReveal(root = document) {
 
 const BREAKS = [
   {
-    name: "Uluwatu",
-    region: "Bali & Bukit",
-    type: "Left · reef",
-    level: "Advanced",
-    best: "Dry-season SW swell · SE offshore · mid–high tide",
-    hazard: "Shallow reef, strong currents, crowds",
-    blurb: "Iconic Bukit left with multiple sections and a cave paddle-out.",
-  },
-  {
-    name: "Padang Padang",
-    region: "Bali & Bukit",
-    type: "Left · reef barrel",
-    level: "Expert",
-    best: "Solid SW swell · mid tide",
-    hazard: "Very shallow reef, heavy takeoff",
-    blurb: "The 'Balinese Pipeline' — a perfect, hollow left when it's on.",
-  },
-  {
-    name: "Bingin",
-    region: "Bali & Bukit",
-    type: "Left · reef",
-    level: "Intermediate–Adv",
-    best: "SW swell · mid–low tide",
-    hazard: "Sharp reef, shallow at low tide",
-    blurb: "Short, hollow, playful left right in front of the warungs.",
-  },
-  {
-    name: "Canggu",
-    region: "Bali & Bukit",
-    type: "Beach + reef",
-    level: "Beginner–Int",
-    best: "Morning offshore · smaller swell",
-    hazard: "Crowds, rips",
-    blurb: "Mellow rollers at Batu Bolong / Echo — a good warm-up.",
-  },
-  {
-    name: "Keramas",
-    region: "Bali & Bukit",
-    type: "Right · reef",
-    level: "Advanced",
-    best: "Dry season · glassy mornings · higher tide",
-    hazard: "Reef",
-    blurb: "East Bali right-hander, punchy and rippable — good for airs.",
-  },
-  {
-    name: "Lance's Right (HT's)",
-    region: "Mentawai",
-    type: "Right · reef",
-    level: "Advanced",
-    best: "SW–S swell · SE wind · mid tide",
-    hazard: "Shallow inside reef, crowds",
-    blurb: "Sipora. Machine-like barreling right — the Mentawai benchmark.",
-  },
-  {
-    name: "Lance's Left",
-    region: "Mentawai",
-    type: "Left · reef",
-    level: "Intermediate–Adv",
-    best: "Bigger swell · mid–high tide",
-    hazard: "Reef",
-    blurb: "Sipora. Long, rippable wall across the bay from HT's.",
-  },
-  {
-    name: "Telescopes",
-    region: "Mentawai",
-    type: "Left · reef",
-    level: "Advanced",
-    best: "Solid SW swell · mid tide",
-    hazard: "Fast, shallow sections",
-    blurb: "Sipora. Fast, hollow left with multiple barrel sections.",
-  },
-  {
-    name: "Macaronis",
-    region: "Mentawai",
-    type: "Left · reef",
-    level: "Intermediate–Adv",
-    best: "Most swell directions · mid tide",
-    hazard: "End-section reef",
-    blurb: "North Pagai. Often called the funnest wave on earth — an endless carveable wall.",
-  },
-  {
-    name: "Greenbush",
-    region: "Mentawai",
-    type: "Left · reef barrel",
-    level: "Expert",
-    best: "Solid S/SW swell · mid–low tide",
-    hazard: "Thick lip, very shallow",
-    blurb: "South Pagai. A grinding, below-sea-level barrel — experts only.",
-  },
-  {
-    name: "Thunders",
-    region: "Mentawai",
-    type: "Left · reef",
-    level: "Advanced",
-    best: "Bigger SW swell · mid tide",
-    hazard: "Heavy takeoff, reef",
-    blurb: "North Pagai. Powerful left barrel a paddle from Macaronis.",
-  },
-  {
-    name: "Bintangs",
-    region: "Mentawai",
-    type: "A-frame · reef",
-    level: "Beginner–Int",
-    best: "Small–mid swell",
-    hazard: "Reef at low tide",
-    blurb: "Sipora. Fun, forgiving peaks — a great step-in wave.",
-  },
-  {
-    name: "Roxies",
-    region: "Mentawai",
-    type: "Left · reef",
-    level: "Advanced",
-    best: "SW swell · mid tide",
-    hazard: "Shallow reef",
-    blurb: "Sipora. Hollow, punchy left when the swell is up.",
-  },
-  {
     name: "Bank Vaults",
     region: "Telos",
     type: "Right · reef",
@@ -938,29 +821,9 @@ const BREAKS = [
   },
 ];
 
-const BREAK_REGIONS = ["All", "Bali & Bukit", "Mentawai", "Telos"];
-let breakFilter = "All";
-
-function renderBreakFilters() {
-  const el = document.getElementById("breakFilters");
-  el.setAttribute("role", "group");
-  el.setAttribute("aria-label", "Filter breaks by region");
-  el.innerHTML = BREAK_REGIONS.map(
-    (r) =>
-      `<button type="button" class="breaks__filter ${r === breakFilter ? "is-active" : ""}" data-region="${r}" aria-pressed="${r === breakFilter}">${r}</button>`
-  ).join("");
-  el.querySelectorAll(".breaks__filter").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      breakFilter = btn.dataset.region;
-      renderBreakFilters();
-      renderBreaks();
-    });
-  });
-}
-
 function renderBreaks() {
   const grid = document.getElementById("breaksGrid");
-  const list = BREAKS.filter((b) => breakFilter === "All" || b.region === breakFilter);
+  const list = BREAKS;
   grid.innerHTML = list
     .map(
       (b, i) => `
@@ -1008,6 +871,17 @@ function renderBreaks() {
 const LOG_KEY = "surf-trip-log-v1";
 let logEntries = loadJSON(LOG_KEY, []);
 let logRating = 0;
+let logBoard = "";
+
+// The quiver — used to color-code sessions and to label the export.
+const BOARDS = [
+  { id: "5150", label: "5150+", color: "#2f6df6" },
+  { id: "sword", label: "Sword", color: "#ff8a3d" },
+];
+
+function boardMeta(id) {
+  return BOARDS.find((b) => b.id === id);
+}
 
 function loadJSON(key, fallback) {
   try {
@@ -1049,9 +923,34 @@ function renderLogStars() {
   });
 }
 
+function renderLogBoards() {
+  const el = document.getElementById("logBoards");
+  if (!el) return;
+  el.setAttribute("role", "group");
+  el.setAttribute("aria-label", `Board: ${logBoard ? boardMeta(logBoard).label : "not set"}`);
+  el.innerHTML =
+    `<button type="button" class="board-pill ${logBoard ? "" : "is-on"}" data-board="" aria-pressed="${!logBoard}">—</button>` +
+    BOARDS.map(
+      (b) =>
+        `<button type="button" class="board-pill ${logBoard === b.id ? "is-on" : ""}" data-board="${b.id}" style="--board-color:${b.color}" aria-pressed="${logBoard === b.id}">${b.label}</button>`
+    ).join("");
+  el.querySelectorAll(".board-pill").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      logBoard = btn.dataset.board;
+      renderLogBoards();
+      pop(btn);
+    });
+  });
+}
+
 function fmtLogDate(iso) {
   const d = new Date(iso + "T00:00:00");
   return d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
+}
+
+function fmtLogDateLong(iso) {
+  const d = new Date(iso + "T00:00:00");
+  return d.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" });
 }
 
 function renderLog() {
@@ -1069,7 +968,10 @@ function renderLog() {
       <div class="log-entry__body">
         <div class="log-entry__head">
           <span class="log-entry__spot">${escapeHTML(e.spot)}</span>
-          <span class="log-entry__stars" aria-label="${e.rating} out of 5 stars">${starRow(e.rating, false)}</span>
+          <span class="log-entry__tags">
+            ${boardMeta(e.board) ? `<span class="log-entry__board" style="--board-color:${boardMeta(e.board).color}">${boardMeta(e.board).label}</span>` : ""}
+            <span class="log-entry__stars" aria-label="${e.rating} out of 5 stars">${starRow(e.rating, false)}</span>
+          </span>
         </div>
         ${e.notes ? `<p class="log-entry__notes">${escapeHTML(e.notes)}</p>` : ""}
       </div>
@@ -1099,6 +1001,7 @@ function initLog() {
   document.getElementById("breakList").innerHTML = BREAKS.map((b) => `<option value="${b.name}"></option>`).join("");
   dateInput.value = new Date().toISOString().slice(0, 10);
   renderLogStars();
+  renderLogBoards();
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -1107,17 +1010,51 @@ function initLog() {
       date: dateInput.value,
       spot: spotInput.value.trim(),
       rating: logRating,
+      board: logBoard,
       notes: notesInput.value.trim(),
     });
     saveJSON(LOG_KEY, logEntries);
     spotInput.value = "";
     notesInput.value = "";
     logRating = 0;
+    logBoard = "";
     renderLogStars();
+    renderLogBoards();
     renderLog();
   });
 
+  document.getElementById("logExport")?.addEventListener("click", exportLog);
+
   renderLog();
+}
+
+function exportLog() {
+  const tripLabel = document.body.dataset.page === "centralamerica" ? "Central America" : "Indonesia";
+  const sorted = [...logEntries].sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : a.id - b.id));
+
+  const lines = [`SURF LOG — ${tripLabel} Trip`, `${sorted.length} session${sorted.length === 1 ? "" : "s"}`, ""];
+  if (!sorted.length) {
+    lines.push("No sessions logged yet.");
+  } else {
+    sorted.forEach((e) => {
+      const board = boardMeta(e.board);
+      lines.push(`${fmtLogDateLong(e.date)} — ${e.spot}`);
+      lines.push(`  Rating: ${"★".repeat(e.rating)}${"☆".repeat(5 - e.rating)} (${e.rating}/5)`);
+      if (board) lines.push(`  Board: ${board.label}`);
+      if (e.notes) lines.push(`  Notes: ${e.notes}`);
+      lines.push("");
+    });
+  }
+
+  const blob = new Blob([lines.join("\n")], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `surf-log-${tripLabel.toLowerCase().replace(/\s+/g, "-")}-${new Date().toISOString().slice(0, 10)}.txt`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
 }
 
 // ---- Money: converter + budget ------------------------------------
@@ -1453,7 +1390,6 @@ document.addEventListener("DOMContentLoaded", () => {
   renderStatusLine();
   renderPhaseStrip();
   renderTimeline();
-  renderBreakFilters();
   renderBreaks();
   renderBoat();
   renderPacking();
