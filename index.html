@@ -29,8 +29,8 @@
     <nav class="nav__links" id="navLinks" aria-label="Primary">
       <a href="#itinerary">Itinerary</a>
       <a href="#breaks">Breaks</a>
-      <a href="#boat">The Boat</a>
       <a href="#log">Log</a>
+      <a href="#boat">The Boat</a>
       <a href="#money">Money</a>
       <a href="#info">Info</a>
       <a href="#packing">Packing</a>
@@ -93,13 +93,28 @@
       <div class="section__head">
         <p class="section__eyebrow">Where to surf</p>
         <h2 class="section__title">Surf Breaks</h2>
-        <p class="section__lede">The Telo reef setups on the charter, with the conditions that make them fire.</p>
+        <p class="section__lede">The six Telo breaks actually surfed on the charter.</p>
       </div>
       <div class="breaks__grid" id="breaksGrid"></div>
     </section>
 
+    <!-- Surf Log -->
+    <section class="section section--alt" id="log">
+      <div class="section__head">
+        <p class="section__eyebrow">The sessions</p>
+        <h2 class="section__title">Surf Log <span class="section__badge section__badge--done">Complete</span></h2>
+        <p class="section__lede">Every session from the trip, board included.</p>
+      </div>
+
+      <div class="log__actions">
+        <button type="button" class="log__export" id="logExport">⬇ Export log (.txt)</button>
+      </div>
+
+      <div class="log__list" id="logList"></div>
+    </section>
+
     <!-- The Boat -->
-    <section class="section section--alt" id="boat">
+    <section class="section" id="boat">
       <div class="section__head">
         <p class="section__eyebrow">Home for 11 nights</p>
         <h2 class="section__title">The Switchfoot</h2>
@@ -109,50 +124,8 @@
       <div class="info__grid" id="boatSpecs"></div>
     </section>
 
-    <!-- Surf Log -->
-    <section class="section section--alt" id="log">
-      <div class="section__head">
-        <p class="section__eyebrow">The sessions</p>
-        <h2 class="section__title">Surf Log</h2>
-        <p class="section__lede">Log every session as you go. Saved on this device.</p>
-      </div>
-
-      <form class="logform" id="logForm">
-        <div class="logform__row">
-          <label class="logform__field">
-            <span>Date</span>
-            <input type="date" id="logDate" required />
-          </label>
-          <label class="logform__field">
-            <span>Spot</span>
-            <input type="text" id="logSpot" list="breakList" placeholder="e.g. Uluwatu" required />
-            <datalist id="breakList"></datalist>
-          </label>
-          <div class="logform__field logform__field--rating">
-            <span>Rating</span>
-            <div class="logform__stars" id="logStars"></div>
-          </div>
-          <div class="logform__field logform__field--board">
-            <span>Board</span>
-            <div class="logform__boards" id="logBoards"></div>
-          </div>
-        </div>
-        <label class="logform__field">
-          <span>Notes</span>
-          <textarea id="logNotes" rows="2" placeholder="Size, crowd, how it went…"></textarea>
-        </label>
-        <button type="submit" class="logform__submit">Log session</button>
-      </form>
-
-      <div class="log__actions">
-        <button type="button" class="log__export" id="logExport">⬇ Export log (.txt)</button>
-      </div>
-
-      <div class="log__list" id="logList"></div>
-    </section>
-
     <!-- Money -->
-    <section class="section" id="money">
+    <section class="section section--alt" id="money">
       <div class="section__head">
         <p class="section__eyebrow">Rupiah &amp; spending</p>
         <h2 class="section__title">Money</h2>
@@ -195,7 +168,7 @@
     </section>
 
     <!-- Info Hub -->
-    <section class="section section--alt" id="info">
+    <section class="section" id="info">
       <div class="section__head">
         <p class="section__eyebrow">Good to know</p>
         <h2 class="section__title">Info Hub</h2>
@@ -209,7 +182,7 @@
       <div class="section__head">
         <p class="section__eyebrow">All set</p>
         <h2 class="section__title">Packing List <span class="section__badge section__badge--done">Packed</span></h2>
-        <p class="section__lede">Locked in and packed. Kept here read-only for reference.</p>
+        <p class="section__lede">Packing is complete. Kept here read-only for reference.</p>
       </div>
 
       <div class="packing__progress">

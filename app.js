@@ -763,54 +763,58 @@ function armReveal(root = document) {
 
 const BREAKS = [
   {
-    name: "Bank Vaults",
+    name: "Bojo's",
+    region: "Telos",
+    type: "Left · reef",
+    level: "Beginner–Int",
+    best: "High tide · low wind",
+    hazard: "Reef",
+    blurb: "Easy, playful left — the first session in the Telos and a good warm-up for the islands.",
+  },
+  {
+    name: "Jurassic's",
+    region: "Telos",
+    type: "Left · reef",
+    level: "Advanced",
+    best: "Lower tide",
+    hazard: "Tight takeoff against the rocks",
+    blurb: "Steep, section-y left with a small takeoff zone right off the rocks — named for the cliffs behind it.",
+  },
+  {
+    name: "E.P.'s",
+    region: "Telos",
+    type: "Reef pass",
+    level: "Advanced",
+    best: "Offshore wind · glassy mornings",
+    hazard: "Deep water, reef not visible",
+    blurb: "Bowly reef pass that gets big — 8–10ft sessions with long, carvable faces on the sets.",
+  },
+  {
+    name: "G-Banger's",
     region: "Telos",
     type: "Right · reef",
     level: "Advanced",
-    best: "S/SW swell · mid tide",
-    hazard: "Fast, shallow reef",
-    blurb: "Hollow, fast right that runs down a shallow reef.",
-    verify: true,
+    best: "Most swell directions · mid tide",
+    hazard: "Shallow reef, fast barrel section",
+    blurb: "Right-hander that doubles up off the reef into a fast barrel section — the best barrels of the trip.",
   },
   {
-    name: "Max's (Left)",
-    region: "Telos",
-    type: "Left · reef",
-    level: "Intermediate",
-    best: "Mid–bigger swell",
-    hazard: "Reef",
-    blurb: "Playful, rippable left — one of the friendlier Telo waves.",
-    verify: true,
-  },
-  {
-    name: "The Ledge",
+    name: "Church's",
     region: "Telos",
     type: "Left · reef",
     level: "Advanced",
-    best: "Solid swell · mid tide",
-    hazard: "Heavy takeoff, shallow",
-    blurb: "Short, intense barrel breaking off a reef ledge.",
-    verify: true,
+    best: "Solid swell",
+    hazard: "Reef, heavy on size",
+    blurb: "Big, fast left with plenty of carves — size and crowd picked up as the week went on.",
   },
   {
-    name: "Treasure Island",
+    name: "Monkey's",
     region: "Telos",
     type: "Right · reef",
     level: "Intermediate–Adv",
-    best: "Mid swell",
+    best: "Most swell directions · mid tide",
     hazard: "Reef",
-    blurb: "Fun right-hander peeling off a small island.",
-    verify: true,
-  },
-  {
-    name: "Rockstar",
-    region: "Telos",
-    type: "Right · reef",
-    level: "Advanced",
-    best: "Solid S/SW swell",
-    hazard: "Shallow, powerful",
-    blurb: "Punchy right with barrel sections when it's on.",
-    verify: true,
+    blurb: "Peeling right that lines up all the way to the inside — the best session of the trip.",
   },
 ];
 
@@ -862,15 +866,46 @@ function renderBreaks() {
 // ---- Surf Log -----------------------------------------------------
 
 const LOG_KEY = "surf-trip-log-v1";
-let logEntries = loadJSON(LOG_KEY, []);
-let logRating = 0;
-let logBoard = "";
 
 // The quiver — used to color-code sessions and to label the export.
 const BOARDS = [
   { id: "5150", label: "5150+", color: "#2f6df6" },
   { id: "sword", label: "Sword", color: "#ff8a3d" },
 ];
+
+// The trip is over — this is the final record, embedded so it survives
+// a cleared localStorage. No more sessions get added after the fact.
+const SEED_LOG = [
+  { id: 1, date: "2026-08-05", spot: "Dreamland A-frame", rating: 4, board: "sword", notes: "Paddled at 8am on the lowest tide. Decent crowd. Pumping, 8ft on the sets. Caught 6-8 waves? Not much face to it. Big drop. Surfed over 2 hours. Easy entry and exit." },
+  { id: 2, date: "2026-08-05", spot: "Bingin", rating: 2, board: "sword", notes: "Tight pack crowd. Easy getting in, hard getting out. I cut myself on the reef on my hands and feet. Had one wave, small 3-footer and got knocked off. Very critical wave. Was on the low tide." },
+  { id: 3, date: "2026-08-06", spot: "Dreamland", rating: 2, board: "sword", notes: "Waves were bigger but less consistent. Almost always 8ft on the sets. One 12ft set. I didn't catch one. Paddled in after an hour and a half." },
+  { id: 4, date: "2026-08-06", spot: "Baby Padang", rating: 1, board: "sword", notes: "Paddled out through the channel from Padang-Padang beach. Got completely smoked on the one wave I took off on, and pinned on the next one. Paddled in (hard to do with the rip)." },
+  { id: 5, date: "2026-08-11", spot: "Batu Bolong", rating: 3, board: "sword", notes: "Paddled on dropping tide. Maybe mid tide. Wind was on, choppy and mushy but a couple nuggets. Easily overhead." },
+  { id: 6, date: "2026-08-12", spot: "Canggu", rating: 1, board: "sword", notes: "I watched for about 15 minutes before paddling. It looked reasonable but when I got out there I realized it was way bigger and consequential than it looked from the beach. I took an hour catching one smaller wave back to the beach." },
+  { id: 7, date: "2026-08-12", spot: "Batu Bolong", rating: 3, board: "sword", notes: "After Canggu I walked back up and got in at Batu. It was still big but manageable. Caught a few lefts. Harder to position. Went in after a couple hours." },
+  { id: 8, date: "2026-08-13", spot: "Batu Bolong", rating: 4, board: "sword", notes: "Finally a decent session again. 6:30am paddle out. Got like maybe 5 waves? Decent quality and numerous cutbacks. Harder crowd, smaller swell. Surfed into high tide. Got out around 9." },
+  { id: 9, date: "2026-08-17", spot: "Bojo's", rating: 4, board: "5150", notes: "First session in the Telo islands. Crystal clear water. High tide, low wind. Maybe 15 guys out? Caught a few fun ones. Easy left for the most part." },
+  { id: 10, date: "2026-08-17", spot: "Bojo's", rating: 4, board: "5150", notes: "Evening session was much better than the morning. Better swell and wind. Inside was really fun. Some good backside carves. Starting to feel my backside surfing improve more." },
+  { id: 11, date: "2026-08-18", spot: "Jurassic's", rating: 3, board: "sword", notes: "Steep critical left. Small take off zone against the rocks. Gets its name because the beach looks like a scene from Jurassic Park. I couldn't make most waves. Really section-y. Needed a wave off the top that rolled to have any hope of a turn." },
+  { id: 12, date: "2026-08-18", spot: "Jurassic's", rating: 3, board: "sword", notes: "Second session on the lower tide. I had the line up to myself for a bit. Glassed off way nicer than the morning. The key was to take off only on the set waves directly off the rocks. Everything else was closing out. Multiple waves, nothing very long though." },
+  { id: 13, date: "2026-08-19", spot: "E.P.'s", rating: 3, board: "sword", notes: "Pulled up early morning. Bombing 8-10ft. Deep water, couldn't really see the reef. Offshore and glassy, bowled on the inside. Caught 3. Got trapped inside on one big set. Wind shifted quickly and ruined it after about an hour and a half." },
+  { id: 14, date: "2026-08-20", spot: "G-Banger's", rating: 5, board: "5150", notes: "Really fun right hander that barrels on the inside. Really fast take off as the wave doubles up off the reef. Fast pumping thru the barrel section. Maybe one carve on the end. Couldn't see reef, maybe sand break?" },
+  { id: 15, date: "2026-08-20", spot: "G-Banger's", rating: 5, board: "5150", notes: "Another great session on the right side of the A-frame. A bit more crowded but wind was off or slightly offshore. Pulled into another decent barrel and multiple waves with good turns. Short wave but fun." },
+  { id: 16, date: "2026-08-21", spot: "G-Banger's", rating: 3, board: "5150", notes: "Kinda weird this morning. Not as hollow, low crowd though. Early AM session. Caught plenty of waves but they were short." },
+  { id: 17, date: "2026-08-21", spot: "Church's", rating: 5, board: "sword", notes: "Big, fast left hander. Tons of carves and tons of waves. Mid day session. Crowd was bad at the start but then mellowed out. 5-turn waves on average. Just had to get over the wave size." },
+  { id: 18, date: "2026-08-21", spot: "Church's", rating: 2, board: "sword", notes: "Afternoon session was not great. Big crowd, bad wind, choppy water and it wasn't pulling through the channel like it was earlier. Occy snapped his board on the last wave." },
+  { id: 19, date: "2026-08-22", spot: "Church's", rating: 3, board: "sword", notes: "First two waves closed out on me. Hit the reef pretty good on the second one. Waves improved after, got maybe 4 or 5 more decent ones. Not as good as yesterday. More crowded." },
+  { id: 20, date: "2026-08-22", spot: "Church's", rating: 2, board: "sword", notes: "Onshore wind. Crowded. Caught 3 pretty garbage waves." },
+  { id: 21, date: "2026-08-23", spot: "Church's", rating: 3, board: "sword", notes: "Early morning session, 6:30am paddle out. Already like 20 guys in the line up. Caught a few decent ones, nothing crazy. Wind came up again onshore." },
+  { id: 22, date: "2026-08-23", spot: "Church's", rating: 2, board: "sword", notes: "Last session, mid day around 11:30. Still a crazy amount of people out. Couple steep drops but did not line up." },
+  { id: 23, date: "2026-08-24", spot: "E.P.'s", rating: 4, board: "sword", notes: "Went back here this morning. Did dawn patrol with Tom. It was great for like 30 minutes, really glassy and reasonably sized. Then a strong cross wind came up and made it really choppy. If you could pick off a decent set wave it was still fun on the face. Only our boat in the line up." },
+  { id: 24, date: "2026-08-24", spot: "Jurassic's", rating: 1, board: "sword", notes: "Was the only one from our boat to paddle out. Maybe around 2pm? Really small, not working and few other boats out. Glassy and pretty but pretty garbage surf." },
+  { id: 25, date: "2026-08-25", spot: "E.P.'s", rating: 4, board: "sword", notes: "Guide told us the wind was on and parked us at Jurassic's. Few of us took the speedy back to E.P.'s and scored. Surfed for like 4 hours. Solid overhead on the sets. Lining up, plenty of carves." },
+  { id: 26, date: "2026-08-25", spot: "Monkey's", rating: 5, board: "sword", notes: "Easily the best session of the trip. Peeling right handers. Multiple carves. Lined up all the way to the inside." },
+  { id: 27, date: "2026-08-26", spot: "Monkey's", rating: 5, board: "sword", notes: "Final session. Surfed 3.5 hours. Couple barrels on the inside. Tons of great carves and critical take offs. Only our boat out until like 9am." },
+];
+
+let logEntries = loadJSON(LOG_KEY, SEED_LOG);
 
 function boardMeta(id) {
   return BOARDS.find((b) => b.id === id);
@@ -891,49 +926,12 @@ function saveJSON(key, val) {
   }
 }
 
-function starRow(n, interactive) {
+function starRow(n) {
   let s = "";
   for (let i = 1; i <= 5; i++) {
-    const on = i <= n ? "is-on" : "";
-    s += interactive
-      ? `<button type="button" class="star ${on}" data-val="${i}" aria-pressed="${i === n}" aria-label="${i} star${i === 1 ? "" : "s"}">★</button>`
-      : `<span class="star ${on}" aria-hidden="true">★</span>`;
+    s += `<span class="star ${i <= n ? "is-on" : ""}" aria-hidden="true">★</span>`;
   }
   return s;
-}
-
-function renderLogStars() {
-  const el = document.getElementById("logStars");
-  el.setAttribute("role", "group");
-  el.setAttribute("aria-label", `Session rating: ${logRating ? logRating + " of 5" : "not set"}`);
-  el.innerHTML = starRow(logRating, true);
-  el.querySelectorAll(".star").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      logRating = Number(btn.dataset.val);
-      renderLogStars();
-      pop(document.querySelector(`#logStars .star[data-val="${logRating}"]`));
-    });
-  });
-}
-
-function renderLogBoards() {
-  const el = document.getElementById("logBoards");
-  if (!el) return;
-  el.setAttribute("role", "group");
-  el.setAttribute("aria-label", `Board: ${logBoard ? boardMeta(logBoard).label : "not set"}`);
-  el.innerHTML =
-    `<button type="button" class="board-pill ${logBoard ? "" : "is-on"}" data-board="" aria-pressed="${!logBoard}">—</button>` +
-    BOARDS.map(
-      (b) =>
-        `<button type="button" class="board-pill ${logBoard === b.id ? "is-on" : ""}" data-board="${b.id}" style="--board-color:${b.color}" aria-pressed="${logBoard === b.id}">${b.label}</button>`
-    ).join("");
-  el.querySelectorAll(".board-pill").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      logBoard = btn.dataset.board;
-      renderLogBoards();
-      pop(btn);
-    });
-  });
 }
 
 function fmtLogDate(iso) {
@@ -963,7 +961,7 @@ function renderLog() {
           <span class="log-entry__spot">${escapeHTML(e.spot)}</span>
           <span class="log-entry__tags">
             ${boardMeta(e.board) ? `<span class="log-entry__board" style="--board-color:${boardMeta(e.board).color}">${boardMeta(e.board).label}</span>` : ""}
-            <span class="log-entry__stars" aria-label="${e.rating} out of 5 stars">${starRow(e.rating, false)}</span>
+            <span class="log-entry__stars" aria-label="${e.rating} out of 5 stars">${starRow(e.rating)}</span>
           </span>
         </div>
         ${e.notes ? `<p class="log-entry__notes">${escapeHTML(e.notes)}</p>` : ""}
@@ -986,38 +984,7 @@ function escapeHTML(str) {
 }
 
 function initLog() {
-  const form = document.getElementById("logForm");
-  const dateInput = document.getElementById("logDate");
-  const spotInput = document.getElementById("logSpot");
-  const notesInput = document.getElementById("logNotes");
-
-  document.getElementById("breakList").innerHTML = BREAKS.map((b) => `<option value="${b.name}"></option>`).join("");
-  dateInput.value = new Date().toISOString().slice(0, 10);
-  renderLogStars();
-  renderLogBoards();
-
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    logEntries.push({
-      id: Date.now(),
-      date: dateInput.value,
-      spot: spotInput.value.trim(),
-      rating: logRating,
-      board: logBoard,
-      notes: notesInput.value.trim(),
-    });
-    saveJSON(LOG_KEY, logEntries);
-    spotInput.value = "";
-    notesInput.value = "";
-    logRating = 0;
-    logBoard = "";
-    renderLogStars();
-    renderLogBoards();
-    renderLog();
-  });
-
   document.getElementById("logExport")?.addEventListener("click", exportLog);
-
   renderLog();
 }
 
