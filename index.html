@@ -27,6 +27,7 @@
       <span>Indonesia '26</span>
     </a>
     <nav class="nav__links" id="navLinks" aria-label="Primary">
+      <a href="#gallery">Gallery</a>
       <a href="#itinerary">Itinerary</a>
       <a href="#breaks">Breaks</a>
       <a href="#log">Log</a>
@@ -67,6 +68,16 @@
     <p class="statusline" id="statusLine" role="status"></p>
     <div class="phases" id="phaseStrip" role="group" aria-label="Sabbatical progress"></div>
 
+    <!-- Gallery -->
+    <section class="section" id="gallery">
+      <div class="section__head">
+        <p class="section__eyebrow">From the trip</p>
+        <h2 class="section__title">Gallery</h2>
+        <p class="section__lede">Shots from the boat, the breaks, and everywhere in between.</p>
+      </div>
+      <div class="gallery__grid" id="galleryGrid"></div>
+    </section>
+
     <!-- Itinerary -->
     <section class="section" id="itinerary">
       <div class="section__head">
@@ -102,8 +113,8 @@
     <section class="section section--alt" id="log">
       <div class="section__head">
         <p class="section__eyebrow">The sessions</p>
-        <h2 class="section__title">Surf Log <span class="section__badge section__badge--done">Complete</span></h2>
-        <p class="section__lede">Every session from the trip, board included.</p>
+        <h2 class="section__title">Surf Log</h2>
+        <p class="section__lede">Every session from the trip.</p>
       </div>
 
       <div class="log__list" id="logList"></div>
@@ -177,7 +188,7 @@
     <section class="section packing--locked" id="packing">
       <div class="section__head">
         <p class="section__eyebrow">All set</p>
-        <h2 class="section__title">Packing List <span class="section__badge section__badge--done">Packed</span></h2>
+        <h2 class="section__title">Packing List</h2>
         <p class="section__lede">Packing is complete. Kept here read-only for reference.</p>
       </div>
 
@@ -196,6 +207,13 @@
   <footer class="footer">
     <p>Indonesia · August 3–28, 2026</p>
   </footer>
+
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer" hidden>
+    <button type="button" class="lightbox__close" id="lightboxClose" aria-label="Close">✕</button>
+    <button type="button" class="lightbox__nav lightbox__nav--prev" id="lightboxPrev" aria-label="Previous photo">‹</button>
+    <img class="lightbox__img" id="lightboxImg" alt="" />
+    <button type="button" class="lightbox__nav lightbox__nav--next" id="lightboxNext" aria-label="Next photo">›</button>
+  </div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="app.js"></script>

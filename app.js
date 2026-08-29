@@ -759,6 +759,81 @@ function armReveal(root = document) {
   });
 }
 
+// ---- Gallery -------------------------------------------------------
+
+// Order set deliberately — not chronological. Files live in assets/gallery/{thumbs,full}.
+const GALLERY = [
+  "BW1_3341", "BW1_3343", "BW1_3346", "BW1_3347", "BW1_3350", "BW1_3351", "BW1_3358",
+  "_BW20084", "_BW20090", "_BW20255", "_BW20256", "_BW20305", "_BW20364", "_BW20439", "_BW20441",
+  "_BW21186", "_BW21255", "_BW21261", "_BW21265", "_BW21599", "_BW21775", "_BW21938", "_BW22093",
+  "_BW22269", "_BW22270", "_BW22316",
+  "BW1_1300", "BW1_1340", "BW1_1345", "BW1_1348", "BW1_1541", "BW1_1697", "BW1_1698", "BW1_1990",
+  "BW1_2043", "BW1_2281", "BW1_2282", "BW1_2335", "BW1_3093",
+];
+
+let lightboxIndex = 0;
+
+function renderGallery() {
+  const grid = document.getElementById("galleryGrid");
+  if (!grid) return;
+  grid.innerHTML = GALLERY.map(
+    (name, i) => `
+    <button type="button" class="gallery__item reveal" data-index="${i}" aria-label="Open photo ${i + 1} of ${GALLERY.length}">
+      <img src="assets/gallery/thumbs/${name}.jpg" alt="" loading="lazy" />
+    </button>`
+  ).join("");
+  armReveal(grid);
+
+  grid.querySelectorAll(".gallery__item").forEach((btn) => {
+    btn.addEventListener("click", () => openLightbox(Number(btn.dataset.index)));
+  });
+}
+
+function openLightbox(index) {
+  lightboxIndex = index;
+  const box = document.getElementById("lightbox");
+  box.hidden = false;
+  document.body.style.overflow = "hidden";
+  showLightboxImage();
+}
+
+function closeLightbox() {
+  const box = document.getElementById("lightbox");
+  box.hidden = true;
+  document.body.style.overflow = "";
+}
+
+function showLightboxImage() {
+  const name = GALLERY[lightboxIndex];
+  const img = document.getElementById("lightboxImg");
+  img.src = `assets/gallery/full/${name}.jpg`;
+  img.alt = `Photo ${lightboxIndex + 1} of ${GALLERY.length}`;
+}
+
+function lightboxStep(dir) {
+  lightboxIndex = (lightboxIndex + dir + GALLERY.length) % GALLERY.length;
+  showLightboxImage();
+}
+
+function initGallery() {
+  renderGallery();
+  const box = document.getElementById("lightbox");
+  if (!box) return;
+
+  document.getElementById("lightboxClose").addEventListener("click", closeLightbox);
+  document.getElementById("lightboxPrev").addEventListener("click", () => lightboxStep(-1));
+  document.getElementById("lightboxNext").addEventListener("click", () => lightboxStep(1));
+  box.addEventListener("click", (e) => {
+    if (e.target === box) closeLightbox();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (box.hidden) return;
+    if (e.key === "Escape") closeLightbox();
+    if (e.key === "ArrowLeft") lightboxStep(-1);
+    if (e.key === "ArrowRight") lightboxStep(1);
+  });
+}
+
 // ---- Surf Breaks --------------------------------------------------
 
 const BREAKS = [
@@ -873,7 +948,7 @@ const BOARDS = [
 // The trip is over — this is the final record, embedded so it survives
 // a cleared localStorage. No more sessions get added after the fact.
 const SEED_LOG = [
-  { id: 1, date: "2026-08-05", spot: "Dreamland A-frame", rating: 4, board: "sword", notes: "Paddled at 8am on the lowest tide. Decent crowd. Pumping, 8ft on the sets. Caught 6-8 waves? Not much face to it. Big drop. Surfed over 2 hours. Easy entry and exit." },
+  { id: 1, date: "2026-08-05", spot: "Dreamland", rating: 4, board: "sword", notes: "Paddled at 8am on the lowest tide. Decent crowd. Pumping, 8ft on the sets. Caught 6-8 waves? Not much face to it. Big drop. Surfed over 2 hours. Easy entry and exit." },
   { id: 2, date: "2026-08-05", spot: "Bingin", rating: 2, board: "sword", notes: "Tight pack crowd. Easy getting in, hard getting out. I cut myself on the reef on my hands and feet. Had one wave, small 3-footer and got knocked off. Very critical wave. Was on the low tide." },
   { id: 3, date: "2026-08-06", spot: "Dreamland", rating: 2, board: "sword", notes: "Waves were bigger but less consistent. Almost always 8ft on the sets. One 12ft set. I didn't catch one. Paddled in after an hour and a half." },
   { id: 4, date: "2026-08-06", spot: "Baby Padang", rating: 1, board: "sword", notes: "Paddled out through the channel from Padang-Padang beach. Got completely smoked on the one wave I took off on, and pinned on the next one. Paddled in (hard to do with the rip)." },
@@ -1303,6 +1378,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initTheme();
   renderStatusLine();
   renderPhaseStrip();
+  initGallery();
   renderTimeline();
   renderBreaks();
   renderBoat();
