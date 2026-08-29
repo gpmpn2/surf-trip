@@ -265,7 +265,7 @@ const PACKING = [
 
 const BOAT = {
   intro:
-    "A premium, custom-built 52-foot fiberglass power catamaran engineered for high-end wave-hunting. Built in Java by Crestrider Marine and skippered by seasoned Mentawai captain Jason Quinn under an Indonesian flag. Home base for eleven nights across the Mentawai and Telo chains.",
+    "A custom-built 52-foot fiberglass power catamaran built in Java by Crestrider Marine and skippered by seasoned Mentawai captain Jason Quinn under an Indonesian flag. Home base for eleven nights across the Mentawai and Telo chains.",
   stats: [
     { num: "52 ft", label: "length overall" },
     { num: "7.1 m", label: "beam" },
@@ -382,6 +382,7 @@ const INFO = [
 
 const CHECK_SVG = '<svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg>';
 const STORAGE_KEY = "surf-trip-packing-v3";
+const PACKING_LOCKED = true; // trip is packed — list stays visible read-only
 
 // Returns a status per itinerary stop: "done" | "now" | "upcoming" | "later".
 // "now" = today falls inside the stop. If the trip hasn't started (or we're in a
@@ -586,8 +587,8 @@ function renderPacking() {
                 ${note ? `<span class="pack-item__note">${note}</span>` : ""}
               </span>
               <span class="pack-item__toggles">
-                <button type="button" class="pack-toggle pack-toggle--got ${st.got ? "is-on" : ""}" data-act="got" aria-pressed="${!!st.got}" aria-label="Got: ${escapeHTML(label)}">Got</button>
-                <button type="button" class="pack-toggle pack-toggle--packed ${st.packed ? "is-on" : ""}" data-act="packed" aria-pressed="${!!st.packed}" aria-label="Packed: ${escapeHTML(label)}">Packed</button>
+                <button type="button" class="pack-toggle pack-toggle--got ${st.got ? "is-on" : ""}" data-act="got" aria-pressed="${!!st.got}" aria-label="Got: ${escapeHTML(label)}" ${PACKING_LOCKED ? "disabled" : ""}>Got</button>
+                <button type="button" class="pack-toggle pack-toggle--packed ${st.packed ? "is-on" : ""}" data-act="packed" aria-pressed="${!!st.packed}" aria-label="Packed: ${escapeHTML(label)}" ${PACKING_LOCKED ? "disabled" : ""}>Packed</button>
               </span>
             </div>`;
           })
@@ -709,14 +710,6 @@ function updateProgress() {
   });
 }
 
-function resetPacking() {
-  if (!confirm("Clear every item's Got and Packed status and start fresh?")) return;
-  state = {};
-  saveState(state);
-  renderPacking();
-  updateProgress();
-}
-
 // ---- Hero countdown ----------------------------------------------
 
 function renderCountdown() {
@@ -806,7 +799,7 @@ const BREAKS = [
     level: "Intermediate–Adv",
     best: "Mid swell",
     hazard: "Reef",
-    blurb: "Fun right-hander peeling off a picture-perfect island.",
+    blurb: "Fun right-hander peeling off a small island.",
     verify: true,
   },
   {
@@ -1405,5 +1398,4 @@ document.addEventListener("DOMContentLoaded", () => {
   initMobileNav();
   initParallax();
   armReveal();
-  document.getElementById("resetBtn").addEventListener("click", resetPacking);
 });

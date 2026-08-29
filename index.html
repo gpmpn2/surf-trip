@@ -30,10 +30,10 @@
       <a href="#itinerary">Itinerary</a>
       <a href="#breaks">Breaks</a>
       <a href="#boat">The Boat</a>
-      <a href="#packing">Packing</a>
       <a href="#log">Log</a>
       <a href="#money">Money</a>
       <a href="#info">Info</a>
+      <a href="#packing">Packing</a>
     </nav>
     <button class="nav__theme" id="themeToggle" type="button" aria-label="Toggle dark mode">🌙</button>
     <button class="nav__burger" id="navBurger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
@@ -107,26 +107,6 @@
       </div>
       <div class="boat__stats" id="boatStats"></div>
       <div class="info__grid" id="boatSpecs"></div>
-    </section>
-
-    <!-- Packing List -->
-    <section class="section" id="packing">
-      <div class="section__head">
-        <p class="section__eyebrow">Don't forget</p>
-        <h2 class="section__title">Packing List</h2>
-        <p class="section__lede">Mark items <b>Got</b> once you have them, then <b>Packed</b> when they're in the bag. Saves automatically on this device.</p>
-      </div>
-
-      <div class="packing__progress">
-        <div class="packing__progress-bar" role="progressbar" aria-label="Packing progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-          <div class="packing__progress-fill packing__progress-fill--got" id="progressFillGot" aria-hidden="true"></div>
-          <div class="packing__progress-fill" id="progressFill" aria-hidden="true"></div>
-        </div>
-        <div class="packing__progress-text"><span id="progressCount">0</span> of <span id="progressTotal">0</span> packed <span class="packing__progress-pct" id="progressPct">0%</span><span class="packing__progress-got"><span id="progressGot">0</span> obtained</span></div>
-        <button class="packing__reset" id="resetBtn" type="button">Reset all</button>
-      </div>
-
-      <div class="packing__grid" id="packingGrid"></div>
     </section>
 
     <!-- Surf Log -->
@@ -222,6 +202,25 @@
         <p class="section__lede">The essentials for landing, staying, and staying safe.</p>
       </div>
       <div class="info__grid" id="infoGrid"></div>
+    </section>
+
+    <!-- Packing List (locked once the trip is packed) -->
+    <section class="section packing--locked" id="packing">
+      <div class="section__head">
+        <p class="section__eyebrow">All set</p>
+        <h2 class="section__title">Packing List <span class="section__badge section__badge--done">Packed</span></h2>
+        <p class="section__lede">Locked in and packed. Kept here read-only for reference.</p>
+      </div>
+
+      <div class="packing__progress">
+        <div class="packing__progress-bar" role="progressbar" aria-label="Packing progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <div class="packing__progress-fill packing__progress-fill--got" id="progressFillGot" aria-hidden="true"></div>
+          <div class="packing__progress-fill" id="progressFill" aria-hidden="true"></div>
+        </div>
+        <div class="packing__progress-text"><span id="progressCount">0</span> of <span id="progressTotal">0</span> packed <span class="packing__progress-pct" id="progressPct">0%</span><span class="packing__progress-got"><span id="progressGot">0</span> obtained</span></div>
+      </div>
+
+      <div class="packing__grid" id="packingGrid"></div>
     </section>
   </main>
 

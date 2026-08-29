@@ -323,6 +323,19 @@ select:focus-visible, textarea:focus-visible {
   margin-bottom: 16px;
 }
 .section__lede { font-size: 1.15rem; color: var(--ink-soft); }
+.section__badge {
+  display: inline-block;
+  vertical-align: middle;
+  font-family: var(--font-body);
+  font-size: .85rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  padding: 5px 16px;
+  border-radius: 100px;
+  margin-left: 14px;
+  transform: translateY(-8px);
+}
+.section__badge--done { background: rgba(63, 90, 99, 0.12); color: var(--ink-soft); }
 
 /* ---------- Sabbatical phase strip ---------- */
 .statusline {
@@ -607,6 +620,7 @@ a.phase:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); borde
   top: 90px;
   z-index: 20;
 }
+.packing--locked .packing__progress { position: static; }
 .packing__progress-bar {
   position: relative;
   flex: 1 1 220px;
@@ -721,6 +735,13 @@ a.phase:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); borde
 
 .pack-item.is-packed .pack-item__label { color: var(--ink-soft); text-decoration: line-through; text-decoration-color: rgba(63,90,99,.4); }
 .pack-item.is-packed .pack-item__note { opacity: .6; }
+
+.packing--locked .packing__progress,
+.packing--locked .packing__grid {
+  opacity: .5;
+  filter: grayscale(.6);
+  pointer-events: none;
+}
 
 /* ---------- Boat ---------- */
 .boat__stats {

@@ -109,7 +109,7 @@ const BREAKS = [
     level: "Advanced",
     best: "Solid S swell · mid–high tide",
     hazard: "Rocks, very long paddle back",
-    blurb: "One of the longest left points on earth — needs a real south swell to fire.",
+    blurb: "One of the longest left points around — needs a real south swell to fire.",
   },
   {
     name: "Witch's Rock",
@@ -118,7 +118,7 @@ const BREAKS = [
     level: "Intermediate–Adv",
     best: "Offshore Papagayo wind · S swell",
     hazard: "Remote, boat access, crocs in the river mouth",
-    blurb: "Fabled Guanacaste beach break — usually a boat or 4x4 mission from Tamarindo.",
+    blurb: "Remote Guanacaste beach break — usually a boat or 4x4 mission from Tamarindo.",
   },
   {
     name: "Ollie's Point",
