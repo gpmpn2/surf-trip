@@ -399,6 +399,11 @@ a.phase:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); borde
 .gallery__item:hover img { transform: scale(1.06); }
 .gallery__item:focus-visible { outline: 3px solid var(--teal-400); outline-offset: 2px; }
 
+.gallery__sub-head { margin: 40px 0 16px; }
+.gallery__sub-title { font-family: var(--font-display); font-weight: 600; font-size: 1.4rem; color: var(--heading); }
+.gallery__grid--landscape { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+.gallery__grid--landscape .gallery__item { aspect-ratio: 3 / 2; }
+
 .lightbox {
   position: fixed;
   inset: 0;
@@ -412,6 +417,10 @@ a.phase:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); borde
 .lightbox__img { max-width: min(92vw, 1400px); max-height: 90vh; object-fit: contain; border-radius: 4px; }
 .lightbox__close, .lightbox__nav {
   position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
   background: rgba(255, 255, 255, 0.12);
   color: #fff;
   border: none;

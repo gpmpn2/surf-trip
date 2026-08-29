@@ -78,7 +78,7 @@ const ITINERARY = [
     days: "Aug 16–27",
     start: "2026-08-16",
     end: "2026-08-27",
-    place: "Mentawai Boat Trip",
+    place: "Telo Boat Trip",
     desc: "Eleven nights aboard the Switchfoot, surfing reef setups across the Mentawai and Telo chains.",
     tags: ["Boat charter", "Pumping reef", "Remote"],
   },
@@ -86,14 +86,14 @@ const ITINERARY = [
     days: "Aug 27–28",
     start: "2026-08-27",
     end: "2026-08-28",
-    place: "Padang · Fahira Hotel",
+    place: "Padang · Sendosa Lodge",
     area: "Padang · Sumatera Barat",
-    desc: "Back to the mainland around noon. One night at Fahira Hotel to clean up, repack, and rest before the flight home.",
+    desc: "Back to the mainland around noon. One night at Sendosa Lodge to clean up, repack, and rest before the flight home.",
     nights: 1,
     checkIn: "After 2:00 PM",
     checkOut: "12:00 PM (noon)",
-    address: "No. 69 Jl. Ujung Gurun, Padang, Sumatera Barat, 25114 Indonesia",
-    tags: ["Fahira Hotel", "1 night", "Recovery"],
+    address: "Jl. Tanah Beroyo No.17, Belakang Tangsi, Kec. Padang Bar., Kota Padang, Sumatera Barat 25119, Indonesia",
+    tags: ["Sendosa Lodge", "1 night", "Recovery"],
   },
   {
     days: "Aug 28",
@@ -771,25 +771,54 @@ const GALLERY = [
   "BW1_2043", "BW1_2281", "BW1_2282", "BW1_2335", "BW1_3093",
 ];
 
+// Files live in assets/gallery/landscapes/{thumbs,full}.
+const GALLERY_LANDSCAPES = [
+  "_BW20029", "_BW29863", "_BW20196", "_BW20214",
+  "5A", "BW1_1127", "BW1_1227", "BW1_1255", "BW1_1263", "BW1_1685", "BWS_4909",
+  "92499342-3496-4ed3-b821-b06f74675685", "bc5b5ce3-94b3-4183-8ded-02fd0d8aa220",
+  "fce3bf81-d390-42f8-b5fc-aa04fbd9e7d6", "GPTempDownload", "GPTempDownload_2",
+  "IMG_8908", "IMG_8919", "IMG_8927", "IMG_8932", "IMG_8933", "IMG_8950",
+  "IMG_8973", "IMG_8974",
+];
+
+// Files live in assets/gallery/bali/{thumbs,full}.
+const GALLERY_BALI = [
+  "IMG_8796", "IMG_8798", "IMG_8799", "IMG_8801", "IMG_8803", "IMG_8804", "IMG_8811",
+  "IMG_8816", "IMG_8817", "IMG_8821", "IMG_8822", "IMG_8828", "IMG_8829", "IMG_8831",
+  "IMG_8836", "IMG_8837", "IMG_8838", "IMG_8843", "IMG_8849", "IMG_8857", "IMG_8862",
+  "IMG_8864", "IMG_8867", "IMG_8873", "IMG_8875", "IMG_8885", "IMG_8902", "IMG_8904",
+  "DSC_0368",
+];
+
+let lightboxSource = GALLERY;
+let lightboxFolder = "assets/gallery";
 let lightboxIndex = 0;
 
-function renderGallery() {
-  const grid = document.getElementById("galleryGrid");
+function renderGalleryGrid(gridId, names, folder) {
+  const grid = document.getElementById(gridId);
   if (!grid) return;
-  grid.innerHTML = GALLERY.map(
+  grid.innerHTML = names.map(
     (name, i) => `
-    <button type="button" class="gallery__item reveal" data-index="${i}" aria-label="Open photo ${i + 1} of ${GALLERY.length}">
-      <img src="assets/gallery/thumbs/${name}.jpg" alt="" loading="lazy" />
+    <button type="button" class="gallery__item reveal" data-index="${i}" aria-label="Open photo ${i + 1} of ${names.length}">
+      <img src="${folder}/thumbs/${name}.jpg" alt="" loading="lazy" />
     </button>`
   ).join("");
   armReveal(grid);
 
   grid.querySelectorAll(".gallery__item").forEach((btn) => {
-    btn.addEventListener("click", () => openLightbox(Number(btn.dataset.index)));
+    btn.addEventListener("click", () => openLightbox(names, folder, Number(btn.dataset.index)));
   });
 }
 
-function openLightbox(index) {
+function renderGallery() {
+  renderGalleryGrid("galleryGrid", GALLERY, "assets/gallery");
+  renderGalleryGrid("galleryLandscapeGrid", GALLERY_LANDSCAPES, "assets/gallery/landscapes");
+  renderGalleryGrid("galleryBaliGrid", GALLERY_BALI, "assets/gallery/bali");
+}
+
+function openLightbox(source, folder, index) {
+  lightboxSource = source;
+  lightboxFolder = folder;
   lightboxIndex = index;
   const box = document.getElementById("lightbox");
   box.hidden = false;
@@ -804,14 +833,14 @@ function closeLightbox() {
 }
 
 function showLightboxImage() {
-  const name = GALLERY[lightboxIndex];
+  const name = lightboxSource[lightboxIndex];
   const img = document.getElementById("lightboxImg");
-  img.src = `assets/gallery/full/${name}.jpg`;
-  img.alt = `Photo ${lightboxIndex + 1} of ${GALLERY.length}`;
+  img.src = `${lightboxFolder}/full/${name}.jpg`;
+  img.alt = `Photo ${lightboxIndex + 1} of ${lightboxSource.length}`;
 }
 
 function lightboxStep(dir) {
-  lightboxIndex = (lightboxIndex + dir + GALLERY.length) % GALLERY.length;
+  lightboxIndex = (lightboxIndex + dir + lightboxSource.length) % lightboxSource.length;
   showLightboxImage();
 }
 
