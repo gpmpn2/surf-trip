@@ -920,11 +920,77 @@ const BREAKS = [
     hazard: "Reef",
     blurb: "Peeling right that lines up all the way to the inside — the best session of the trip.",
   },
+  {
+    name: "Dreamland",
+    region: "Bali",
+    type: "Left & right · reef",
+    level: "Intermediate–Adv",
+    best: "Low–mid tide",
+    hazard: "Shallow reef on the inside, strong current",
+    blurb: "Popular Bukit reef break with a big, punchy drop — pumping and consistent, with easy entry and exit via the stairs.",
+  },
+  {
+    name: "Bingin",
+    region: "Bali",
+    type: "Left · reef",
+    level: "Advanced",
+    best: "Low tide",
+    hazard: "Sharp shallow reef, tight crowded pack",
+    blurb: "Tight, crowded lineup over sharp reef — easy paddle out, hard exit, and a very critical takeoff even on smaller waves.",
+  },
+  {
+    name: "Batu Bolong",
+    region: "Bali",
+    type: "Left · reef/beach",
+    level: "Intermediate",
+    best: "Mid, dropping tide",
+    hazard: "Rocks at the point, crowds",
+    blurb: "Playful Canggu point break that lines up for backside carves — got progressively more crowded as the swell held through the week.",
+  },
+  {
+    name: "Canggu",
+    region: "Bali",
+    type: "Beach break",
+    level: "Advanced",
+    best: "Check from the sand first — deceptive size",
+    hazard: "Strong current, bigger and more consequential than it looks from the beach",
+    blurb: "Looked reasonable watching from the sand, but far bigger and heavier once out there — an hour just catching one smaller wave back in.",
+  },
+  {
+    name: "Baby Padang",
+    region: "Bali",
+    type: "Reef · channel entry",
+    level: "Advanced",
+    best: "Enter via the channel from Padang-Padang beach",
+    hazard: "Heavy, consequential wave; rip through the channel",
+    blurb: "Channel paddle out from Padang-Padang beach into a heavy, consequential wave — smoked on the takeoff, pinned on the next, hard paddle in against the rip.",
+  },
 ];
+
+let activeBreaksRegion = "Telos";
+
+function renderBreaksFilters() {
+  const el = document.getElementById("breaksFilters");
+  if (!el) return;
+  const regions = [...new Set(BREAKS.map((b) => b.region))];
+  el.innerHTML = regions
+    .map(
+      (r) => `
+    <button type="button" class="breaks__filter${r === activeBreaksRegion ? " is-active" : ""}" data-region="${r}">${r}</button>`
+    )
+    .join("");
+  el.querySelectorAll(".breaks__filter").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      activeBreaksRegion = btn.dataset.region;
+      renderBreaksFilters();
+      renderBreaks();
+    });
+  });
+}
 
 function renderBreaks() {
   const grid = document.getElementById("breaksGrid");
-  const list = BREAKS;
+  const list = BREAKS.filter((b) => b.region === activeBreaksRegion);
   grid.innerHTML = list
     .map(
       (b, i) => `
@@ -1409,6 +1475,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderPhaseStrip();
   initGallery();
   renderTimeline();
+  renderBreaksFilters();
   renderBreaks();
   renderBoat();
   renderPacking();
