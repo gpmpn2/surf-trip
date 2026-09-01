@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Central America Surf Trip · Sabbatical Pt. 2</title>
+  <title>Costa Rica Surf Trip · Sabbatical Pt. 2</title>
   <script>try{var t=localStorage.getItem('surf-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.dataset.theme=t;}catch(e){}</script>
-  <meta name="description" content="Nicaragua and Costa Rica surf trip — the Central America leg of the sabbatical." />
-  <meta property="og:title" content="Central America Surf Trip · Sabbatical Pt. 2" />
-  <meta property="og:description" content="After Indonesia: reset in Santa Cruz, then chase Pacific points and beach breaks through Nicaragua and Costa Rica." />
+  <meta name="description" content="Costa Rica surf trip — the Central America leg of the sabbatical." />
+  <meta property="og:title" content="Costa Rica Surf Trip · Sabbatical Pt. 2" />
+  <meta property="og:description" content="After Indonesia: reset in Santa Cruz, then surf Pacific points and beach breaks up the coast." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="assets/favicon.svg" />
   <meta name="twitter:card" content="summary" />
@@ -25,7 +25,7 @@
   <header class="nav" id="nav">
     <a href="#top" class="nav__brand">
       <span class="nav__mark" aria-hidden="true">🌴</span>
-      <span>Central America '26</span>
+      <span>Costa Rica '26</span>
     </a>
     <nav class="nav__links" id="navLinks" aria-label="Primary">
       <a href="#itinerary">Plan</a>
@@ -52,11 +52,11 @@
     </div>
     <div class="hero__content">
       <p class="hero__eyebrow">Sabbatical · Part Two</p>
-      <h1 class="hero__title">Central<br /><em>America</em></h1>
-      <p class="hero__sub">Reset at home in Santa Cruz, then chase Pacific points and beach breaks through Nicaragua and Costa Rica. Plans loose, on purpose.</p>
+      <h1 class="hero__title">Costa<br /><em>Rica</em></h1>
+      <p class="hero__sub">Reset at home in Santa Cruz, then surf Pacific points and beach breaks up the coast.</p>
       <div class="hero__meta">
         <div class="hero__meta-item"><span class="hero__meta-num" id="countdown">—</span><span class="hero__meta-label">days to go</span></div>
-        <div class="hero__meta-item"><span class="hero__meta-num">2</span><span class="hero__meta-label">countries</span></div>
+        <div class="hero__meta-item"><span class="hero__meta-num">24</span><span class="hero__meta-label">days there</span></div>
         <div class="hero__meta-item"><span class="hero__meta-num">∞</span><span class="hero__meta-label">points to find</span></div>
       </div>
       <a href="#itinerary" class="hero__cta">See the plan ↓</a>
@@ -72,12 +72,12 @@
       <div class="section__head">
         <p class="section__eyebrow">The loose plan</p>
         <h2 class="section__title">The Route</h2>
-        <p class="section__lede">Dates and stops are intentionally unsettled — plans flex around the swell.</p>
+        <p class="section__lede">Dates and stops aren't finalized yet.</p>
       </div>
 
-      <p class="sr-only">Route: Santa Cruz, California to Nicaragua to Costa Rica, then home.</p>
+      <p class="sr-only">Route: Santa Cruz, California to Costa Rica, then home.</p>
       <div class="flightmap-wrap">
-        <div class="flightmap" id="routeMap" aria-label="Interactive route map from Santa Cruz to Nicaragua and Costa Rica"></div>
+        <div class="flightmap" id="routeMap" aria-label="Interactive route map from Santa Cruz to Costa Rica"></div>
         <div class="flightmap__legend" id="mapLegend">
           <span class="routemap__key routemap__key--flight">Travel</span>
           <span class="routemap__key routemap__key--now">You are here</span>
@@ -92,9 +92,8 @@
       <div class="section__head">
         <p class="section__eyebrow">Where to surf</p>
         <h2 class="section__title">Surf Breaks</h2>
-        <p class="section__lede">Pacific-coast points and beach breaks across both countries.</p>
+        <p class="section__lede">Pacific-coast points and beach breaks up the coast.</p>
       </div>
-      <div class="breaks__filters" id="breakFilters"></div>
       <div class="breaks__grid" id="breaksGrid"></div>
     </section>
 
@@ -163,7 +162,7 @@
     <!-- Money -->
     <section class="section" id="money">
       <div class="section__head">
-        <p class="section__eyebrow">Córdoba, colón &amp; spending</p>
+        <p class="section__eyebrow">Colón &amp; spending</p>
         <h2 class="section__title">Money</h2>
         <p class="section__lede">Convert to the local currency and keep a running tally of the budget.</p>
       </div>
@@ -171,18 +170,15 @@
       <div class="money__grid">
         <div class="money__panel">
           <h3 class="money__panel-title">Converter</h3>
-          <div class="converter">
+          <div class="converter" id="converter">
             <div class="converter__row">
-              <input type="number" id="convFrom" value="10" min="0" inputmode="decimal" aria-label="Amount in US dollars" />
-              <span class="converter__cur">USD</span>
+              <input type="number" id="convFrom" value="10" min="0" inputmode="decimal" aria-label="Amount to convert" />
+              <span class="converter__cur" id="convFromCur">USD</span>
             </div>
-            <div class="converter__arrow" aria-hidden="true">↓</div>
+            <button type="button" class="converter__swap" id="convSwap" aria-label="Swap currencies">⇅</button>
             <div class="converter__row">
               <input type="text" id="convTo" readonly aria-label="Converted amount" />
-              <select id="convCur" class="converter__cur converter__cur--select" aria-label="Local currency">
-                <option value="CRC">₡ Colón</option>
-                <option value="NIO">C$ Córdoba</option>
-              </select>
+              <span class="converter__cur" id="convToCur">CRC</span>
             </div>
           </div>
           <p class="converter__rate" id="convRate"></p>
@@ -211,14 +207,14 @@
       <div class="section__head">
         <p class="section__eyebrow">Good to know</p>
         <h2 class="section__title">Info Hub</h2>
-        <p class="section__lede">The essentials for Nicaragua and Costa Rica.</p>
+        <p class="section__lede">The essentials for Costa Rica.</p>
       </div>
       <div class="info__grid" id="infoGrid"></div>
     </section>
   </main>
 
   <footer class="footer">
-    <p>Central America · September 2026 · Sabbatical Pt. 2</p>
+    <p>Costa Rica · September 2026 · Sabbatical Pt. 2</p>
   </footer>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>

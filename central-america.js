@@ -8,85 +8,68 @@ const TRIP_START = "2026-08-28"; // countdown target: start of the Santa Cruz re
 // Shared across both trip pages. Keep in sync with app.js.
 const PHASES = [
   { key: "indonesia", icon: "🌊", label: "Indonesia", dates: "Aug 3–28", start: "2026-08-03", end: "2026-08-28", href: "index.html" },
-  { key: "reset", icon: "🏡", label: "Santa Cruz", dates: "Aug 28–Sep 1", start: "2026-08-28", end: "2026-09-01", href: null },
-  { key: "centralamerica", icon: "🌴", label: "Central America", dates: "Sep 1 – Oct 4", start: "2026-09-01", end: "2026-10-04", href: "central-america.html" },
+  { key: "reset", icon: "🏡", label: "Santa Cruz", dates: "Aug 28–Sep 2", start: "2026-08-28", end: "2026-09-02", href: null },
+  { key: "centralamerica", icon: "🌴", label: "Costa Rica", dates: "Sep 2 – Sep 25", start: "2026-09-02", end: "2026-09-25", href: "central-america.html" },
 ];
 
 const ITINERARY = [
   {
-    days: "Aug 28 – Sep 1",
+    days: "Aug 28 – Sep 2",
     start: "2026-08-28",
-    end: "2026-09-01",
+    end: "2026-09-02",
     place: "Resetting in Santa Cruz",
-    desc: "Home. Rest, reset, unpack the boards, do laundry, and recharge before round two.",
+    desc: "Home. Rest, reset, unpack the boards, do laundry, and recharge before round two. Flight out Sept 2 at 8:55am.",
     tags: ["Home", "Rest", "Reset"],
   },
   {
-    days: "Early September",
-    start: "2026-09-01",
-    end: "2026-09-14",
-    place: "Nicaragua",
-    desc: "Warm-water beach and reef breaks around Popoyo and the Tola coast. Offshore most mornings.",
-    tags: ["Popoyo", "Tola coast", "Dates TBD"],
+    days: "Sep 2",
+    start: "2026-09-02",
+    end: "2026-09-02",
+    place: "Fly San Jose → San José",
+    desc: "Cross the country with a Houston connection, landing in Costa Rica by evening.",
+    flights: [
+      { route: "SJC → HOU", detail: "Southwest WN 3508 · 8:55 AM → 2:40 PM" },
+      { route: "HOU → SJO", detail: "Southwest WN 112 · 4:10 PM → 6:40 PM" },
+    ],
+    total: "8h 45m door-to-door",
+    tags: ["Southwest", "Houston connection"],
   },
   {
-    days: "Mid–late September",
-    start: "2026-09-14",
-    end: "2026-09-30",
-    place: "Costa Rica",
-    desc: "South down the Pacific coast — Santa Teresa and Nosara, maybe Pavones if a big south swell lines up.",
-    tags: ["Santa Teresa", "Nosara", "Pavones"],
+    days: "Sep 3 – Sep 8",
+    start: "2026-09-03",
+    end: "2026-09-08",
+    place: "Pavones",
+    desc: "First stop after landing — the long, walling lefts of Pavones on the southern Pacific coast.",
+    nights: 5,
+    tags: ["Pavones", "5 nights"],
   },
   {
-    days: "Sep 30 – Oct 4",
-    start: "2026-09-30",
-    end: "2026-10-04",
-    place: "Home",
-    desc: "Fly back to Santa Cruz by October 4th. Sabbatical complete. Exact flights still to be booked.",
-    tags: ["Fly home", "Oct 4"],
+    days: "Sep 8 – Sep 25",
+    start: "2026-09-08",
+    end: "2026-09-25",
+    place: "Costa Rica · open days",
+    desc: "Undetermined from here — maybe Nosara, maybe Santa Teresa, moving with the swell before the flight home.",
+    tags: ["Nosara", "Santa Teresa", "Flexible"],
+  },
+  {
+    days: "Sep 25",
+    start: "2026-09-25",
+    end: "2026-09-25",
+    place: "Fly San José → San Jose",
+    desc: "The long way home — Orlando and Austin connections before landing back in San Jose the same night. Sabbatical complete.",
+    flights: [
+      { route: "SJO → MCO", detail: "Southwest WN 182 · 9:00 AM → 2:15 PM" },
+      { route: "MCO → AUS", detail: "Southwest WN 2548 · 5:30 PM → 7:15 PM" },
+      { route: "AUS → SJC", detail: "Southwest WN 1927 · 8:25 PM → 10:05 PM" },
+    ],
+    total: "14h 05m door-to-door",
+    tags: ["Southwest", "2 connections", "Home"],
   },
 ];
 
 const BREAKS = [
   {
-    name: "Popoyo",
-    region: "Nicaragua",
-    type: "Reef + beach",
-    level: "Beginner–Adv",
-    best: "S/SW swell · offshore mornings · most tides",
-    hazard: "Crowds, rocks at the reef",
-    blurb: "The hub of southern Nica — a consistent outer reef plus a mellower beach break.",
-  },
-  {
-    name: "Playa Colorados",
-    region: "Nicaragua",
-    type: "Beach break",
-    level: "Intermediate–Adv",
-    best: "S/SW swell · mid tide",
-    hazard: "Punchy, can get heavy",
-    blurb: "Hollow, powerful beach break a short ride from Popoyo.",
-  },
-  {
-    name: "Playgrounds",
-    region: "Nicaragua",
-    type: "Reef",
-    level: "Intermediate",
-    best: "Mid tide · smaller swell",
-    hazard: "Shallow reef sections",
-    blurb: "Fun, forgiving rights and lefts — a good step-up from the beach.",
-  },
-  {
-    name: "Playa Maderas",
-    region: "Nicaragua",
-    type: "Beach break",
-    level: "Beginner–Int",
-    best: "Morning offshore · small–mid swell",
-    hazard: "Crowds, rips",
-    blurb: "San Juan del Sur's go-to beach break and a great warm-up.",
-  },
-  {
     name: "Santa Teresa",
-    region: "Costa Rica",
     type: "Beach break",
     level: "Beginner–Adv",
     best: "S/SW swell · offshore AM · mid tide",
@@ -95,7 +78,6 @@ const BREAKS = [
   },
   {
     name: "Playa Guiones, Nosara",
-    region: "Costa Rica",
     type: "Beach break",
     level: "Beginner–Int",
     best: "Almost any swell · mid tide",
@@ -104,7 +86,6 @@ const BREAKS = [
   },
   {
     name: "Pavones",
-    region: "Costa Rica",
     type: "Left point",
     level: "Advanced",
     best: "Solid S swell · mid–high tide",
@@ -113,7 +94,6 @@ const BREAKS = [
   },
   {
     name: "Witch's Rock",
-    region: "Costa Rica",
     type: "Beach break",
     level: "Intermediate–Adv",
     best: "Offshore Papagayo wind · S swell",
@@ -122,7 +102,6 @@ const BREAKS = [
   },
   {
     name: "Ollie's Point",
-    region: "Costa Rica",
     type: "Right point",
     level: "Intermediate–Adv",
     best: "S/SW swell · offshore · mid tide",
@@ -131,7 +110,6 @@ const BREAKS = [
   },
   {
     name: "Playa Hermosa (Jacó)",
-    region: "Costa Rica",
     type: "Beach break",
     level: "Advanced",
     best: "S/SW swell · mid tide",
@@ -139,9 +117,6 @@ const BREAKS = [
     blurb: "Fast, hollow, and serious — the proving-ground beach break south of Jacó.",
   },
 ];
-
-const BREAK_REGIONS = ["All", "Nicaragua", "Costa Rica"];
-let breakFilter = "All";
 
 const PACKING = [
   {
@@ -193,7 +168,7 @@ const PACKING = [
       { label: "Reef-safe sunscreen ×2", note: "SPF 50+" },
       { label: "Zinc stick", note: "Face, stays on all session" },
       { label: "Aloe vera", note: "After-sun" },
-      { label: "Mosquito repellent", note: "DEET/Picaridin — dengue risk in both countries" },
+      { label: "Mosquito repellent", note: "DEET/Picaridin — dengue risk in Costa Rica" },
       { label: "First-aid + reef kit", note: "Antiseptic, tape, waterproof band-aids" },
       { label: "Stomach meds + Liquid I.V.", note: "Traveler's tummy + rehydration" },
       { label: "Antihistamines", note: "Bites, stings, allergies" },
@@ -205,7 +180,7 @@ const PACKING = [
     icon: "🔌",
     title: "Tech",
     items: [
-      { label: "Phone + charger", note: "No adapter needed — CR & Nica use US-style plugs, 120V" },
+      { label: "Phone + charger", note: "No adapter needed — Costa Rica uses US-style plugs, 120V" },
       { label: "Power bank", note: "20,000mAh, airline-approved" },
       { label: "Action camera", note: "Mounts, spare battery, SD cards" },
       { label: "Charging cables ×2", note: "Braided USB-C / Lightning" },
@@ -220,24 +195,13 @@ const PACKING = [
       { label: "Passport", note: "6+ months validity" },
       { label: "Passport copies", note: "Printed + offline digital" },
       { label: "Travel insurance", note: "Must cover surfing + medical" },
-      { label: "Cash (USD)", note: "Small bills — widely accepted in both countries" },
+      { label: "Cash (USD)", note: "Small bills — widely accepted in Costa Rica" },
       { label: "Debit/credit cards", note: "No foreign-transaction fees" },
     ],
   },
 ];
 
 const INFO = [
-  {
-    icon: "🇳🇮",
-    title: "Nicaragua",
-    type: "list",
-    rows: [
-      ["Currency", "Córdoba (NIO) · USD ok"],
-      ["Plug", "Type A/B, 120V"],
-      ["Language", "Spanish"],
-      ["Getting there", "Fly into Managua (MGA)"],
-    ],
-  },
   {
     icon: "🇨🇷",
     title: "Costa Rica",
@@ -259,13 +223,13 @@ const INFO = [
     icon: "🦟",
     title: "Stay Well",
     type: "text",
-    text: "Dengue is present in both countries — wear repellent, especially at dawn and dusk. Drink filtered or bottled water, mind the rips, and reapply reef-safe sunscreen every session.",
+    text: "Dengue is present in Costa Rica — wear repellent, especially at dawn and dusk. Drink filtered or bottled water, mind the rips, and reapply reef-safe sunscreen every session.",
   },
   {
     icon: "🚐",
     title: "Getting Around",
     type: "text",
-    text: "Shared shuttles connect the surf towns; a 4x4 helps for remote points. Boat trips run to Witch's Rock and Ollie's Point. Border crossing Nica↔CR overland is doable but slow.",
+    text: "Shared shuttles connect the surf towns; a 4x4 helps for remote points. Boat trips run to Witch's Rock and Ollie's Point.",
   },
   {
     icon: "💵",
@@ -440,7 +404,34 @@ function renderTimeline() {
           ${STATUS_BADGE[status]}
         </div>
         <h3 class="tl-item__place">${stop.place}</h3>
+        ${stop.area ? `<span class="tl-item__area">${stop.area}</span>` : ""}
         <p class="tl-item__desc">${stop.desc}</p>
+        ${
+          stop.address
+            ? `<dl class="tl-item__stay">
+                <div><dt>Check-in</dt><dd>${stop.checkIn}</dd></div>
+                <div><dt>Check-out</dt><dd>${stop.checkOut}</dd></div>
+                <div><dt>Address</dt><dd>${escapeHTML(stop.address)}</dd></div>
+              </dl>
+              <div class="tl-item__stay-links">
+                <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(stop.place + " " + stop.address)}" target="_blank" rel="noopener">📍 Map<span class="sr-only"> (opens Google Maps)</span></a>
+              </div>`
+            : ""
+        }
+        ${
+          stop.flights
+            ? `<ul class="tl-item__flights">${stop.flights
+                .map(
+                  (f) =>
+                    `<li><span class="tl-item__flight-route">✈ ${f.route}</span><span class="tl-item__flight-detail">${f.detail}</span></li>`
+                )
+                .join("")}${
+                stop.total
+                  ? `<li class="tl-item__flight-sum"><span class="tl-item__flight-route">Total travel</span><span class="tl-item__flight-detail">${stop.total}</span></li>`
+                  : ""
+              }</ul>`
+            : ""
+        }
         <div class="tl-item__tags">
           ${stop.tags.map((t) => `<span class="tl-item__tag">${t}</span>`).join("")}
         </div>
@@ -449,25 +440,9 @@ function renderTimeline() {
   }).join("");
 }
 
-function renderBreakFilters() {
-  const el = document.getElementById("breakFilters");
-  el.setAttribute("role", "group");
-  el.setAttribute("aria-label", "Filter breaks by region");
-  el.innerHTML = BREAK_REGIONS.map(
-    (r) => `<button type="button" class="breaks__filter ${r === breakFilter ? "is-active" : ""}" data-region="${r}" aria-pressed="${r === breakFilter}">${r}</button>`
-  ).join("");
-  el.querySelectorAll(".breaks__filter").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      breakFilter = btn.dataset.region;
-      renderBreakFilters();
-      renderBreaks();
-    });
-  });
-}
-
 function renderBreaks() {
   const grid = document.getElementById("breaksGrid");
-  const list = BREAKS.filter((b) => breakFilter === "All" || b.region === breakFilter);
+  const list = BREAKS;
   grid.innerHTML = list
     .map(
       (b, i) => `
@@ -475,7 +450,6 @@ function renderBreaks() {
       <div class="break-card__top">
         <div class="break-card__heading">
           <h3 class="break-card__name">${b.name}</h3>
-          <span class="break-card__region">${b.region}</span>
         </div>
         <span class="break-card__level" data-level="${b.level.split("–")[0]}">${b.level}</span>
         <button type="button" class="break-card__chev" aria-expanded="false" aria-controls="break-body-${i}" aria-label="Toggle details for ${escapeHTML(b.name)}">▾</button>
@@ -648,8 +622,7 @@ function caCurrentPoint(P) {
   today.setHours(0, 0, 0, 0);
   const toDate = (s) => new Date(s + "T00:00:00");
   const inR = (a, b) => today >= toDate(a) && today <= toDate(b);
-  if (inR("2026-09-01", "2026-09-14")) return P.nica;
-  if (inR("2026-09-14", "2026-09-30")) return P.cr;
+  if (inR("2026-09-02", "2026-09-25")) return P.cr;
   return P.sc; // home (Santa Cruz) before, during the reset, and after
 }
 
@@ -662,7 +635,7 @@ function initRouteMap() {
     el.innerHTML = "<p>The interactive map needs an internet connection.</p>";
     return;
   }
-  const P = { sc: [36.97, -122.03], nica: [11.44, -86.11], cr: [9.98, -85.65] };
+  const P = { sc: [36.97, -122.03], cr: [9.98, -85.65] };
   const map = L.map(el, { scrollWheelZoom: false, zoomControl: true });
   L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
     attribution: "&copy; OpenStreetMap contributors &copy; CARTO",
@@ -670,13 +643,10 @@ function initRouteMap() {
     maxZoom: 10,
   }).addTo(map);
 
-  [[P.sc, P.nica], [P.nica, P.cr]].forEach((leg) =>
-    L.polyline(leg, { color: "#3f9d5a", weight: 3, opacity: 0.9, dashArray: "1 9", lineCap: "round" }).addTo(map)
-  );
+  L.polyline([P.sc, P.cr], { color: "#3f9d5a", weight: 3, opacity: 0.9, dashArray: "1 9", lineCap: "round" }).addTo(map);
 
   const stops = [
     { p: P.sc, name: "Santa Cruz", dest: false },
-    { p: P.nica, name: "Nicaragua", dest: true },
     { p: P.cr, name: "Costa Rica", dest: true },
   ];
   stops.forEach((s) => {
@@ -877,44 +847,56 @@ function exportLog() {
 
 // ---- Money: converter + budget ------------------------------------
 
-const RATES = { CRC: 510, NIO: 36.8 }; // approximate — 1 USD = ; update before departure
-const SYM = { CRC: "₡", NIO: "C$" };
+const USD_TO_CRC = 510; // approximate — update to the live rate before departure
 function fmtUSD(n) {
   return "$" + Number(n).toLocaleString("en-US", { maximumFractionDigits: 2 });
 }
-function fmtLocal(n, cur) {
-  return SYM[cur] + Math.round(n).toLocaleString("en-US");
+function fmtCRC(n) {
+  return "₡" + Math.round(n).toLocaleString("en-US");
 }
+let convDir = "USD2CRC";
 function updateConverter() {
-  const cur = document.getElementById("convCur").value;
-  const amt = parseFloat(document.getElementById("convFrom").value) || 0;
-  document.getElementById("convTo").value = fmtLocal(amt * RATES[cur], cur);
+  const from = document.getElementById("convFrom");
+  const to = document.getElementById("convTo");
+  const amt = parseFloat(from.value) || 0;
+  to.value = convDir === "USD2CRC" ? fmtCRC(amt * USD_TO_CRC) : fmtUSD(amt / USD_TO_CRC);
 }
 function initConverter() {
-  const curEl = document.getElementById("convCur");
+  const from = document.getElementById("convFrom");
+  const to = document.getElementById("convTo");
+  const fromCur = document.getElementById("convFromCur");
+  const toCur = document.getElementById("convToCur");
   const rate = document.getElementById("convRate");
-  const build = () => {
-    const c = curEl.value;
-    rate.textContent = `Approx. $1 = ${fmtLocal(RATES[c], c)} · update before you go`;
-    const usd = [1, 5, 10, 20, 50, 100];
-    const local = [500, 1000, 5000, 10000, 20000];
-    document.getElementById("cheatsheet").innerHTML = `
-      <div class="cheatsheet__col">
-        <h4>USD → ${c}</h4>
-        ${usd.map((v) => `<div class="cheatsheet__row"><span>${fmtUSD(v)}</span><b>${fmtLocal(v * RATES[c], c)}</b></div>`).join("")}
-      </div>
-      <div class="cheatsheet__col">
-        <h4>${c} → USD</h4>
-        ${local.map((v) => `<div class="cheatsheet__row"><span>${fmtLocal(v, c)}</span><b>${fmtUSD(v / RATES[c])}</b></div>`).join("")}
-      </div>`;
+
+  const applyLabels = () => {
+    fromCur.textContent = convDir === "USD2CRC" ? "USD" : "CRC";
+    toCur.textContent = convDir === "USD2CRC" ? "CRC" : "USD";
+    rate.textContent = `Approx. $1 = ${fmtCRC(USD_TO_CRC)} · update before you go`;
   };
-  document.getElementById("convFrom").addEventListener("input", updateConverter);
-  curEl.addEventListener("change", () => {
-    build();
+
+  from.addEventListener("input", updateConverter);
+  document.getElementById("convSwap").addEventListener("click", () => {
+    const shown = Number(String(to.value).replace(/[^0-9.]/g, "")) || 0;
+    convDir = convDir === "USD2CRC" ? "CRC2USD" : "USD2CRC";
+    from.value = shown || from.value;
+    applyLabels();
     updateConverter();
   });
-  build();
+
+  applyLabels();
   updateConverter();
+
+  const usd = [1, 5, 10, 20, 50, 100];
+  const crc = [500, 1000, 5000, 10000, 20000];
+  document.getElementById("cheatsheet").innerHTML = `
+    <div class="cheatsheet__col">
+      <h4>USD → CRC</h4>
+      ${usd.map((v) => `<div class="cheatsheet__row"><span>${fmtUSD(v)}</span><b>${fmtCRC(v * USD_TO_CRC)}</b></div>`).join("")}
+    </div>
+    <div class="cheatsheet__col">
+      <h4>CRC → USD</h4>
+      ${crc.map((v) => `<div class="cheatsheet__row"><span>${fmtCRC(v)}</span><b>${fmtUSD(v / USD_TO_CRC)}</b></div>`).join("")}
+    </div>`;
 }
 
 const BUDGET_CATS = [
@@ -1093,7 +1075,6 @@ document.addEventListener("DOMContentLoaded", () => {
   renderStatusLine();
   renderPhaseStrip();
   renderTimeline();
-  renderBreakFilters();
   renderBreaks();
   renderPacking();
   renderInfo();

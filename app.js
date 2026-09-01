@@ -9,8 +9,8 @@ const TRIP_START = "2026-08-03"; // used for the hero countdown
 // Shared across both trip pages. Keep in sync with central-america.js.
 const PHASES = [
   { key: "indonesia", icon: "🌊", label: "Indonesia", dates: "Aug 3–28", start: "2026-08-03", end: "2026-08-28", href: "index.html" },
-  { key: "reset", icon: "🏡", label: "Santa Cruz", dates: "Aug 28–Sep 1", start: "2026-08-28", end: "2026-09-01", href: null },
-  { key: "centralamerica", icon: "🌴", label: "Central America", dates: "Sep 1 – Oct 4", start: "2026-09-01", end: "2026-10-04", href: "central-america.html" },
+  { key: "reset", icon: "🏡", label: "Santa Cruz", dates: "Aug 28–Sep 2", start: "2026-08-28", end: "2026-09-02", href: null },
+  { key: "centralamerica", icon: "🌴", label: "Costa Rica", dates: "Sep 2 – Sep 25", start: "2026-09-02", end: "2026-09-25", href: "central-america.html" },
 ];
 
 const ITINERARY = [
@@ -58,7 +58,7 @@ const ITINERARY = [
     start: "2026-08-09",
     end: "2026-08-15",
     place: "Bali · open days",
-    desc: "Unbooked days to chase swell around the Bukit and the Canggu beach breaks before the flight north to Padang.",
+    desc: "Unbooked days to surf around the Bukit and the Canggu beach breaks before the flight north to Padang.",
     tags: ["Canggu", "The Bukit", "Flexible"],
   },
   {
@@ -79,7 +79,7 @@ const ITINERARY = [
     start: "2026-08-16",
     end: "2026-08-27",
     place: "Telo Boat Trip",
-    desc: "Eleven nights aboard the Switchfoot, surfing reef setups across the Mentawai and Telo chains.",
+    desc: "Eleven nights aboard the Switchfoot, surfing reef setups across the Telo chain.",
     tags: ["Boat charter", "Pumping reef", "Remote"],
   },
   {
@@ -217,7 +217,7 @@ const PACKING = [
       { label: "Stomach meds", note: "Imodium, Pepto-Bismol, activated charcoal tablets" },
       { label: "Pain relief", note: "Ibuprofen for sore paddling muscles" },
       { label: "Prescription antibiotics", note: "Doctor-prescribed course for reef cuts / staph" },
-      { label: "Antimalarial meds", note: "Doxycycline or Malarone — malaria risk in the Mentawais" },
+      { label: "Antimalarial meds", note: "Doxycycline or Malarone — malaria risk in the Telos" },
       { label: "Antihistamines", note: "Allergies, bites, stings" },
       { label: "Tweezers", note: "Fine-point — for splinters, sea-urchin spines, reef debris" },
     ],
@@ -254,7 +254,7 @@ const PACKING = [
       { label: "Visa docs", note: "e-VoA (Electronic Visa on Arrival) confirmation" },
       { label: "Travel insurance", note: "Must cover surfing + medical evacuation" },
       { label: "Cash", note: "$200 USD in crisp, unblemished bills for backup" },
-      { label: "Mentawai surf tax", note: "~Rp 2,000,000 (≈$130) cash — mandatory region fee" },
+      { label: "Telos surf tax", note: "~Rp 2,000,000 (≈$130) cash — mandatory region fee" },
       { label: "Crew tip cash", note: "Customary 10–15% of trip cost — set aside separately" },
       { label: "Cards ×2", note: "Zero foreign-exchange-fee debit/credit" },
       { label: "Wallet (ID)", note: "Driver's license + everyday cards, kept separate from passport" },
@@ -265,7 +265,7 @@ const PACKING = [
 
 const BOAT = {
   intro:
-    "A custom-built 52-foot fiberglass power catamaran built in Java by Crestrider Marine and skippered by seasoned Mentawai captain Jason Quinn under an Indonesian flag. Home base for eleven nights across the Mentawai and Telo chains.",
+    "A custom-built 52-foot fiberglass power catamaran built in Java by Crestrider Marine and skippered by seasoned Telos captain Jason Quinn under an Indonesian flag. Home base for eleven nights across the Telo chain.",
   stats: [
     { num: "52 ft", label: "length overall" },
     { num: "7.1 m", label: "beam" },
@@ -356,7 +356,7 @@ const INFO = [
     icon: "🌊",
     title: "Surf Season",
     type: "text",
-    text: "May–September is the dry season and prime time for the west-coast reefs. Expect clean offshore mornings, bigger swell on the Bukit, and consistent Mentawai lines.",
+    text: "May–September is the dry season and prime time for the west-coast reefs. Expect clean offshore mornings, bigger swell on the Bukit, and consistent Telo lines.",
   },
   {
     icon: "⚠️",
@@ -374,7 +374,7 @@ const INFO = [
     icon: "🛵",
     title: "Getting Around",
     type: "text",
-    text: "Scooters rule Bali but ride within your limits and always wear a helmet. Gojek and Grab cover longer hops. For the Mentawais it's a ferry or charter from Padang.",
+    text: "Scooters rule Bali but ride within your limits and always wear a helmet. Gojek and Grab cover longer hops. For the Telos it's a ferry or charter from Padang.",
   },
 ];
 
@@ -1295,7 +1295,7 @@ function indoCurrentPoint(P) {
   const inR = (a, b) => today >= toDate(a) && today <= toDate(b);
   if (inR("2026-08-03", "2026-08-04")) return P.tpe; // in transit
   if (inR("2026-08-04", "2026-08-15")) return P.dps;
-  if (inR("2026-08-16", "2026-08-27")) return P.mtw;
+  if (inR("2026-08-16", "2026-08-27")) return P.telo;
   if (inR("2026-08-27", "2026-08-28")) return P.pdg;
   return P.sfo; // home before and after the trip
 }
@@ -1319,7 +1319,7 @@ function initFlightMap() {
     cgk: [-6.13, -253.34],
     dps: [-8.75, -244.83],
     pdg: [-0.79, -259.72],
-    mtw: [-2.28, -260.43],
+    telo: [-2.28, -260.43],
   };
 
   const map = L.map(el, { scrollWheelZoom: false, zoomControl: true });
@@ -1339,7 +1339,7 @@ function initFlightMap() {
   flightLegs.forEach((leg) =>
     L.polyline(leg, { color: "#178ca4", weight: 3, opacity: 0.9, dashArray: "1 9", lineCap: "round" }).addTo(map)
   );
-  L.polyline([P.pdg, P.mtw], { color: "#ff6b5b", weight: 3, opacity: 0.95, dashArray: "1 9", lineCap: "round" }).addTo(map);
+  L.polyline([P.pdg, P.telo], { color: "#ff6b5b", weight: 3, opacity: 0.95, dashArray: "1 9", lineCap: "round" }).addTo(map);
 
   const stops = [
     { p: P.sfo, name: "San Francisco", dest: false },
@@ -1347,7 +1347,7 @@ function initFlightMap() {
     { p: P.cgk, name: "Jakarta", dest: false },
     { p: P.dps, name: "Bali (Denpasar)", dest: true },
     { p: P.pdg, name: "Padang", dest: false },
-    { p: P.mtw, name: "Mentawai Is.", dest: true },
+    { p: P.telo, name: "Telo Is.", dest: true },
   ];
   stops.forEach((s) => {
     L.circleMarker(s.p, {
