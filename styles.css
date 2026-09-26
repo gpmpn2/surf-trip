@@ -372,9 +372,13 @@ select:focus-visible, textarea:focus-visible {
   border: 1.5px solid transparent;
   text-decoration: none;
   color: var(--ink);
-  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease;
 }
-a.phase:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: var(--teal-400); }
+a.phase {
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+}
+a.phase:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
 .phase__dot { flex: 0 0 auto; width: 9px; height: 9px; border-radius: 50%; background: var(--sand-deep); }
 .phase__icon { font-size: 1.25rem; line-height: 1; }
 .phase__label { font-weight: 600; color: var(--heading); }
