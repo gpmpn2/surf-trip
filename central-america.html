@@ -28,6 +28,7 @@
       <span>Costa Rica '26</span>
     </a>
     <nav class="nav__links" id="navLinks" aria-label="Primary">
+      <a href="#gallery">Gallery</a>
       <a href="#itinerary">Plan</a>
       <a href="#breaks">Breaks</a>
       <a href="#packing">Packing</a>
@@ -57,7 +58,7 @@
       <div class="hero__meta">
         <div class="hero__meta-item"><span class="hero__meta-num" id="countdown">—</span><span class="hero__meta-label">days to go</span></div>
         <div class="hero__meta-item"><span class="hero__meta-num">24</span><span class="hero__meta-label">days there</span></div>
-        <div class="hero__meta-item"><span class="hero__meta-num">∞</span><span class="hero__meta-label">points to find</span></div>
+        <div class="hero__meta-item"><span class="hero__meta-num">4</span><span class="hero__meta-label">spots surfed</span></div>
       </div>
       <a href="#itinerary" class="hero__cta">See the plan ↓</a>
     </div>
@@ -67,12 +68,22 @@
     <p class="statusline" id="statusLine" role="status"></p>
     <div class="phases" id="phaseStrip" role="group" aria-label="Sabbatical progress"></div>
 
+    <!-- Gallery -->
+    <section class="section" id="gallery">
+      <div class="section__head">
+        <p class="section__eyebrow">From the trip</p>
+        <h2 class="section__title">Gallery</h2>
+        <p class="section__lede">Shots from Pavones, Dominical, and Santa Teresa.</p>
+      </div>
+      <div class="gallery__grid" id="galleryGrid"></div>
+    </section>
+
     <!-- Itinerary -->
     <section class="section" id="itinerary">
       <div class="section__head">
-        <p class="section__eyebrow">The loose plan</p>
+        <p class="section__eyebrow">The trip</p>
         <h2 class="section__title">The Route</h2>
-        <p class="section__lede">Dates and stops aren't finalized yet.</p>
+        <p class="section__lede">The route, dates, and stays.</p>
       </div>
 
       <p class="sr-only">Route: Santa Cruz, California to Costa Rica, then home.</p>
@@ -122,38 +133,7 @@
       <div class="section__head">
         <p class="section__eyebrow">The sessions</p>
         <h2 class="section__title">Surf Log</h2>
-        <p class="section__lede">Log every session as you go. Saved on this device.</p>
-      </div>
-
-      <form class="logform" id="logForm">
-        <div class="logform__row">
-          <label class="logform__field">
-            <span>Date</span>
-            <input type="date" id="logDate" required />
-          </label>
-          <label class="logform__field">
-            <span>Spot</span>
-            <input type="text" id="logSpot" list="breakList" placeholder="e.g. Popoyo" required />
-            <datalist id="breakList"></datalist>
-          </label>
-          <div class="logform__field logform__field--rating">
-            <span>Rating</span>
-            <div class="logform__stars" id="logStars"></div>
-          </div>
-          <div class="logform__field logform__field--board">
-            <span>Board</span>
-            <div class="logform__boards" id="logBoards"></div>
-          </div>
-        </div>
-        <label class="logform__field">
-          <span>Notes</span>
-          <textarea id="logNotes" rows="2" placeholder="Size, crowd, how it went…"></textarea>
-        </label>
-        <button type="submit" class="logform__submit">Log session</button>
-      </form>
-
-      <div class="log__actions">
-        <button type="button" class="log__export" id="logExport">⬇ Export log (.txt)</button>
+        <p class="section__lede" id="logLede">Every session from the trip.</p>
       </div>
 
       <div class="log__list" id="logList"></div>
@@ -216,6 +196,13 @@
   <footer class="footer">
     <p>Costa Rica · September 2026 · Sabbatical Pt. 2</p>
   </footer>
+
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer" hidden>
+    <button type="button" class="lightbox__close" id="lightboxClose" aria-label="Close">✕</button>
+    <button type="button" class="lightbox__nav lightbox__nav--prev" id="lightboxPrev" aria-label="Previous photo">‹</button>
+    <img class="lightbox__img" id="lightboxImg" alt="" />
+    <button type="button" class="lightbox__nav lightbox__nav--next" id="lightboxNext" aria-label="Next photo">›</button>
+  </div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="central-america.js"></script>

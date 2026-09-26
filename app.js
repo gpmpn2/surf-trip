@@ -380,7 +380,7 @@ const INFO = [
 
 // ---- Rendering ----------------------------------------------------
 
-const CHECK_SVG = '<svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg>';
+const CHECK_SVG = '<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
 const STORAGE_KEY = "surf-trip-packing-v3";
 const PACKING_LOCKED = true; // trip is packed — list stays visible read-only
 
@@ -461,11 +461,13 @@ function renderStatusLine() {
   const lastEnd = toDate(PHASES[PHASES.length - 1].end);
 
   let msg;
+  let isComplete = false;
   if (today < firstStart) {
     const n = days(today, firstStart);
     msg = `${n} day${n === 1 ? "" : "s"} until Indonesia`;
   } else if (today > lastEnd) {
     msg = "Sabbatical complete 🤙";
+    isComplete = true;
   } else {
     const active = PHASES.find((p) => toDate(p.start) <= today && today <= toDate(p.end));
     if (active && active.key === page) {
@@ -488,7 +490,7 @@ function renderStatusLine() {
       }
     }
   }
-  el.innerHTML = `<span class="statusline__dot" aria-hidden="true"></span>${msg}`;
+  el.innerHTML = `${isComplete ? "" : `<span class="statusline__dot" aria-hidden="true"></span>`}${msg}`;
 }
 
 function renderPhaseStrip() {
@@ -718,6 +720,7 @@ function renderCountdown() {
   const now = new Date();
   const days = Math.ceil((start - now) / (1000 * 60 * 60 * 24));
   el.textContent = days > 0 ? days : "🌴";
+  el.classList.toggle("is-complete", days <= 0);
 }
 
 // ---- Scroll behaviors --------------------------------------------
@@ -1093,6 +1096,8 @@ function fmtLogDate(iso) {
 
 function renderLog() {
   const el = document.getElementById("logList");
+  const lede = document.getElementById("logLede");
+  if (lede) lede.textContent = `${logEntries.length} session${logEntries.length === 1 ? "" : "s"} from the trip.`;
   if (!logEntries.length) {
     el.innerHTML = `<p class="log__empty">No sessions logged yet. Your first paddle-out goes here.</p>`;
     return;

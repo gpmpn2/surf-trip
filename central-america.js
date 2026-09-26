@@ -35,21 +35,49 @@ const ITINERARY = [
     tags: ["Southwest", "Houston connection"],
   },
   {
+    days: "Sep 2 – Sep 3",
+    start: "2026-09-02",
+    end: "2026-09-03",
+    place: "Alajuela · Hotel City Alajuela",
+    desc: "One night near the airport before heading to the coast.",
+    nights: 1,
+    tags: ["1 night"],
+  },
+  {
     days: "Sep 3 – Sep 8",
     start: "2026-09-03",
     end: "2026-09-08",
-    place: "Pavones",
-    desc: "First stop after landing — the long, walling lefts of Pavones on the southern Pacific coast.",
+    place: "Pavones · Cabinas Las Gemelas",
+    desc: "The long, walling lefts of Pavones on the southern Pacific coast.",
     nights: 5,
-    tags: ["Pavones", "5 nights"],
+    tags: ["5 nights"],
   },
   {
-    days: "Sep 8 – Sep 25",
-    start: "2026-09-08",
+    days: "Sep 9 – Sep 13",
+    start: "2026-09-09",
+    end: "2026-09-13",
+    place: "Dominical · Hotel Rio Lindo",
+    desc: "Moved up the coast to Dominical.",
+    nights: 4,
+    tags: ["4 nights"],
+  },
+  {
+    days: "Sep 14 – Sep 24",
+    start: "2026-09-14",
+    end: "2026-09-24",
+    place: "Santa Teresa · Nautilus Surf & Yoga",
+    desc: "Final stretch, up on the Nicoya Peninsula.",
+    nights: 10,
+    tags: ["10 nights"],
+  },
+  {
+    days: "Sep 24 – Sep 25",
+    start: "2026-09-24",
     end: "2026-09-25",
-    place: "Costa Rica · open days",
-    desc: "Undetermined from here — maybe Nosara, maybe Santa Teresa, moving with the swell before the flight home.",
-    tags: ["Nosara", "Santa Teresa", "Flexible"],
+    place: "Alajuela · Hotel City Alajuela",
+    desc: "Back near the airport ahead of the flights home.",
+    nights: 1,
+    tags: ["1 night"],
   },
   {
     days: "Sep 25",
@@ -69,52 +97,36 @@ const ITINERARY = [
 
 const BREAKS = [
   {
-    name: "Santa Teresa",
-    type: "Beach break",
-    level: "Beginner–Adv",
-    best: "S/SW swell · offshore AM · mid tide",
-    hazard: "Rips on bigger days",
-    blurb: "Long stretch of consistent, punchy beach break — surfable most of the day.",
-  },
-  {
-    name: "Playa Guiones, Nosara",
-    type: "Beach break",
-    level: "Beginner–Int",
-    best: "Almost any swell · mid tide",
-    hazard: "Strong currents at size",
-    blurb: "Mellow, super-consistent — one of the best all-round learning-to-logging waves.",
-  },
-  {
     name: "Pavones",
-    type: "Left point",
+    type: "Left point · river mouth",
     level: "Advanced",
-    best: "Solid S swell · mid–high tide",
-    hazard: "Rocks, very long paddle back",
-    blurb: "One of the longest left points around — needs a real south swell to fire.",
+    best: "Glassy, low wind — usually a narrow window",
+    hazard: "River-mouth current, onshore wind most mornings",
+    blurb: "Long, racey lefts off the river mouth — best in a short glassy window, often a late morning or a sneaky afternoon session.",
   },
   {
-    name: "Witch's Rock",
-    type: "Beach break",
-    level: "Intermediate–Adv",
-    best: "Offshore Papagayo wind · S swell",
-    hazard: "Remote, boat access, crocs in the river mouth",
-    blurb: "Remote Guanacaste beach break — usually a boat or 4x4 mission from Tamarindo.",
-  },
-  {
-    name: "Ollie's Point",
-    type: "Right point",
-    level: "Intermediate–Adv",
-    best: "S/SW swell · offshore · mid tide",
-    hazard: "Boat access only, crowds",
-    blurb: "Long, peeling right point north of Witch's Rock — boat trip from Playas del Coco.",
-  },
-  {
-    name: "Playa Hermosa (Jacó)",
+    name: "Dominical",
     type: "Beach break",
     level: "Advanced",
-    best: "S/SW swell · mid tide",
-    hazard: "Heavy, powerful, strong rips",
-    blurb: "Fast, hollow, and serious — the proving-ground beach break south of Jacó.",
+    best: "Rising tide, before the wind fills in",
+    hazard: "Powerful shorebreak, closeouts at low tide",
+    blurb: "Punchy, powerful beach break by the lifeguard stand — heavy and closing out at low tide, needs the tide pushing in to work.",
+  },
+  {
+    name: "Playa Santa Teresa",
+    type: "Beach break",
+    level: "Intermediate",
+    best: "Later morning, main peak or the rocks on the south end",
+    hazard: "Shifts fast from fun to onshore shorebreak",
+    blurb: "Long beach with a shifting main peak and a rocky-point left on the south end — quality swings a lot session to session.",
+  },
+  {
+    name: "Playa Hermosa",
+    type: "Beach break",
+    level: "Intermediate",
+    best: "First light, low tide, before the wind",
+    hazard: "Inside sandbar can kill momentum, onshore by mid-morning",
+    blurb: "Beach 15 minutes north of Santa Teresa — best at dawn before the wind fills in, with a peak up top and lefts further south.",
   },
 ];
 
@@ -226,12 +238,6 @@ const INFO = [
     text: "Dengue is present in Costa Rica — wear repellent, especially at dawn and dusk. Drink filtered or bottled water, mind the rips, and reapply reef-safe sunscreen every session.",
   },
   {
-    icon: "🚐",
-    title: "Getting Around",
-    type: "text",
-    text: "Shared shuttles connect the surf towns; a 4x4 helps for remote points. Boat trips run to Witch's Rock and Ollie's Point.",
-  },
-  {
     icon: "💵",
     title: "Money",
     type: "text",
@@ -241,7 +247,7 @@ const INFO = [
 
 // ---- Rendering ----------------------------------------------------
 
-const CHECK_SVG = '<svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg>';
+const CHECK_SVG = '<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
 const STORAGE_KEY = "surf-trip-ca-packing-v1";
 
 function pop(el) {
@@ -326,6 +332,90 @@ function armReveal(root = document) {
   });
 }
 
+// ---- Gallery -------------------------------------------------------
+
+// Files live in assets/gallery-cr/{thumbs,full}.
+const GALLERY = [
+  "GPTempDownload_3", "GPTempDownload_4", "IMG_1C7C510D",
+  "IMG_9052", "IMG_9055", "IMG_9059", "IMG_9060", "IMG_9061", "IMG_9064",
+  "IMG_9068", "IMG_9071", "IMG_9074", "IMG_9078", "IMG_9082", "IMG_9090",
+  "IMG_9095", "IMG_9102", "IMG_9111", "IMG_9115", "IMG_9125", "IMG_9131",
+  "IMG_9132", "IMG_9136", "IMG_9138", "IMG_9140", "IMG_9142", "IMG_9148",
+  "IMG_9150", "IMG_9151", "IMG_9158", "IMG_9160", "IMG_9162",
+  "IMG_BD5BFEE7",
+];
+
+let lightboxSource = GALLERY;
+let lightboxFolder = "assets/gallery-cr";
+let lightboxIndex = 0;
+
+function renderGalleryGrid(gridId, names, folder) {
+  const grid = document.getElementById(gridId);
+  if (!grid) return;
+  grid.innerHTML = names.map(
+    (name, i) => `
+    <button type="button" class="gallery__item reveal" data-index="${i}" aria-label="Open photo ${i + 1} of ${names.length}">
+      <img src="${folder}/thumbs/${name}.jpg" alt="" loading="lazy" />
+    </button>`
+  ).join("");
+  armReveal(grid);
+
+  grid.querySelectorAll(".gallery__item").forEach((btn) => {
+    btn.addEventListener("click", () => openLightbox(names, folder, Number(btn.dataset.index)));
+  });
+}
+
+function renderGallery() {
+  renderGalleryGrid("galleryGrid", GALLERY, "assets/gallery-cr");
+}
+
+function openLightbox(source, folder, index) {
+  lightboxSource = source;
+  lightboxFolder = folder;
+  lightboxIndex = index;
+  const box = document.getElementById("lightbox");
+  box.hidden = false;
+  document.body.style.overflow = "hidden";
+  showLightboxImage();
+}
+
+function closeLightbox() {
+  const box = document.getElementById("lightbox");
+  box.hidden = true;
+  document.body.style.overflow = "";
+}
+
+function showLightboxImage() {
+  const name = lightboxSource[lightboxIndex];
+  const img = document.getElementById("lightboxImg");
+  img.src = `${lightboxFolder}/full/${name}.jpg`;
+  img.alt = `Photo ${lightboxIndex + 1} of ${lightboxSource.length}`;
+}
+
+function lightboxStep(dir) {
+  lightboxIndex = (lightboxIndex + dir + lightboxSource.length) % lightboxSource.length;
+  showLightboxImage();
+}
+
+function initGallery() {
+  renderGallery();
+  const box = document.getElementById("lightbox");
+  if (!box) return;
+
+  document.getElementById("lightboxClose").addEventListener("click", closeLightbox);
+  document.getElementById("lightboxPrev").addEventListener("click", () => lightboxStep(-1));
+  document.getElementById("lightboxNext").addEventListener("click", () => lightboxStep(1));
+  box.addEventListener("click", (e) => {
+    if (e.target === box) closeLightbox();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (box.hidden) return;
+    if (e.key === "Escape") closeLightbox();
+    if (e.key === "ArrowLeft") lightboxStep(-1);
+    if (e.key === "ArrowRight") lightboxStep(1);
+  });
+}
+
 function renderStatusLine() {
   const el = document.getElementById("statusLine");
   if (!el) return;
@@ -338,11 +428,13 @@ function renderStatusLine() {
   const lastEnd = toDate(PHASES[PHASES.length - 1].end);
 
   let msg;
+  let isComplete = false;
   if (today < firstStart) {
     const n = days(today, firstStart);
     msg = `${n} day${n === 1 ? "" : "s"} until Indonesia`;
   } else if (today > lastEnd) {
     msg = "Sabbatical complete 🤙";
+    isComplete = true;
   } else {
     const active = PHASES.find((p) => toDate(p.start) <= today && today <= toDate(p.end));
     if (active && active.key === page) {
@@ -365,7 +457,7 @@ function renderStatusLine() {
       }
     }
   }
-  el.innerHTML = `<span class="statusline__dot" aria-hidden="true"></span>${msg}`;
+  el.innerHTML = `${isComplete ? "" : `<span class="statusline__dot" aria-hidden="true"></span>`}${msg}`;
 }
 
 function renderPhaseStrip() {
@@ -462,7 +554,6 @@ function renderBreaks() {
           <div><dt>Watch for</dt><dd>${b.hazard}</dd></div>
         </dl>
         <div class="break-card__links">
-          <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(b.name + " surf spot")}" target="_blank" rel="noopener">📍 Map<span class="sr-only"> (opens Google Maps)</span></a>
           <a href="https://www.google.com/search?q=${encodeURIComponent(b.name + " surf forecast")}" target="_blank" rel="noopener">🌊 Forecast<span class="sr-only"> (opens a web search)</span></a>
         </div>
       </div>
@@ -613,6 +704,7 @@ function renderCountdown() {
   const now = new Date();
   const days = Math.ceil((start - now) / (1000 * 60 * 60 * 24));
   el.textContent = days > 0 ? days : "🌴";
+  el.classList.toggle("is-complete", days <= 0);
 }
 
 // ---- Route map (Leaflet) ------------------------------------------
@@ -622,7 +714,11 @@ function caCurrentPoint(P) {
   today.setHours(0, 0, 0, 0);
   const toDate = (s) => new Date(s + "T00:00:00");
   const inR = (a, b) => today >= toDate(a) && today <= toDate(b);
-  if (inR("2026-09-02", "2026-09-25")) return P.cr;
+  if (inR("2026-09-02", "2026-09-03")) return P.sjo;
+  if (inR("2026-09-03", "2026-09-08")) return P.pavones;
+  if (inR("2026-09-08", "2026-09-13")) return P.dominical;
+  if (inR("2026-09-13", "2026-09-24")) return P.santateresa;
+  if (inR("2026-09-24", "2026-09-25")) return P.sjo;
   return P.sc; // home (Santa Cruz) before, during the reset, and after
 }
 
@@ -635,7 +731,13 @@ function initRouteMap() {
     el.innerHTML = "<p>The interactive map needs an internet connection.</p>";
     return;
   }
-  const P = { sc: [36.97, -122.03], cr: [9.98, -85.65] };
+  const P = {
+    sc: [36.97, -122.03],
+    sjo: [9.9981, -84.2041],
+    pavones: [8.3833, -83.0],
+    dominical: [9.25, -83.8667],
+    santateresa: [9.6461, -85.1691],
+  };
   const map = L.map(el, { scrollWheelZoom: false, zoomControl: true });
   L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
     attribution: "&copy; OpenStreetMap contributors &copy; CARTO",
@@ -643,11 +745,22 @@ function initRouteMap() {
     maxZoom: 10,
   }).addTo(map);
 
-  L.polyline([P.sc, P.cr], { color: "#3f9d5a", weight: 3, opacity: 0.9, dashArray: "1 9", lineCap: "round" }).addTo(map);
+  L.polyline([P.sc, P.sjo], { color: "#3f9d5a", weight: 3, opacity: 0.9, dashArray: "1 9", lineCap: "round" }).addTo(map);
+  [
+    [P.sjo, P.pavones],
+    [P.pavones, P.dominical],
+    [P.dominical, P.santateresa],
+    [P.santateresa, P.sjo],
+  ].forEach((leg) =>
+    L.polyline(leg, { color: "#ff7a3c", weight: 3, opacity: 0.9, dashArray: "1 9", lineCap: "round" }).addTo(map)
+  );
 
   const stops = [
     { p: P.sc, name: "Santa Cruz", dest: false },
-    { p: P.cr, name: "Costa Rica", dest: true },
+    { p: P.sjo, name: "Alajuela", dest: false },
+    { p: P.pavones, name: "Pavones", dest: true },
+    { p: P.dominical, name: "Dominical", dest: true },
+    { p: P.santateresa, name: "Santa Teresa", dest: true },
   ];
   stops.forEach((s) => {
     L.circleMarker(s.p, {
@@ -675,16 +788,42 @@ function initRouteMap() {
 
 // ---- Surf Log -----------------------------------------------------
 
-const LOG_KEY = "surf-trip-ca-log-v1";
-let logEntries = loadJSON(LOG_KEY, []);
-let logRating = 0;
-let logBoard = "";
-
-// The quiver — used to color-code sessions and to label the export.
+// The quiver — used to color-code sessions.
 const BOARDS = [
   { id: "5150", label: "5150+", color: "#2f6df6" },
   { id: "sword", label: "Sword", color: "#ff8a3d" },
 ];
+
+// The trip is over — this is the final record, embedded so it survives
+// a cleared localStorage. No more sessions get added after the fact.
+const SEED_LOG = [
+  { id: 1, date: "2026-09-04", spot: "Pavones", rating: 3, board: "5150", notes: "Pretty small. Swell is still building, but got a few and could see the potential for this weekend. Racey left walls." },
+  { id: 2, date: "2026-09-05", spot: "Pavones", rating: 2, board: "5150", notes: "The swell arrived. Im learning that there is realistically an hour window to get decent surf. This morning session was pretty much on shore wind the whole time. Paddled at 8. Out by 9:30." },
+  { id: 3, date: "2026-09-05", spot: "Pavones", rating: 4, board: "5150", notes: "11am session. This is when the wind finally dies. No offshore wind though. Sets every 15 minutes. A few longer rides. I drove to the paddle out this session." },
+  { id: 4, date: "2026-09-06", spot: "Pavones", rating: 2, board: "5150", notes: "I attempted another 7am morning session. I surfed the river mouth. Pretty much onshore wind the whole time." },
+  { id: 5, date: "2026-09-06", spot: "Pavones", rating: 4, board: "5150", notes: "11am to 12:30pm. Wind was mostly quiet, picked up onshore at the end so I got out. A few long waves with decent shoulders. Lineup was fine, not too crowded. Swell direction felt like it changed (as in it got better, probably more south than west)" },
+  { id: 6, date: "2026-09-07", spot: "Pavones", rating: 2, board: "5150", notes: "6:30am session. Tide was rising and wind was on. Not great, caught a few." },
+  { id: 7, date: "2026-09-07", spot: "Pavones", rating: 4, board: "5150", notes: "Sneaker session. Got in at 3pm. No wind, super glassy. Probably got the best wave of the trip so far. And pigdogged a small wave successfully." },
+  { id: 8, date: "2026-09-08", spot: "Pavones", rating: 4, board: "5150", notes: "Surfed the river mouth and it was great. Super glassy, I was the only one out at one point. Solid 5ft, and consistent. Got in around 7am and out at 9:30am." },
+  { id: 9, date: "2026-09-09", spot: "Dominical", rating: 2, board: "5150", notes: "Waited for the tide to push in. Got in around 10am. Started at the river mouth but eventually went about half a mile down the beach infront of the guard stand. You had to really scratch to get in the waves, but had a couple turns. Left and right." },
+  { id: 10, date: "2026-09-10", spot: "Dominical", rating: 3, board: "5150", notes: "Session was ok, got in around 10. Got a couple hours in before the tide got too high and the wind came up. More people out today. Drifted down below the lifeguard stand." },
+  { id: 11, date: "2026-09-11", spot: "Dominical", rating: 1, board: "5150", notes: "Big, closing out. Surfed around 10 again, it was a lower tide. Barely scratched under a huge set wave and decided to call it." },
+  { id: 12, date: "2026-09-12", spot: "Dominical", rating: 2, board: "5150", notes: "In the water at 6am. Glassy, bit smaller than yesterday. Most people I've seen yet. Caught a few rights. Got my spine adjusted by a clean up set at the end. Met a guy who had a Stretch 2win." },
+  { id: 13, date: "2026-09-14", spot: "Playa Hermosa", rating: 4, board: "5150", notes: "Paddled at 6am. Sheet glass with 3 people out. Took multiple fun waves from the peak going right. Some fun lefts further south on the beach." },
+  { id: 14, date: "2026-09-14", spot: "Playa Hermosa", rating: 2, board: "5150", notes: "Evening session. Still choppy from the wind and tide was probably to high. Learning morning sessions are the best." },
+  { id: 15, date: "2026-09-15", spot: "Playa Hermosa", rating: 2, board: "5150", notes: "Early morning session. Glassy but something was off. The waves weren't easy to paddle into and died quickly as they hit the inside sandbar." },
+  { id: 16, date: "2026-09-16", spot: "Playa Hermosa", rating: 2, board: "5150", notes: "6am session again. There was bigger swell but still pretty inconsistent and slow. A couple fun lefts." },
+  { id: 17, date: "2026-09-18", spot: "Playa Santa Teresa", rating: 4, board: "5150", notes: "Fun left off the rocks on the south side of the beach. Surfed later in the morning. Had the peak to myself." },
+  { id: 18, date: "2026-09-19", spot: "Playa Santa Teresa", rating: 2, board: "5150", notes: "Waves were not nearly as good this morning. Got in the water just before 6. Really slow session. Left off the rock wasnt working." },
+  { id: 19, date: "2026-09-20", spot: "Playa Santa Teresa", rating: 3, board: "5150", notes: "Slept in a bit. Didn't paddle until 8am. Went to the main peak right in the middle of the beach. Small cover up going right. Then drifted back down to the rocks on the south side and got some decent lefts. Wind came on around 9:30 and kinda blew it out." },
+  { id: 20, date: "2026-09-20", spot: "Playa Santa Teresa", rating: 1, board: "5150", notes: "Evening session, pretty garbage. Basically onshore wind shore break." },
+  { id: 21, date: "2026-09-21", spot: "Playa Santa Teresa", rating: 2, board: "5150", notes: "Stormed all last night and into this morning. Surf was choppy, short period. I moved down to the main peak and had a couple fun rights and lefts." },
+  { id: 22, date: "2026-09-22", spot: "Playa Santa Teresa", rating: 1, board: "5150", notes: "Shore break essentially. Tried to move down to the rock on the south side but nothing ever came through." },
+  { id: 23, date: "2026-09-23", spot: "Playa Santa Teresa", rating: 1, board: "5150", notes: "Low tide shore break, wind came onshore early…" },
+  { id: 24, date: "2026-09-24", spot: "Playa Hermosa", rating: 3, board: "5150", notes: "Solid 3 star session. In the water before 6 am, barely anyone out. Really low tide so it was mostly hollow. Got a fun right cover up and some fun lefts." },
+];
+
+const logEntries = SEED_LOG;
 
 function boardMeta(id) {
   return BOARDS.find((b) => b.id === id);
@@ -707,58 +846,21 @@ function saveJSON(key, val) {
 function escapeHTML(str) {
   return String(str).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 }
-function starRow(n, interactive) {
+function starRow(n) {
   let s = "";
   for (let i = 1; i <= 5; i++) {
-    const on = i <= n ? "is-on" : "";
-    s += interactive
-      ? `<button type="button" class="star ${on}" data-val="${i}" aria-pressed="${i === n}" aria-label="${i} star${i === 1 ? "" : "s"}">★</button>`
-      : `<span class="star ${on}" aria-hidden="true">★</span>`;
+    s += `<span class="star ${i <= n ? "is-on" : ""}" aria-hidden="true">★</span>`;
   }
   return s;
-}
-function renderLogStars() {
-  const el = document.getElementById("logStars");
-  el.setAttribute("role", "group");
-  el.setAttribute("aria-label", `Session rating: ${logRating ? logRating + " of 5" : "not set"}`);
-  el.innerHTML = starRow(logRating, true);
-  el.querySelectorAll(".star").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      logRating = Number(btn.dataset.val);
-      renderLogStars();
-      pop(document.querySelector(`#logStars .star[data-val="${logRating}"]`));
-    });
-  });
-}
-function renderLogBoards() {
-  const el = document.getElementById("logBoards");
-  if (!el) return;
-  el.setAttribute("role", "group");
-  el.setAttribute("aria-label", `Board: ${logBoard ? boardMeta(logBoard).label : "not set"}`);
-  el.innerHTML =
-    `<button type="button" class="board-pill ${logBoard ? "" : "is-on"}" data-board="" aria-pressed="${!logBoard}">—</button>` +
-    BOARDS.map(
-      (b) =>
-        `<button type="button" class="board-pill ${logBoard === b.id ? "is-on" : ""}" data-board="${b.id}" style="--board-color:${b.color}" aria-pressed="${logBoard === b.id}">${b.label}</button>`
-    ).join("");
-  el.querySelectorAll(".board-pill").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      logBoard = btn.dataset.board;
-      renderLogBoards();
-      pop(btn);
-    });
-  });
 }
 function fmtLogDate(iso) {
   const d = new Date(iso + "T00:00:00");
   return d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
 }
-function fmtLogDateLong(iso) {
-  const d = new Date(iso + "T00:00:00");
-  return d.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" });
-}
 function renderLog() {
   const el = document.getElementById("logList");
+  const lede = document.getElementById("logLede");
+  if (lede) lede.textContent = `${logEntries.length} session${logEntries.length === 1 ? "" : "s"} from the trip.`;
   if (!logEntries.length) {
     el.innerHTML = `<p class="log__empty">No sessions logged yet. Your first paddle-out goes here.</p>`;
     return;
@@ -774,75 +876,17 @@ function renderLog() {
           <span class="log-entry__spot">${escapeHTML(e.spot)}</span>
           <span class="log-entry__tags">
             ${boardMeta(e.board) ? `<span class="log-entry__board" style="--board-color:${boardMeta(e.board).color}">${boardMeta(e.board).label}</span>` : ""}
-            <span class="log-entry__stars" aria-label="${e.rating} out of 5 stars">${starRow(e.rating, false)}</span>
+            <span class="log-entry__stars" aria-label="${e.rating} out of 5 stars">${starRow(e.rating)}</span>
           </span>
         </div>
         ${e.notes ? `<p class="log-entry__notes">${escapeHTML(e.notes)}</p>` : ""}
       </div>
-      <button type="button" class="log-entry__del" data-id="${e.id}" aria-label="Delete session">✕</button>
     </div>`
     )
     .join("");
-  el.querySelectorAll(".log-entry__del").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      logEntries = logEntries.filter((x) => String(x.id) !== btn.dataset.id);
-      saveJSON(LOG_KEY, logEntries);
-      renderLog();
-    });
-  });
 }
 function initLog() {
-  const form = document.getElementById("logForm");
-  const dateInput = document.getElementById("logDate");
-  const spotInput = document.getElementById("logSpot");
-  const notesInput = document.getElementById("logNotes");
-  document.getElementById("breakList").innerHTML = BREAKS.map((b) => `<option value="${b.name}"></option>`).join("");
-  dateInput.value = new Date().toISOString().slice(0, 10);
-  renderLogStars();
-  renderLogBoards();
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    logEntries.push({ id: Date.now(), date: dateInput.value, spot: spotInput.value.trim(), rating: logRating, board: logBoard, notes: notesInput.value.trim() });
-    saveJSON(LOG_KEY, logEntries);
-    spotInput.value = "";
-    notesInput.value = "";
-    logRating = 0;
-    logBoard = "";
-    renderLogStars();
-    renderLogBoards();
-    renderLog();
-  });
-  document.getElementById("logExport")?.addEventListener("click", exportLog);
   renderLog();
-}
-
-function exportLog() {
-  const tripLabel = document.body.dataset.page === "centralamerica" ? "Central America" : "Indonesia";
-  const sorted = [...logEntries].sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : a.id - b.id));
-
-  const lines = [`SURF LOG — ${tripLabel} Trip`, `${sorted.length} session${sorted.length === 1 ? "" : "s"}`, ""];
-  if (!sorted.length) {
-    lines.push("No sessions logged yet.");
-  } else {
-    sorted.forEach((e) => {
-      const board = boardMeta(e.board);
-      lines.push(`${fmtLogDateLong(e.date)} — ${e.spot}`);
-      lines.push(`  Rating: ${"★".repeat(e.rating)}${"☆".repeat(5 - e.rating)} (${e.rating}/5)`);
-      if (board) lines.push(`  Board: ${board.label}`);
-      if (e.notes) lines.push(`  Notes: ${e.notes}`);
-      lines.push("");
-    });
-  }
-
-  const blob = new Blob([lines.join("\n")], { type: "text/plain" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `surf-log-${tripLabel.toLowerCase().replace(/\s+/g, "-")}-${new Date().toISOString().slice(0, 10)}.txt`;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(url);
 }
 
 // ---- Money: converter + budget ------------------------------------
@@ -1074,6 +1118,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initTheme();
   renderStatusLine();
   renderPhaseStrip();
+  initGallery();
   renderTimeline();
   renderBreaks();
   renderPacking();
