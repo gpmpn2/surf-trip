@@ -840,7 +840,8 @@ function renderVideos() {
 
   // Safari doesn't paint a frame from preload="metadata" alone — nudging the
   // playhead forces it to decode and show one, giving a real thumbnail.
-  grid.querySelectorAll("video").forEach((video) => {
+  const videos = [...grid.querySelectorAll("video")];
+  videos.forEach((video) => {
     video.addEventListener(
       "loadedmetadata",
       () => {
@@ -852,6 +853,11 @@ function renderVideos() {
       },
       { once: true }
     );
+    video.addEventListener("play", () => {
+      videos.forEach((v) => {
+        if (v !== video) v.pause();
+      });
+    });
   });
 }
 
