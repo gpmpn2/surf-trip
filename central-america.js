@@ -342,7 +342,7 @@ const GALLERY = [
   "IMG_9095", "IMG_9102", "IMG_9111", "IMG_9115", "IMG_9125", "IMG_9131",
   "IMG_9132", "IMG_9136", "IMG_9138", "IMG_9140", "IMG_9142", "IMG_9148",
   "IMG_9150", "IMG_9151", "IMG_9158", "IMG_9160", "IMG_9162",
-  "IMG_BD5BFEE7",
+  "IMG_BD5BFEE7", "IMG_9104", "IMG_9116",
 ];
 
 let lightboxSource = GALLERY;
@@ -367,6 +367,41 @@ function renderGalleryGrid(gridId, names, folder) {
 
 function renderGallery() {
   renderGalleryGrid("galleryGrid", GALLERY, "assets/gallery-cr");
+}
+
+// Files live in assets/videos-cr/.
+const VIDEOS = [
+  "IMG_9054", "IMG_9058", "IMG_9062", "IMG_9067", "IMG_9080", "IMG_9091",
+  "IMG_9106", "IMG_9107", "IMG_9109", "IMG_9112", "IMG_9113", "IMG_9152",
+  "IMG_9159", "IMG_9163",
+];
+
+function renderVideos() {
+  const grid = document.getElementById("videoGrid");
+  if (!grid) return;
+  grid.innerHTML = VIDEOS.map(
+    (name) => `
+    <div class="video-card reveal">
+      <video controls preload="metadata" playsinline src="assets/videos-cr/${name}.mov"></video>
+    </div>`
+  ).join("");
+  armReveal(grid);
+
+  // Safari doesn't paint a frame from preload="metadata" alone — nudging the
+  // playhead forces it to decode and show one, giving a real thumbnail.
+  grid.querySelectorAll("video").forEach((video) => {
+    video.addEventListener(
+      "loadedmetadata",
+      () => {
+        try {
+          video.currentTime = Math.min(0.1, video.duration / 2);
+        } catch {
+          /* ignore */
+        }
+      },
+      { once: true }
+    );
+  });
 }
 
 function openLightbox(source, folder, index) {
@@ -1119,6 +1154,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderStatusLine();
   renderPhaseStrip();
   initGallery();
+  renderVideos();
   renderTimeline();
   renderBreaks();
   renderPacking();
