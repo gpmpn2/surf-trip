@@ -906,6 +906,28 @@ function initGallery() {
     if (e.key === "ArrowLeft") lightboxStep(-1);
     if (e.key === "ArrowRight") lightboxStep(1);
   });
+
+  let touchStartX = 0;
+  let touchStartY = 0;
+  box.addEventListener(
+    "touchstart",
+    (e) => {
+      touchStartX = e.changedTouches[0].clientX;
+      touchStartY = e.changedTouches[0].clientY;
+    },
+    { passive: true }
+  );
+  box.addEventListener(
+    "touchend",
+    (e) => {
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      const dy = e.changedTouches[0].clientY - touchStartY;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+        lightboxStep(dx < 0 ? 1 : -1);
+      }
+    },
+    { passive: true }
+  );
 }
 
 // ---- Surf Breaks --------------------------------------------------
